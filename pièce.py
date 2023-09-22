@@ -88,8 +88,8 @@ class Reine(Piece):
         else:
             self.symbole="♛"
 
-        def __str__(self):
-            return self.symbole
+    def __str__(self):
+        return self.symbole
 
 
     def coups_possibles(self):
@@ -120,7 +120,7 @@ class Fou(Piece):
             self.symbole="♝"
 
     def __str__(self):
-            return self.symbole
+        return self.symbole
     
 
 class Cavalier(Piece):
@@ -140,7 +140,7 @@ class Cavalier(Piece):
             self.symbole="♞"
 
     def __str__(self):
-            return self.symbole
+        return self.symbole
 
 class Tour(Piece):
     
@@ -159,7 +159,7 @@ class Tour(Piece):
             self.symbole="♜"
 
     def __str__(self):
-            return self.symbole
+        return self.symbole
 
 class Pion(Piece):
     
@@ -178,5 +178,5 @@ class Pion(Piece):
             self.symbole="♟"
 
     def __str__(self):
-            return self.symbole
+        return self.symbole
 
