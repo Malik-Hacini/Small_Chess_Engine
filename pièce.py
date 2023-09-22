@@ -21,7 +21,7 @@ class Piece:
     
     '''
 
-    def __init__(self, couleur, position=None):
+    def __init__(self, couleur=None, position=None):
         '''
         param: 
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -29,12 +29,14 @@ class Piece:
         '''
         self.couleur=couleur
         self.position=position
-
+    
+    def __str__(self):
+        return " "
 
 
 class Roi(Piece):
     
-    def __init__(self, couleur, position):
+    def __init__(self, couleur, position=None):
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -74,7 +76,7 @@ class Roi(Piece):
 
 class Reine(Piece):
     
-    def __init__(self, couleur, position):
+    def __init__(self, couleur, position=None):
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -105,7 +107,7 @@ class Reine(Piece):
 
 class Fou(Piece):
     
-    def __init__(self, couleur, position):
+    def __init__(self, couleur, position=None):
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -125,7 +127,7 @@ class Fou(Piece):
 
 class Cavalier(Piece):
     
-    def __init__(self, couleur, position):
+    def __init__(self, couleur, position=None):
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -144,7 +146,7 @@ class Cavalier(Piece):
 
 class Tour(Piece):
     
-    def __init__(self, couleur, position):
+    def __init__(self, couleur, position=None):
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -163,7 +165,7 @@ class Tour(Piece):
 
 class Pion(Piece):
     
-    def __init__(self, couleur, position):
+    def __init__(self, couleur, position=None):
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
