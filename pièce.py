@@ -21,28 +21,41 @@ class Piece:
     
     '''
 
+<<<<<<< HEAD
     def __init__(self, couleur=None, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param: 
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple(int, int) (obssice(1-8), ordonnée(1-8)) ou None si la pièce n'est pas sur le plateau
+            coord: tuple(int, int) (obssice(1-8), ordonnée(1-8)) ou None si la pièce n'est pas sur le plateau
         '''
         self.couleur=couleur
+<<<<<<< HEAD
         self.position=position
     
     def __str__(self):
         return " "
+=======
+        self.coord=coord
+
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
 
 
 class Roi(Piece):
     
+<<<<<<< HEAD
     def __init__(self, couleur, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple (obssice(1-8), ordonnée(1-8))
+            coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
-        super().__init__(couleur, position) 
+        super().__init__(couleur, coord) 
         self.nom=("Roi", couleur)
         
         if self.couleur==True:
@@ -57,11 +70,11 @@ class Roi(Piece):
     def coups_possibles(self):
         '''
         Fonction qui rends la liste des coups de déplacement possible pour cette pièce
-        Input: Piece
+        Input: La piece
         Output: Listes des coups possibles 
         '''
         liste_coups=[]
-        x,y= self.position
+        x,y= self.coord
         for dy in range(-1,2):
             
             if case_existe(x-1, y+dy) and not case_controlle(x-1, y+dy) and not case_bloque(x-1, y+dy): #Verifier à gauche
@@ -70,19 +83,28 @@ class Roi(Piece):
             if case_existe(x-1, y+dy) and not case_controlle(x-1, y+dy) and not case_bloque(x-1, y+dy): #Verifier a droite
                 liste_coups.append((x-1, y+dy))
 
+        if case_existe(x, y+1) and not case_controlle(x, y+1) and not case_bloque(x, y+1): #Verifie case au dessus
+            liste_coups.append((x, y+1))
+        
+        if case_existe(x, y-1) and not case_controlle(x, y-1) and not case_bloque(x, y-1): #Verifie case en dessous
+            liste_coups.append((x, y-1))
 
-            
+        
 
 
 class Reine(Piece):
     
+<<<<<<< HEAD
     def __init__(self, couleur, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple (obssice(1-8), ordonnée(1-8))
+            coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
-        super().__init__(couleur, position) 
+        super().__init__(couleur, coord) 
         self.nom=("Reine", couleur)
         
         if self.couleur==True:
@@ -93,27 +115,30 @@ class Reine(Piece):
     def __str__(self):
         return self.symbole
 
-
     def coups_possibles(self):
         '''
         Fonction qui rends la liste des coups de déplacement possible pour cette pièce
-        Input: Piece
+        Input: La piece
         Output: Listes des coups possibles 
         '''
         liste_coups=[]
-        x,y= self.position
+        x,y= self.coord
         pass
 
 
 class Fou(Piece):
     
+<<<<<<< HEAD
     def __init__(self, couleur, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple (obssice(1-8), ordonnée(1-8))
+            coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
-        super().__init__(couleur, position) 
+        super().__init__(couleur, coord) 
         self.nom=("Reine", couleur)
         
         if self.couleur==True:
@@ -123,17 +148,31 @@ class Fou(Piece):
 
     def __str__(self):
         return self.symbole
+
+    def coups_possibles(self):
+        '''
+        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Input: La piece
+        Output: Listes des coups possibles 
+        '''
+        liste_coups=[]
+        x,y= self.coord
+        pass
     
 
 class Cavalier(Piece):
     
+<<<<<<< HEAD
     def __init__(self, couleur, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple (obssice(1-8), ordonnée(1-8))
+            coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
-        super().__init__(couleur, position) 
+        super().__init__(couleur, coord) 
         self.nom=("Reine", couleur)
         
         if self.couleur==True:
@@ -144,15 +183,29 @@ class Cavalier(Piece):
     def __str__(self):
         return self.symbole
 
+    def coups_possibles(self):
+        '''
+        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Input: La piece
+        Output: Listes des coups possibles 
+        '''
+        liste_coups=[]
+        x,y= self.coord
+        pass
+
 class Tour(Piece):
     
+<<<<<<< HEAD
     def __init__(self, couleur, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple (obssice(1-8), ordonnée(1-8))
+            coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
-        super().__init__(couleur, position) 
+        super().__init__(couleur, coord) 
         self.nom=("Reine", couleur)
         
         if self.couleur==True:
@@ -163,15 +216,30 @@ class Tour(Piece):
     def __str__(self):
         return self.symbole
 
+    def coups_possibles(self):
+        '''
+        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Input: La piece
+        Output: Listes des coups possibles 
+        '''
+        liste_coups=[]
+        x,y= self.coord
+        pass
+        
+
 class Pion(Piece):
     
+<<<<<<< HEAD
     def __init__(self, couleur, position=None):
+=======
+    def __init__(self, couleur, coord=None):
+>>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
-            position: tuple (obssice(1-8), ordonnée(1-8))
+            coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
-        super().__init__(couleur, position) 
+        super().__init__(couleur, coord) 
         self.nom=("Reine", couleur)
         
         if self.couleur==True:
@@ -182,3 +250,12 @@ class Pion(Piece):
     def __str__(self):
         return self.symbole
 
+    def coups_possibles(self):
+        '''
+        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Input: La piece
+        Output: Listes des coups possibles 
+        '''
+        liste_coups=[]
+        x,y= self.coord
+        pass
