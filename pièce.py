@@ -34,11 +34,14 @@ class Roi(Piece):
         '''
         liste_coups=[]
         x,y= position
-        for i in range(-1,2):
-            if plateau.existance_case(x-1,y+i) and not plateau.echec(x-1, y+i):
-                liste_coups.append(x-1,y+i)
+        for i in range(-1,2): 
+            if plateau.existance_case(x-1,y+i) and not plateau.echec(x-1, y+i): #Verifie les case à gauche du roi
+                liste_coups.append((x-1,y+i))
 
-        pass
+            if plateau.existance_case(x+1, y+i) and not plateau.echec(x+1,y+i): #Verifie les case à droite du roi
+                liste_coups.append((x+1,y+i))
+
+            
 
 
 
