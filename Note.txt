@@ -1,0 +1,4 @@
+Créer une classe pièce:
+    -couleur
+    -position
+
