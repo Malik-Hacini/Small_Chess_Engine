@@ -37,8 +37,8 @@ class Partie:
                 plateau[ligne,3]=Reine(couleur)
                 plateau[ligne,4]=Roi(couleur)
         self.plateau=plateau
-        j1.pieces=[[x for x in i if x.couleur==True] for i in plateau]
-        j1.pieces=[[x for x in i if x.couleur==False] for i in plateau]
+        j1.pieces=[[x for x in i if x.couleur==j1.couleur] for i in plateau]
+        j1.pieces=[[x for x in i if x.couleur==j2.couleur] for i in plateau]
         self.j1=j1
         self.j2=j2
        
@@ -71,5 +71,4 @@ class Partie:
             """
 
         self.plateau[coord1[0],coord1[1]] , self.plateau[coord2[0],coord2[1]] = Piece(), self.plateau[coord1[0],coord1[1]]
-partie=Partie()
-print(partie)
+

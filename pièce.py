@@ -17,39 +17,25 @@ def existance_case(x,y):
 
 
 class Piece:
-    '''
-    
-    '''
 
-<<<<<<< HEAD
-    def __init__(self, couleur=None, position=None):
-=======
-    def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
+    def __init__(self, couleur=None, coord=None):
         '''
         param: 
             couleur: Bool (True<=>Blanc, False<=>Noir)
             coord: tuple(int, int) (obssice(1-8), ordonnée(1-8)) ou None si la pièce n'est pas sur le plateau
         '''
         self.couleur=couleur
-<<<<<<< HEAD
-        self.position=position
+        self.coord=coord
     
     def __str__(self):
         return " "
-=======
         self.coord=coord
 
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
 
 
 class Roi(Piece):
     
-<<<<<<< HEAD
-    def __init__(self, couleur, position=None):
-=======
     def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -94,11 +80,7 @@ class Roi(Piece):
 
 class Reine(Piece):
     
-<<<<<<< HEAD
-    def __init__(self, couleur, position=None):
-=======
     def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -128,11 +110,7 @@ class Reine(Piece):
 
 class Fou(Piece):
     
-<<<<<<< HEAD
-    def __init__(self, couleur, position=None):
-=======
     def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -162,11 +140,7 @@ class Fou(Piece):
 
 class Cavalier(Piece):
     
-<<<<<<< HEAD
-    def __init__(self, couleur, position=None):
-=======
     def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -195,11 +169,7 @@ class Cavalier(Piece):
 
 class Tour(Piece):
     
-<<<<<<< HEAD
-    def __init__(self, couleur, position=None):
-=======
     def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)
@@ -229,11 +199,7 @@ class Tour(Piece):
 
 class Pion(Piece):
     
-<<<<<<< HEAD
-    def __init__(self, couleur, position=None):
-=======
     def __init__(self, couleur, coord=None):
->>>>>>> 73716cf61c062c3f358b835101e93d98be90defe
         '''
         param:
             couleur: Bool (True<=>Blanc, False<=>Noir)

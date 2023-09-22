@@ -1,9 +1,6 @@
-import plateau
-
-
-
-class joueur():
-    def __init__(self,nom : str,couleur : bool, pieces : dict) -> None:
+import numpy as np
+class Joueur():
+    def __init__(self,nom : str,couleur : bool, pieces : dict = None) -> None:
         """création un joueur
 
         Args:
@@ -15,12 +12,12 @@ class joueur():
         self.pieces = pieces 
 
 
-class humain(joueur):
-    def __init__(self, nom: str, couleur: bool, pieces: dict) -> None:
+class humain(Joueur):
+    def __init__(self, nom: str, couleur: bool, pieces: dict = None) -> None:
         super().__init__(nom, couleur, pieces)
         
     
-    def jouer_coup(self,plateau : plateau) -> None:
+    def jouer_coup(self,plateau : np.ndarray) -> None:
         #donner les positions des pieces
         print("voici vos pieces")
         for piece in self.pieces:
