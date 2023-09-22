@@ -2,3 +2,12 @@ Créer une classe pièce:
     -couleur
     -position
 
+Sous Classe de pièce(type):
+    -Mouvement possible
+
+Classe Plateau:
+
+Classe Joueur:
+    -Humain/Ia
+    -Niveau Ia
+
