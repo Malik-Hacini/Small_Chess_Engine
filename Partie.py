@@ -37,12 +37,12 @@ class Partie:
                 plateau[ligne,3]=Reine(couleur)
                 plateau[ligne,4]=Roi(couleur)
         self.plateau=plateau
-        j1.pieces=[[x for x in i if x.couleur==j1.couleur] for i in plateau]
-        j1.pieces=[[x for x in i if x.couleur==j2.couleur] for i in plateau]
+        j1.pieces=[i for x in plateau for i in x if i.couleur==j1.couleur]
+        j2.pieces=[i for x in plateau for i in x if i.couleur==j2.couleur]
         self.j1=j1
         self.j2=j2
-       
-       
+    
+
     def __str__(self)->str:
         """méthode print pour la partie. Affiche le plateau dans
         son état actuel
@@ -52,13 +52,26 @@ class Partie:
         """
         
         p=""
+        i=0
+        num_ligne=[str(x) for x in range(8)]
+        nom_col=["A","B" ,"C",
+                 "D","E" ,"F","G","H"]
+        
+        p+="    " +  "    ".join(nom_col) +"\n"
         for ligne in self.plateau:
+            
+            p+=num_ligne[i] + "   "
+            i+=1
+            
             for piece in ligne:
-                p+=piece.__str__() + "   "
-            p+= "\n"
+                p+=piece.__str__() + "  | "
+            p+=  "\n" + "   "+ "-"*41 + "\n"
+        p+=" "*5 +  "    ".join(nom_col) 
+            
+             
         return p
     
-    def deplacer(self, coord1: tuple[int,int], coord2: tuple[int, int])->np.ndarray:
+    def deplacer_piece(self, coord1: tuple[int,int], coord2: tuple[int, int])->np.ndarray:
         """Déplace une pièce du plateau à un autre endroit.
         Cette méthode n'est exécutée que si le coup est valide,
         il n'y a donc pas besoin de le vérifier.
@@ -72,3 +85,11 @@ class Partie:
 
         self.plateau[coord1[0],coord1[1]] , self.plateau[coord2[0],coord2[1]] = Piece(), self.plateau[coord1[0],coord1[1]]
 
+j1=Humain("Malik",1)
+j2=Humain("Basile", 0)
+p=Partie(j1,j2)
+
+p.deplacer_piece((0,0),(3,3))
+print(p)
+for i in enumerate(j1.pieces):
+    print(i)

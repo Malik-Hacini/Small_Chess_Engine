@@ -29,7 +29,6 @@ class Piece:
     
     def __str__(self):
         return " "
-        self.coord=coord
 
 
 

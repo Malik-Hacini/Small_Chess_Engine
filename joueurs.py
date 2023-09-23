@@ -1,7 +1,7 @@
 import numpy as np
 class Joueur():
     def __init__(self,nom : str,couleur : bool, pieces : dict = None) -> None:
-        """création un joueur
+        """création d'un joueur
 
         Args:
             nom (str): nom du joueur
@@ -12,7 +12,7 @@ class Joueur():
         self.pieces = pieces 
 
 
-class humain(Joueur):
+class Humain(Joueur):
     def __init__(self, nom: str, couleur: bool, pieces: dict = None) -> None:
         super().__init__(nom, couleur, pieces)
         
