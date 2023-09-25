@@ -11,20 +11,6 @@ def existance_case(x,y):
     else:
         return True
 
-
-def case_controlle(x,y,couleur):
-    '''
-    Nous renvoie si la case de coordonnées x,y est controllé par l'adversaire
-    Input:
-        x,y: coordonnées de la case
-        couleur: couleur de la piece concerné, on doit donc voir si la case est controllé par l'autre couleur
-
-    Output: Bool
-        La case est controllé par l'adversaire -> True
-        La case n'est pas controllé par l'adversaire -> False
-    '''
-    pass
-
 def case_occupe(x,y, couleur):
     '''
     Nous renvoie si la case de coordonnées x,y est déjà occupé par une des pieces de la même couleur
