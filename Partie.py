@@ -146,7 +146,6 @@ p.deplacer_piece((0,0),(3,3))
 print(p)
 for i in enumerate(j1.pieces):
     print(i)
-    
-    
+   
 p.sauvegarder("sauvegarde")
 p2 = Partie(j1,j2,"sauvegarde")
