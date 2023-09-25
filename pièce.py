@@ -301,6 +301,33 @@ class Cavalier(Piece):
         '''
         self.liste_coups=[]
 
+        x,y= self.coord
+        
+        if not case_occupe(x+1,y+2, couleur):
+            self.liste_coups.append((x+1,y+2))
+
+        if not case_occupe(x-1,y+2, couleur):
+            self.liste_coups.append((x-1,y+2))
+
+        if not case_occupe(x-2,y+1, couleur):
+            self.liste_coups.append((x-2,y+1))
+
+        if not case_occupe(x-2,y-1, couleur):
+            self.liste_coups.append((x-2,y-1))
+
+        if not case_occupe(x-1,y-2, couleur):
+            self.liste_coups.append((x-1,y-2))
+        
+        if not case_occupe(x+1,y-2, couleur):
+            self.liste_coups.append((x+1,y-2))
+
+        if not case_occupe(x+2,y-1, couleur):
+            self.liste_coups.append((x+2,y-1))
+
+        if not case_occupe(x+2,y+1, couleur):
+            self.liste_coups.append((x+2,y+1))
+        
+
 class Tour(Piece):
     
     def __init__(self, couleur, coord=None):
