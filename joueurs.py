@@ -59,10 +59,10 @@ class Humain(Joueur):
         #déplacer la pièce sur le plateau
         plateau.jouer(p.coord,coup)
         
+class IA(Joueur):
+    def __init__(self, nom: str, couleur: bool, pieces: dict = None) -> None:
+        super().__init__(nom, couleur, pieces)      
+    pass    
         
         
         
-        
-        
-#une piece possede:
-    #couleur, position
