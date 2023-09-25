@@ -136,6 +136,60 @@ class Reine(Piece):
                 y-=1 #On continue
 
 
+        #déplacement du fou
+        #deplacement diagonale droite haute x et y croissant
+        x,y = self.coord
+        x+=1
+        y+=1
+        while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x+=1
+                y+=1 #On continue
+
+        #deplacement diagonale droite basse x croissant et y décroissant
+        x,y = self.coord
+        x+=1
+        y-=1
+        while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x+=1
+                y-=1 #On continue
+
+        #deplacement diagonale gauche basse x décroissant et y décroissant
+        x,y = self.coord
+        x-=1
+        y-=1
+        while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x-=1
+                y-=1 #On continue
+
+        #deplacement diagonale gauche haute x décroissant et y croissant
+        x,y = self.coord
+        x-=1
+        y+=1
+        while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x-=1
+                y+=1 #On continue
+
+
 class Fou(Piece):
     
     def __init__(self, couleur, coord=None):
@@ -162,6 +216,59 @@ class Fou(Piece):
         Output: Listes des coups possibles 
         '''
         self.liste_coups=[]
+
+        #deplacement diagonale droite haute x et y croissant
+        x,y = self.coord
+        x+=1
+        y+=1
+        while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x+=1
+                y+=1 #On continue
+
+        #deplacement diagonale droite basse x croissant et y décroissant
+        x,y = self.coord
+        x+=1
+        y-=1
+        while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x+=1
+                y-=1 #On continue
+
+        #deplacement diagonale gauche basse x décroissant et y décroissant
+        x,y = self.coord
+        x-=1
+        y-=1
+        while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x-=1
+                y-=1 #On continue
+
+        #deplacement diagonale gauche haute x décroissant et y croissant
+        x,y = self.coord
+        x-=1
+        y+=1
+        while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x-=1
+                y+=1 #On continue
+
 
 
 class Cavalier(Piece):
