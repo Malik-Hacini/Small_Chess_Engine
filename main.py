@@ -1,8 +1,14 @@
 from joueurs import*
+from Partie import*
 import sys
 
 def jouer_une_partie(joueur1,joueur2):
-    
+    """Joue une partie d'échecs. 
+
+    Args:
+        joueur1 (_type_): Le joueur 1. Peut être humain ou IA
+        joueur2 (_type_): Le joueur 2. Peut être humain ou IA
+    """
     joueurs=[joueur1,joueur2]
     
     save=None
@@ -40,6 +46,9 @@ def jouer_une_partie(joueur1,joueur2):
     
     
 def main():
+    """Le jeu d'échec dans son intégralité. Initialise une partie, 
+    la joue et demande à l'utilisateur si il veut rejouer."""
+    
     while True:
         for i in range(1,3):
             type_joueur=None
@@ -61,14 +70,15 @@ def main():
                 else:
                     joueur2=IA(nom,0)
 
-            #jouer_une_partie(joueur1,joueur2)
+        jouer_une_partie(joueur1,joueur2)
             
-            while replay not in ("O","N"):
-                replay=input("Voulez vous rejouer ? (O/N) \n")
-                
-            if replay=="N":
-                print("Merci d'avoir joué ! ")
-                sys.exit()
+        replay=None
+        while replay not in ("O","N"):
+            replay=input("Voulez vous rejouer ? (O/N) \n")
+            
+        if replay=="N":
+            print("Merci d'avoir joué ! ")
+            sys.exit()
     
     
         
