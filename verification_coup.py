@@ -22,8 +22,36 @@ def case_occupe(x,y, couleur):
         La case est occupé par une piece de même couleur -> True
         La case n'est pas occupé par une piece de même couleur -> False
     '''
-    piece=plateau[x][y]
+    piece=partie.plateau[x][y]
     if piece.couleur==couleur:
         return True
     else:
         return False
+
+def tri_deplacement_echec(piece, liste_deplacement):
+    '''
+    Vérifie si il y a une situation d'échec contre  la couleur d'une pièce déplacé à une liste de déplacement. Par la même
+    occasion supprime les déplacement qui conduisent à une situation d'échec.
+    Input: piece: Pièce  La pièce que l'on déplace 
+           liste_deplacement: list La liste des déplacement qu'on veut faire
+    Output: liste_déplacement: list La liste ou on a retiré les déplacements qui mène à un échec
+    '''
+    x_i, y_i = piece.coord
+    for deplacement in liste_deplacement:
+        x,y = deplacement
+        piece.bouger_piece(x,y)
+        if echec(piece.couleur):
+            liste_deplacement.remove(deplacement)
+    piece.bouger_piece(x_i, y_i)
+    return liste_deplacement
+
+def echec(couleur : bool) -> None:
+    
+    liste_case_controllee=[]
+    if couleur:
+        for piece in joueur2.pieces:
+            liste_case_controllee+=piece.cases_controllées
+
+        for case in liste_case_controllee:
+            x,y= case
+            piece=
