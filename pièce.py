@@ -326,6 +326,8 @@ class Cavalier(Piece):
 
         if not case_occupe(x+2,y+1, couleur):
             self.liste_coups.append((x+2,y+1))
+
+        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
         
 
 class Tour(Piece):
