@@ -13,6 +13,7 @@ class Piece:
         '''
         self.couleur=couleur
         self.coord=coord
+        self.liste_case_controllé=[]
         self.liste_coups=[]
         self.premier_coup=True #Important de le savoir pour les pion le roi et les tours
     
@@ -38,7 +39,7 @@ class Roi(Piece):
             coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
         super().__init__(couleur, coord) 
-        self.nom=("Roi", couleur)
+        self.nom="Roi"
         
         if self.couleur==True:
             self.symbole="♔"
@@ -57,7 +58,7 @@ class Roi(Piece):
         '''
         self.liste_coups=[]
 
-        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        
         return self.liste_coups
 
         
@@ -72,7 +73,7 @@ class Reine(Piece):
             coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
         super().__init__(couleur, coord) 
-        self.nom=("Reine", couleur)
+        self.nom="Reine"
         
         if self.couleur==True:
             self.symbole="♕"
@@ -82,11 +83,11 @@ class Reine(Piece):
     def __str__(self):
         return self.symbole
 
-    def coups_possibles(self):
+    def cases_controllées(self):
         '''
-        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Fonction qui rends la liste des cases controllées possible pour cette pièce
         Input: La piece
-        Output: Listes des coups possibles 
+        Output: Listes des cases que la piece controlle possibles 
         '''
         self.liste_coups=[]
 
@@ -191,8 +192,17 @@ class Reine(Piece):
                 self.liste_coups.append((x,y))
                 x-=1
                 y+=1 #On continue
+    
+        return self.liste_coups
 
-        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+    def coups_possibles(self):
+        '''
+        Fonction qui calcules les cases ou la piece peut aller. C'est à dire les cases qu'elle controle sans meetre le roi en echec
+        Input: piece
+        Output: liste des cases ou on peut aller
+        '''
+        self.liste_case_controllé=self.cases_controllées()
+        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
         return self.liste_coups
 
 
@@ -215,11 +225,11 @@ class Fou(Piece):
     def __str__(self):
         return self.symbole
 
-    def coups_possibles(self):
+    def cases_controllées(self):
         '''
-        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Fonction qui rends la liste des cases controllées possible pour cette pièce
         Input: La piece
-        Output: Listes des coups possibles 
+        Output: Listes des cases que la piece controlle possibles 
         '''
         self.liste_coups=[]
 
@@ -275,7 +285,17 @@ class Fou(Piece):
                 x-=1
                 y+=1 #On continue
         
-        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        
+        return self.liste_coups
+
+    def coups_possibles(self):
+        '''
+        Fonction qui calcules les cases ou la piece peut aller. C'est à dire les cases qu'elle controle sans meetre le roi en echec
+        Input: piece
+        Output: liste des cases ou on peut aller
+        '''
+        self.liste_case_controllé=self.cases_controllées()
+        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
         return self.liste_coups
 
 
@@ -298,11 +318,11 @@ class Cavalier(Piece):
     def __str__(self):
         return self.symbole
 
-    def coups_possibles(self):
+    def cases_controllées(self):
         '''
-        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Fonction qui rends la liste des cases controllées possible pour cette pièce
         Input: La piece
-        Output: Listes des coups possibles 
+        Output: Listes des cases que la piece controlle possibles 
         '''
         self.liste_coups=[]
 
@@ -333,7 +353,7 @@ class Cavalier(Piece):
         if not case_occupe(x+2,y+1, couleur) and 1<=x+2<=8 and 1<=y+1<=8:
             self.liste_coups.append((x+2,y+1))
 
-        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        
         return self.liste_coups
         
 
@@ -356,11 +376,11 @@ class Tour(Piece):
     def __str__(self):
         return self.symbole
 
-    def coups_possibles(self):
+    def cases_controllées(self):
         '''
-        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Fonction qui rends la liste des cases controllées possible pour cette pièce
         Input: La piece
-        Output: Listes des coups possibles 
+        Output: Listes des cases que la piece controlle possibles 
         '''
         self.liste_coups=[]
         
@@ -411,7 +431,17 @@ class Tour(Piece):
                 self.liste_coups.append((x,y))
                 y-=1 #On continue
 
-        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        
+        return self.liste_coups
+
+    def coups_possibles(self):
+        '''
+        Fonction qui calcules les cases ou la piece peut aller. C'est à dire les cases qu'elle controle sans meetre le roi en echec
+        Input: piece
+        Output: liste des cases ou on peut aller
+        '''
+        self.liste_case_controllé=self.cases_controllées()
+        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
         return self.liste_coups
 
 
@@ -435,11 +465,11 @@ class Pion(Piece):
     def __str__(self):
         return self.symbole
 
-    def coups_possibles(self):
+    def cases_controllées(self):
         '''
-        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
+        Fonction qui rends la liste des cases controllées possible pour cette pièce
         Input: La piece
-        Output: Listes des coups possibles 
+        Output: Listes des cases que la piece controlle possibles 
         '''
         self.liste_coups=[]
         x,y=self.coord
@@ -482,5 +512,15 @@ class Pion(Piece):
                     if not case_occupe(x,y-1, self.couleur) and not case_occupe(x,y-1, not self.couleur) and not case_occupe(x,y-2, self.couleur) and not case_occupe(x,y-2, not self.couleur):
                         self.coups_possibles.append((x, y-2))
 
-        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        
         return(self.liste_coups)
+
+    def coups_possibles(self):
+        '''
+        Fonction qui calcules les cases ou la piece peut aller. C'est à dire les cases qu'elle controle sans meetre le roi en echec
+        Input: piece
+        Output: liste des cases ou on peut aller
+        '''
+        self.liste_case_controllé=self.cases_controllées()
+        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
+        return self.liste_coups
