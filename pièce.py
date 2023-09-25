@@ -202,7 +202,7 @@ class Reine(Piece):
         Output: liste des cases ou on peut aller
         '''
         self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
+        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
         return self.liste_coups
 
 
@@ -215,7 +215,7 @@ class Fou(Piece):
             coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
         super().__init__(couleur, coord) 
-        self.nom=("Reine", couleur)
+        self.nom=("Fou")
         
         if self.couleur==True:
             self.symbole="♗"
@@ -295,7 +295,7 @@ class Fou(Piece):
         Output: liste des cases ou on peut aller
         '''
         self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
+        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
         return self.liste_coups
 
 
@@ -308,7 +308,7 @@ class Cavalier(Piece):
             coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
         super().__init__(couleur, coord) 
-        self.nom=("Reine", couleur)
+        self.nom="Cavalier"
         
         if self.couleur==True:
             self.symbole="♘"
@@ -352,8 +352,17 @@ class Cavalier(Piece):
 
         if not case_occupe(x+2,y+1, couleur) and 1<=x+2<=8 and 1<=y+1<=8:
             self.liste_coups.append((x+2,y+1))
-
         
+        return self.liste_coups
+    
+    def coups_possibles(self):
+        '''
+        Fonction qui calcules les cases ou la piece peut aller. C'est à dire les cases qu'elle controle sans meetre le roi en echec
+        Input: piece
+        Output: liste des cases ou on peut aller
+        '''
+        self.liste_case_controllé=self.cases_controllées()
+        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
         return self.liste_coups
         
 
@@ -366,7 +375,7 @@ class Tour(Piece):
             coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
         super().__init__(couleur, coord) 
-        self.nom=("Reine", couleur)
+        self.nom="Tour"
         
         if self.couleur==True:
             self.symbole="♖"
@@ -441,7 +450,7 @@ class Tour(Piece):
         Output: liste des cases ou on peut aller
         '''
         self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
+        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
         return self.liste_coups
 
 
@@ -455,7 +464,7 @@ class Pion(Piece):
             coord: tuple (obssice(1-8), ordonnée(1-8))
         '''
         super().__init__(couleur, coord) 
-        self.nom=("Reine", couleur)
+        self.nom="Pion"
         
         if self.couleur==True:
             self.symbole="♙"
@@ -522,5 +531,5 @@ class Pion(Piece):
         Output: liste des cases ou on peut aller
         '''
         self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups=test_echec(self.coord, self.liste_case_controllé, self.couleur)
+        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
         return self.liste_coups
