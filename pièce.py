@@ -87,6 +87,54 @@ class Reine(Piece):
         '''
         self.liste_coups=[]
 
+        #Déplacement de la tour
+        #deplacement x croissant
+        x,y = self.coord
+        x+=1
+        while x<=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                x+=1 #On continue 
+
+        
+        #deplacement x decroissant
+        x,y = self.coord
+        x-=1
+        while x>=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else: #Sinon
+                self.liste_coups.append((x,y))
+                x-=1 #On continue
+
+        
+        #Déplacement y croissant
+        x,y = self.coord
+        y+=1
+        while y<=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else:#Sinon
+                self.liste_coups.append((x,y))
+                y+=1 #On continue 
+
+        
+        #deplacement y decroissant
+        x,y = self.coord
+        y-=1
+        while y>=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
+            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_coups.append((x,y)) #On la mange
+                break #Et on s'arrete la 
+            else: #Sinon
+                self.liste_coups.append((x,y))
+                y-=1 #On continue
+
 
 class Fou(Piece):
     
