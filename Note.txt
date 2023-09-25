@@ -7,7 +7,7 @@ Sous Classe de pièce(type):
 
 Classe Plateau:
     echec(x,y): verifie si le roi est en echec sur cette case
-    existance_case(x,y): verifie si la case existe
+
 
 
 Classe Joueur:
@@ -17,3 +17,7 @@ Classe Joueur:
 Classe Partie
     Initialise le plateau et les pieces les joueurs
     sauvegarde les logs des coups 
+
+
+Pour vérifier les coups possible d'abord voir si ils sont possible logiquement cad sur le plateau et sans être bloqué.
+Puis tester cette liste pour voir si situation d'echec.

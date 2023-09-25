@@ -1,7 +1,7 @@
 '''
 Fichier Contenant le comportement des différentes pièces du jeu
 '''
-
+from verification_coup import*
 
 class Piece:
 
@@ -56,6 +56,9 @@ class Roi(Piece):
         Output: Listes des coups possibles 
         '''
         self.liste_coups=[]
+
+        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        return self.liste_coups
 
         
 
@@ -190,6 +193,7 @@ class Reine(Piece):
                 y+=1 #On continue
 
         self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        return self.liste_coups
 
 
 class Fou(Piece):
@@ -272,6 +276,7 @@ class Fou(Piece):
                 y+=1 #On continue
         
         self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        return self.liste_coups
 
 
 class Cavalier(Piece):
@@ -303,31 +308,33 @@ class Cavalier(Piece):
 
         x,y= self.coord
         
-        if not case_occupe(x+1,y+2, couleur):
+
+        if not case_occupe(x+1,y+2, couleur) and 1<=x+1<=8 and 1<=y+2<=8:
             self.liste_coups.append((x+1,y+2))
 
-        if not case_occupe(x-1,y+2, couleur):
+        if not case_occupe(x-1,y+2, couleur) and 1<=x-1<=8 and 1<=y+2<=8:
             self.liste_coups.append((x-1,y+2))
 
-        if not case_occupe(x-2,y+1, couleur):
+        if not case_occupe(x-2,y+1, couleur) and 1<=x-2<=8 and 1<=y+1<=8:
             self.liste_coups.append((x-2,y+1))
 
-        if not case_occupe(x-2,y-1, couleur):
+        if not case_occupe(x-2,y-1, couleur) and 1<=x-2<=8 and 1<=y-1<=8:
             self.liste_coups.append((x-2,y-1))
 
-        if not case_occupe(x-1,y-2, couleur):
+        if not case_occupe(x-1,y-2, couleur) and 1<=x-1<=8 and 1<=y-2<=8:
             self.liste_coups.append((x-1,y-2))
         
-        if not case_occupe(x+1,y-2, couleur):
+        if not case_occupe(x+1,y-2, couleur) and 1<=x+1<=8 and 1<=y-2<=8:
             self.liste_coups.append((x+1,y-2))
 
-        if not case_occupe(x+2,y-1, couleur):
+        if not case_occupe(x+2,y-1, couleur) and 1<=x+2<=8 and 1<=y-1<=8:
             self.liste_coups.append((x+2,y-1))
 
-        if not case_occupe(x+2,y+1, couleur):
+        if not case_occupe(x+2,y+1, couleur) and 1<=x+2<=8 and 1<=y+1<=8:
             self.liste_coups.append((x+2,y+1))
 
         self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        return self.liste_coups
         
 
 class Tour(Piece):
@@ -405,6 +412,7 @@ class Tour(Piece):
                 y-=1 #On continue
 
         self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        return self.liste_coups
 
 
 
@@ -475,3 +483,4 @@ class Pion(Piece):
                         self.coups_possibles.append((x, y-2))
 
         self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+        return(self.liste_coups)
