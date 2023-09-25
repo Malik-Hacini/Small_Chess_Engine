@@ -189,6 +189,8 @@ class Reine(Piece):
                 x-=1
                 y+=1 #On continue
 
+        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+
 
 class Fou(Piece):
     
@@ -268,7 +270,8 @@ class Fou(Piece):
                 self.liste_coups.append((x,y))
                 x-=1
                 y+=1 #On continue
-
+        
+        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
 
 
 class Cavalier(Piece):
@@ -372,6 +375,8 @@ class Tour(Piece):
                 self.liste_coups.append((x,y))
                 y-=1 #On continue
 
+        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
+
 
 
 class Pion(Piece):
@@ -439,3 +444,5 @@ class Pion(Piece):
                 else: #Si noir
                     if not case_occupe(x,y-1, self.couleur) and not case_occupe(x,y-1, not self.couleur) and not case_occupe(x,y-2, self.couleur) and not case_occupe(x,y-2, not self.couleur):
                         self.coups_possibles.append((x, y-2))
+
+        self.liste_coups=trier_coup_echec(self.liste_coups, self.couleur)
