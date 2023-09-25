@@ -45,8 +45,15 @@ def tri_deplacement_echec(piece, liste_deplacement):
     piece.bouger_piece(x_i, y_i)
     return liste_deplacement
 
-def echec(couleur : bool) -> None:
-    
+def echec(couleur : bool) -> bool:
+    """Fonction qui nous dis si le roi de la couleur demandé est en échec
+
+    Args:
+        couleur (bool): Couleur de du roi dont on veut savoir si il est en échec (True<=> Blanc et False <=> Noir)
+
+    Returns:
+        bool: True <=> Roi en échec
+    """
     liste_case_controllee=[]
     if couleur:
         for piece in joueur2.pieces:
@@ -54,4 +61,18 @@ def echec(couleur : bool) -> None:
 
         for case in liste_case_controllee:
             x,y= case
-            piece=
+            piece=partie.plateau[x][y]
+            if piece.name=="Roi" and piece.couleur:
+                return True
+    
+    else:
+        for piece in joueur1.pieces:
+            liste_case_controllee+=piece.cases_controllées
+
+        for case in liste_case_controllee:
+            x,y= case
+            piece=partie.plateau[x][y]
+            if piece.name=="Roi" and not piece.couleur:
+                return True
+            
+    return False
