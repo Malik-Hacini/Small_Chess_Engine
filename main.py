@@ -47,7 +47,7 @@ def jouer_une_partie(joueur1,joueur2):
     
 def main():
     """Le jeu d'échec dans son intégralité. Initialise une partie, 
-    la joue et demande à l'utilisateur si il veut rejouer."""
+    la joue et répète tant que l'utilisateur veut rejouer."""
     
     while True:
         for i in range(1,3):

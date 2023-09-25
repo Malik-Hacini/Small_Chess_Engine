@@ -51,7 +51,7 @@ class Partie:
                 
                 
         else :
-            print("chargement de la partie")
+            print("Chargement de la partie")
             fichier = open(plateau+".txt", 'r')
             sauv_txt = fichier.read()
             fichier.close()
