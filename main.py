@@ -12,7 +12,6 @@ def jouer_une_partie(joueur1,joueur2):
     joueurs=[joueur1,joueur2]
     
     save=None
-    
     while save not in ("O","N"):
         
         save=input("Voulez vous charger une sauvegarde ? (O/N) \n")
@@ -35,7 +34,8 @@ def jouer_une_partie(joueur1,joueur2):
     
         
     tour = True
-    while partie.gagnant() is None:
+    draw= False
+    while partie.gagnant() is None and not draw:
         
         partie.deplacer_piece(joueurs[tour].jouer_coup(partie.plateau))
         
