@@ -13,12 +13,12 @@ class Piece:
         '''
         self.couleur=couleur
         self.coord=coord
-        self.liste_case_controllé=[]
+        self.liste_cases_controllees=[]
         self.liste_coups=[]
         self.premier_coup=True #Important de le savoir pour les pion le roi et les tours
     
 
-    def bouger_piece(self, x, y):
+    def bouger_piece(self, x: int, y: int):
         '''
         Sers à bouger la pièce, lui change ses coordonnées avec les nouvelles qui correspondent à celles après s'être déplacé.
         Input:
@@ -28,6 +28,25 @@ class Piece:
         self.coord=(x,y)
         if self.premier_coup:
             self.premier_coup=False
+            
+    def tri_deplacement_echec(self, liste_deplacement: list)->list:
+        """Fonction qui simule une liste de déplacements et suprime les déplacements qui mène à des echecs
+
+        Args:
+            liste_deplacement (list): La liste de déplacement que l'on simule
+
+        Returns:
+            list: La liste des déplacements triée des situations qui mettent en échec
+        """
+        x_i, y_i = self.coord
+        for deplacement in liste_deplacement:
+            x,y = deplacement
+            self.bouger_piece(x,y)
+            if partie.echec(piece.couleur):
+                liste_deplacement.remove(deplacement)
+        self.bouger_piece(x_i, y_i)
+    
+        return liste_deplacement
 
 
 class Roi(Piece):
@@ -49,19 +68,36 @@ class Roi(Piece):
     def __str__(self):
         return self.symbole
 
-
+    def cases_controllées(self):
+        liste_cases_controllees=[]
+        x,y=self.coord
+        if 1<=x+1<=8 and 1<=y+1<=8 and not case_occupe(x+1,y+1, self.couleur):
+            liste_cases_controllees.append((x+1,y+1))
+        if 1<=x+1<=8 and 1<=y<=8 and not case_occupe(x+1,y, self.couleur):
+            liste_cases_controllees.append((x+1,y))
+        if 1<=x+1<=8 and 1<=y-1<=8 and not case_occupe(x+1,y-1, self.couleur):
+            liste_cases_controllees.append((x+1,y-1))
+        if 1<=x<=8 and 1<=y-1<=8 and not case_occupe(x,y-1, self.couleur):
+            liste_cases_controllees.append((x,y-1))
+        if 1<=x-1<=8 and 1<=y-1<=8 and not case_occupe(x-1,y-1, self.couleur):
+            liste_cases_controllees.append((x-1,y-1))
+        if 1<=x-1<=8 and 1<=y<=8 and not case_occupe(x-1,y, self.couleur):
+            liste_cases_controllees.append((x-1,y))
+        if 1<=x-1<=8 and 1<=y+1<=8 and not case_occupe(x-1,y+1, self.couleur):
+            liste_cases_controllees.append((x-1,y+1))
+        if 1<=x<=8 and 1<=y+1<=8 and not case_occupe(x,y+1, self.couleur):
+            liste_cases_controllees.append((x,y+1))
+              
+    
     def coups_possibles(self):
         '''
-        Fonction qui rends la liste des coups de déplacement possible pour cette pièce
-        Input: La piece
-        Output: Listes des coups possibles 
+        Fonction qui calcules les cases ou la piece peut aller. C'est à dire les cases qu'elle controle sans meetre le roi en echec
+        Input: piece
+        Output: liste des cases ou on peut aller
         '''
-        self.liste_coups=[]
-
-        
+        self.liste_cases_controllees=self.cases_controllées()
+        self.liste_coups= self.tri_deplacement_echec(self.liste_cases_controllees)
         return self.liste_coups
-
-        
 
 
 class Reine(Piece):
@@ -89,18 +125,18 @@ class Reine(Piece):
         Input: La piece
         Output: Listes des cases que la piece controlle possibles 
         '''
-        self.liste_coups=[]
+        self.liste_cases_controllees=[]
 
         #Déplacement de la tour
         #deplacement x croissant
         x,y = self.coord
         x+=1
         while x<=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x+=1 #On continue 
 
         
@@ -108,11 +144,11 @@ class Reine(Piece):
         x,y = self.coord
         x-=1
         while x>=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else: #Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x-=1 #On continue
 
         
@@ -120,11 +156,11 @@ class Reine(Piece):
         x,y = self.coord
         y+=1
         while y<=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 y+=1 #On continue 
 
         
@@ -132,11 +168,11 @@ class Reine(Piece):
         x,y = self.coord
         y-=1
         while y>=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else: #Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 y-=1 #On continue
 
 
@@ -146,11 +182,11 @@ class Reine(Piece):
         x+=1
         y+=1
         while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x+=1
                 y+=1 #On continue
 
@@ -159,11 +195,11 @@ class Reine(Piece):
         x+=1
         y-=1
         while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x+=1
                 y-=1 #On continue
 
@@ -172,11 +208,11 @@ class Reine(Piece):
         x-=1
         y-=1
         while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x-=1
                 y-=1 #On continue
 
@@ -185,15 +221,15 @@ class Reine(Piece):
         x-=1
         y+=1
         while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x-=1
                 y+=1 #On continue
     
-        return self.liste_coups
+        return self.liste_cases_controllees
 
     def coups_possibles(self):
         '''
@@ -201,8 +237,8 @@ class Reine(Piece):
         Input: piece
         Output: liste des cases ou on peut aller
         '''
-        self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
+        self.liste_cases_controllees=self.cases_controllées()
+        self.liste_coups= self.tri_deplacement_echec(self.liste_cases_controllees)
         return self.liste_coups
 
 
@@ -231,18 +267,18 @@ class Fou(Piece):
         Input: La piece
         Output: Listes des cases que la piece controlle possibles 
         '''
-        self.liste_coups=[]
+        self.liste_cases_controllees=[]
 
         #deplacement diagonale droite haute x et y croissant
         x,y = self.coord
         x+=1
         y+=1
         while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x+=1
                 y+=1 #On continue
 
@@ -251,11 +287,11 @@ class Fou(Piece):
         x+=1
         y-=1
         while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x+=1
                 y-=1 #On continue
 
@@ -264,11 +300,11 @@ class Fou(Piece):
         x-=1
         y-=1
         while x<=8  and y >=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x-=1
                 y-=1 #On continue
 
@@ -277,16 +313,16 @@ class Fou(Piece):
         x-=1
         y+=1
         while x<=8  and y <=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x-=1
                 y+=1 #On continue
         
         
-        return self.liste_coups
+        return self.liste_cases_controllees
 
     def coups_possibles(self):
         '''
@@ -294,8 +330,8 @@ class Fou(Piece):
         Input: piece
         Output: liste des cases ou on peut aller
         '''
-        self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
+        self.liste_cases_controllees=self.cases_controllées()
+        self.liste_coups= self.tri_deplacement_echec(self.liste_cases_controllees)
         return self.liste_coups
 
 
@@ -324,36 +360,36 @@ class Cavalier(Piece):
         Input: La piece
         Output: Listes des cases que la piece controlle possibles 
         '''
-        self.liste_coups=[]
+        self.liste_cases_controllees=[]
 
         x,y= self.coord
         
 
-        if not case_occupe(x+1,y+2, couleur) and 1<=x+1<=8 and 1<=y+2<=8:
-            self.liste_coups.append((x+1,y+2))
+        if not case_occupe(x+1,y+2, self.couleur) and 1<=x+1<=8 and 1<=y+2<=8:
+            self.liste_cases_controllees.append((x+1,y+2))
 
-        if not case_occupe(x-1,y+2, couleur) and 1<=x-1<=8 and 1<=y+2<=8:
-            self.liste_coups.append((x-1,y+2))
+        if not case_occupe(x-1,y+2, self.couleur) and 1<=x-1<=8 and 1<=y+2<=8:
+            self.liste_cases_controllees.append((x-1,y+2))
 
-        if not case_occupe(x-2,y+1, couleur) and 1<=x-2<=8 and 1<=y+1<=8:
-            self.liste_coups.append((x-2,y+1))
+        if not case_occupe(x-2,y+1, self.couleur) and 1<=x-2<=8 and 1<=y+1<=8:
+            self.liste_cases_controllees.append((x-2,y+1))
 
-        if not case_occupe(x-2,y-1, couleur) and 1<=x-2<=8 and 1<=y-1<=8:
-            self.liste_coups.append((x-2,y-1))
+        if not case_occupe(x-2,y-1, self.couleur) and 1<=x-2<=8 and 1<=y-1<=8:
+            self.liste_cases_controllees.append((x-2,y-1))
 
-        if not case_occupe(x-1,y-2, couleur) and 1<=x-1<=8 and 1<=y-2<=8:
-            self.liste_coups.append((x-1,y-2))
+        if not case_occupe(x-1,y-2, self.couleur) and 1<=x-1<=8 and 1<=y-2<=8:
+            self.liste_cases_controllees.append((x-1,y-2))
         
-        if not case_occupe(x+1,y-2, couleur) and 1<=x+1<=8 and 1<=y-2<=8:
-            self.liste_coups.append((x+1,y-2))
+        if not case_occupe(x+1,y-2, self.couleur) and 1<=x+1<=8 and 1<=y-2<=8:
+            self.liste_cases_controllees.append((x+1,y-2))
 
-        if not case_occupe(x+2,y-1, couleur) and 1<=x+2<=8 and 1<=y-1<=8:
-            self.liste_coups.append((x+2,y-1))
+        if not case_occupe(x+2,y-1, self.couleur) and 1<=x+2<=8 and 1<=y-1<=8:
+            self.liste_cases_controllees.append((x+2,y-1))
 
-        if not case_occupe(x+2,y+1, couleur) and 1<=x+2<=8 and 1<=y+1<=8:
-            self.liste_coups.append((x+2,y+1))
+        if not case_occupe(x+2,y+1, self.couleur) and 1<=x+2<=8 and 1<=y+1<=8:
+            self.liste_cases_controllees.append((x+2,y+1))
         
-        return self.liste_coups
+        return self.liste_cases_controllees
     
     def coups_possibles(self):
         '''
@@ -361,8 +397,8 @@ class Cavalier(Piece):
         Input: piece
         Output: liste des cases ou on peut aller
         '''
-        self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
+        self.liste_cases_controllees=self.cases_controllées()
+        self.liste_coups= self.tri_deplacement_echec(self.liste_cases_controllees)
         return self.liste_coups
         
 
@@ -391,17 +427,17 @@ class Tour(Piece):
         Input: La piece
         Output: Listes des cases que la piece controlle possibles 
         '''
-        self.liste_coups=[]
+        self.liste_cases_controllees=[]
         
         #deplacement x croissant
         x,y = self.coord
         x+=1
         while x<=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x+=1 #On continue 
 
         
@@ -409,11 +445,11 @@ class Tour(Piece):
         x,y = self.coord
         x-=1
         while x>=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else: #Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 x-=1 #On continue
 
         
@@ -421,11 +457,11 @@ class Tour(Piece):
         x,y = self.coord
         y+=1
         while y<=8 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else:#Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 y+=1 #On continue 
 
         
@@ -433,15 +469,15 @@ class Tour(Piece):
         x,y = self.coord
         y-=1
         while y>=1 and not case_occupe(x,y, not self.couleur): #Tant que on est sur le plateau et que aucune de nos pièce nous bloque
-            if case_occupe(x,y, couleur): #Si une pièce adverse setrouve sur la cette case
-                self.liste_coups.append((x,y)) #On la mange
+            if case_occupe(x,y, self.couleur): #Si une pièce adverse setrouve sur la cette case
+                self.liste_cases_controllees.append((x,y)) #On la mange
                 break #Et on s'arrete la 
             else: #Sinon
-                self.liste_coups.append((x,y))
+                self.liste_cases_controllees.append((x,y))
                 y-=1 #On continue
 
         
-        return self.liste_coups
+        return self.liste_cases_controllees
 
     def coups_possibles(self):
         '''
@@ -449,10 +485,9 @@ class Tour(Piece):
         Input: piece
         Output: liste des cases ou on peut aller
         '''
-        self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
+        self.liste_cases_controllees=self.cases_controllées()
+        self.liste_coups= self.tri_deplacement_echec(self.liste_cases_controllees)
         return self.liste_coups
-
 
 
 class Pion(Piece):
@@ -480,49 +515,49 @@ class Pion(Piece):
         Input: La piece
         Output: Listes des cases que la piece controlle possibles 
         '''
-        self.liste_coups=[]
+        self.liste_cases_controllees=[]
         x,y=self.coord
 
         #Cas 1: Avancer d'une case
         if self.couleur: #Si blanc
-            if y+1<=8: #Si la collone du dessus est encore sur le plateau
+            if y+1<=8: #Si la ligne du dessus est encore sur le plateau
                 if not case_occupe(x,y+1, self.couleur) and not case_occupe(x,y+1, not self.couleur): #Si la case au dessus n'est pas occupe
-                    self.liste_coups.append((x, y+1))  #On peut aller dans cette case
+                    self.liste_cases_controllees.append((x, y+1))  #On peut aller dans cette case
 
                 elif x+1<=8: #Si la collone de droite est encore sur le plateau
                     if case_occupe(x+1,y+1, self.couleur): #Si la case en diagonale droite est occupé par un pièce adverse
-                        self.liste_coups.append((x+1, y+1))
+                        self.liste_cases_controllees.append((x+1, y+1))
 
                 elif x-1<=8: #Si la collone de gauche est encore sur le plateau
                     if case_occupe(x-1,y+1): #Si la case en diagonale gauche est occupé par une pièce adverse 
-                        self.liste_coups.append((x-1, y+1))
+                        self.liste_cases_controllees.append((x-1, y+1))
 
         else: #Couleur noir
-            if y-1<=8: #Si la collone du dessous est encore sur le plateau
+            if y-1<=8: #Si la ligne du dessous est encore sur le plateau
                 if not case_occupe(x,y-1, self.couleur) and not case_occupe(x,y-1, not self.couleur): #Si la case en dessous n'est pas occupé
-                    self.liste_coups.append((x, y-1))  #On peut aller dans cette case
+                   self.liste_cases_controllees.append((x, y-1))  #On peut aller dans cette case
 
                 elif x+1<=8: #Si la collone de droite est encore sur le plateau
                     if case_occupe(x+1,y-1, self.couleur): #Si la case en diagonale droite est occupé par un pièce adverse
-                        self.liste_coups.append((x+1, y-1)) #On peut aller sur cette case
+                       self.liste_cases_controllees.append((x+1, y-1)) #On peut aller sur cette case
 
                 elif x-1<=8: #Si la collone de gauche est encore sur le plateau
                     if case_occupe(x-1,y-1, self.couleur): #Si la case en diagonale gauche est occupé par une pièce adverse 
-                        self.liste_coups.append((x-1, y-1)) #On peut aller sur cette case
+                       self.liste_cases_controllees.append((x-1, y-1)) #On peut aller sur cette case
 
 
         #Cas 2: Avancer de 2 cases
         if premier_coup:
             if self.couleur: #Si blanc
                 if not case_occupe(x,y+1, self.couleur) and not case_occupe(x,y+1, not self.couleur) and not case_occupe(x,y+2, self.couleur) and not case_occupe(x,y+2, not self.couleur):
-                    self.coups_possibles.append((x, y-2))
+                    self.liste_cases_controllees.append((x, y-2))
 
                 else: #Si noir
                     if not case_occupe(x,y-1, self.couleur) and not case_occupe(x,y-1, not self.couleur) and not case_occupe(x,y-2, self.couleur) and not case_occupe(x,y-2, not self.couleur):
-                        self.coups_possibles.append((x, y-2))
+                        self.liste_cases_controllees.append((x, y-2))
 
         
-        return(self.liste_coups)
+        return(self.liste_cases_controllees)
 
     def coups_possibles(self):
         '''
@@ -530,6 +565,6 @@ class Pion(Piece):
         Input: piece
         Output: liste des cases ou on peut aller
         '''
-        self.liste_case_controllé=self.cases_controllées()
-        self.liste_coups= tri_deplacement_echec(self, liste_deplacement)
+        self.liste_cases_controllees=self.cases_controllées()
+        self.liste_coups= self.tri_deplacement_echec(self.liste_cases_controllees)
         return self.liste_coups
