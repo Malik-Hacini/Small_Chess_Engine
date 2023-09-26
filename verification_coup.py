@@ -1,15 +1,4 @@
-def existance_case(x,y):
-    '''
-    Vérifie si la case x,y existe
-    Input: coordonnées x,y de la case
-    Output: Bool True=> Case existe, False=> Case n'existe pas
-    '''
-    if 0>x or x>8:
-        return False
-    elif 0>y or y>8:
-        return False
-    else:
-        return True
+from piece import*
 
 def case_occupe(x,y, couleur):
     '''
@@ -22,20 +11,25 @@ def case_occupe(x,y, couleur):
         La case est occupé par une piece de même couleur -> True
         La case n'est pas occupé par une piece de même couleur -> False
     '''
-    piece=partie.plateau[x][y]
-    if piece.couleur==couleur:
-        return True
-    else:
+    try:
+        #get piece (x,y)
+        if piece.couleur==couleur:
+            return True
+        else:
+            return False
+    except Exception:
         return False
 
-def tri_deplacement_echec(piece, liste_deplacement):
-    '''
-    Vérifie si il y a une situation d'échec contre  la couleur d'une pièce déplacé à une liste de déplacement. Par la même
-    occasion supprime les déplacement qui conduisent à une situation d'échec.
-    Input: piece: Pièce  La pièce que l'on déplace 
-           liste_deplacement: list La liste des déplacement qu'on veut faire
-    Output: liste_déplacement: list La liste ou on a retiré les déplacements qui mène à un échec
-    '''
+def tri_deplacement_echec(piece: Pièce, liste_deplacement: list)->list:
+    """Fonction qui simule une liste de déplacements et suprime les déplacements qui mène à des echecs
+
+    Args:
+        piece (Pièce): La pièce qu'on déplace 
+        liste_deplacement (list): La liste de déplacement que l'on simule
+
+    Returns:
+        list: La liste des déplacements triée des situations qui mettent en échec
+    """
     x_i, y_i = piece.coord
     for deplacement in liste_deplacement:
         x,y = deplacement
@@ -43,6 +37,7 @@ def tri_deplacement_echec(piece, liste_deplacement):
         if echec(piece.couleur):
             liste_deplacement.remove(deplacement)
     piece.bouger_piece(x_i, y_i)
+    
     return liste_deplacement
 
 def echec(couleur : bool) -> bool:
@@ -55,15 +50,19 @@ def echec(couleur : bool) -> bool:
         bool: True <=> Roi en échec
     """
     liste_case_controllee=[]
-    if couleur:
-        for piece in joueur2.pieces:
-            liste_case_controllee+=piece.cases_controllées
+    if couleur: #On regarde l'échec du roi Blanc
+        for piece in joueur2.pieces: #Pour les pièces noire en jeu
+            liste_case_controllee+=piece.cases_controllées #On ajoute les case controllé par chaque pieces adverse à l'ensemble des cases controllé par l'adversaire
 
-        for case in liste_case_controllee:
-            x,y= case
-            piece=partie.plateau[x][y]
-            if piece.name=="Roi" and piece.couleur:
-                return True
+        for case in liste_case_controllee: # Pour chaque case controllé par l'adversaire
+            x,y= case #On pprend ses coordonnées 
+            try:
+                #get pièce coordonnées (x,y) 
+                if piece.nom=="Roi" and couleur: #On vérifie si cette pièce 
+                    return True
+                
+            except Exception: #Il n'y a pas de case à ces coordonnées
+                pass                
     
     else:
         for piece in joueur1.pieces:
