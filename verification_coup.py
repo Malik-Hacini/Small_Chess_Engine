@@ -12,7 +12,7 @@ def case_occupe(x,y, couleur):
         La case n'est pas occupé par une piece de même couleur -> False
     '''
     try:
-        #get piece (x,y)
+        piece=partie.plateau[f"({x},{y})"]
         if piece.couleur==couleur:
             return True
         else:
@@ -57,7 +57,7 @@ def echec(couleur : bool) -> bool:
         for case in liste_case_controllee: # Pour chaque case controllé par l'adversaire
             x,y= case #On pprend ses coordonnées 
             try:
-                #get pièce coordonnées (x,y) 
+                piece=partie.plateau[f"({x},{y})"]
                 if piece.nom=="Roi" and couleur: #On vérifie si cette pièce 
                     return True
                 
@@ -70,7 +70,7 @@ def echec(couleur : bool) -> bool:
 
         for case in liste_case_controllee:
             x,y= case
-            piece=partie.plateau[x][y]
+            piece=partie.plateau[f"({x},{y})"]
             if piece.name=="Roi" and not piece.couleur:
                 return True
             
