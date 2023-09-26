@@ -20,25 +20,7 @@ def case_occupe(x,y, couleur):
     except Exception:
         return False
 
-def tri_deplacement_echec(piece: Pièce, liste_deplacement: list)->list:
-    """Fonction qui simule une liste de déplacements et suprime les déplacements qui mène à des echecs
 
-    Args:
-        piece (Pièce): La pièce qu'on déplace 
-        liste_deplacement (list): La liste de déplacement que l'on simule
-
-    Returns:
-        list: La liste des déplacements triée des situations qui mettent en échec
-    """
-    x_i, y_i = piece.coord
-    for deplacement in liste_deplacement:
-        x,y = deplacement
-        piece.bouger_piece(x,y)
-        if echec(piece.couleur):
-            liste_deplacement.remove(deplacement)
-    piece.bouger_piece(x_i, y_i)
-    
-    return liste_deplacement
 
 def echec(couleur : bool) -> bool:
     """Fonction qui nous dis si le roi de la couleur demandé est en échec
@@ -49,12 +31,12 @@ def echec(couleur : bool) -> bool:
     Returns:
         bool: True <=> Roi en échec
     """
-    liste_case_controllee=[]
+    liste_cases_controllees=[]
     if couleur: #On regarde l'échec du roi Blanc
         for piece in joueur2.pieces: #Pour les pièces noire en jeu
-            liste_case_controllee+=piece.cases_controllées #On ajoute les case controllé par chaque pieces adverse à l'ensemble des cases controllé par l'adversaire
+            liste_cases_controllees+=piece.cases_controllées #On ajoute les case controllé par chaque pieces adverse à l'ensemble des cases controllé par l'adversaire
 
-        for case in liste_case_controllee: # Pour chaque case controllé par l'adversaire
+        for case in liste_cases_controllees: # Pour chaque case controllé par l'adversaire
             x,y= case #On pprend ses coordonnées 
             try:
                 piece=partie.plateau[f"({x},{y})"]
@@ -66,12 +48,21 @@ def echec(couleur : bool) -> bool:
     
     else:
         for piece in joueur1.pieces:
-            liste_case_controllee+=piece.cases_controllées
+            liste_cases_controllees+=piece.cases_controllées
 
-        for case in liste_case_controllee:
+        for case in liste_cases_controllees:
             x,y= case
             piece=partie.plateau[f"({x},{y})"]
             if piece.name=="Roi" and not piece.couleur:
                 return True
             
     return False
+
+
+def echec_mat(couleur)->bool:
+    if couleur:
+        if roi_blanc.coups_possibles == []:
+            return True
+    else:
+        if roi_noir.coups_possibles == []:
+            return False
