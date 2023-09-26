@@ -18,34 +18,36 @@ class Partie:
             j2 (Joueur) : Second joueur de la partie, instance de la classe Joueur
         """
         if plateau is None:
-            plateau=np.full((8,8),Piece())
+            plateau={}
 
-            plateau[1]=[Pion(couleur=False,coord=(1,i)) for i in range(8)]
-            plateau[6]=[Pion(couleur=True, coord=(6,i)) for i in range(8)]
+            for i in range(8):
+                plateau[f"(6,{i})"]=Pion(couleur=False,coord=(1,i))
+                plateau[f"(1,{i})"]=Pion(couleur=True, coord=(6,i)) 
 
-            for couleur in [True,False]:
-
-                if couleur: ligne=7
-                else: ligne = 0
+            for couleur in(True,False):
+                
+                
+                if couleur: ligne = 0
+                else: ligne = 7
                 
                 for col in [0,7]: 
-                    plateau[ligne,col]=Tour(couleur,coord=(ligne,col))
+                    plateau[f"({ligne},{col})"]=Tour(couleur,coord=(ligne,col))
                    
                 for col in [1,6]:
-                    plateau[ligne,col]=Cavalier(couleur,coord=(ligne,col))
+                    plateau[f"({ligne},{col})"]=Cavalier(couleur,coord=(ligne,col))
                    
                 for col in [2,5]:
-                    plateau[ligne,col]=Fou(couleur,coord=(ligne,col))
+                    plateau[f"({ligne},{col})"]=Fou(couleur,coord=(ligne,col))
                     
-                plateau[ligne,3]=Reine(couleur,coord=(ligne,3))
-                plateau[ligne,4]=Roi(couleur, coord=(ligne,4))     
+                plateau[f"({ligne},3)"]=Reine(couleur,coord=(ligne,3))
+                plateau[f"({ligne},4)"]=Roi(couleur, coord=(ligne,4))     
             
             
             
             
             self.plateau=plateau
-            j1.pieces=[i for x in plateau for i in x if i.couleur==j1.couleur]
-            j2.pieces=[i for x in plateau for i in x if i.couleur==j2.couleur]
+            j1.pieces=[value for key,value in plateau.items() if value.couleur==j1.couleur]
+            j2.pieces=[value for key,value in plateau.items() if value.couleur==j2.couleur]
             self.j1=j1
             self.j2=j2
                 
@@ -74,18 +76,22 @@ class Partie:
         
         p=""
         i=0
-        num_ligne=[str(x) for x in range(8)]
+        num_ligne=[str(x) for x in range(1,9)]
         nom_col=["A","B" ,"C",
                  "D","E" ,"F","G","H"]
         
         p+="    " +  "    ".join(nom_col) +"\n"
-        for ligne in self.plateau:
-            
+        for i in range(8):
+           
             p+=num_ligne[i] + "   "
-            i+=1
             
-            for piece in ligne:
-                p+=piece.__str__() + "  | "
+            for j in range(8):
+                try:
+                    p+=self.plateau[f"({i},{j})"].__str__() + "  | "
+                except KeyError:
+                    p+= " " + "  | "
+                
+            i+=1
             p+=  "\n" + "   "+ "-"*41 + "\n"
         p+=" "*5 +  "    ".join(nom_col) 
             
@@ -93,6 +99,7 @@ class Partie:
         return p
     
     def sauvegarder(self,nom_fichier : str = None) -> None:
+
         #ouvrir un fichier de sauvegarde en ecriture
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
@@ -109,15 +116,18 @@ class Partie:
         fichier.write(sauvegarde)
         fichier.close()
     
-        
-        
-        
-        
-        
+     
     
+    def echec_et_mat():
+        
+        if 
     
+    def gagnant(self):
+        
+        if 
+           
     
-    def deplacer_piece(self, coord1: tuple[int,int], coord2: tuple[int, int])->np.ndarray:
+    def deplacer_piece(self, coord1: tuple[int,int], coord2: tuple[int, int])->dict:
         """Déplace une pièce du plateau à un autre endroit.
         Cette méthode n'est exécutée que si le coup est valide,
         il n'y a donc pas besoin de le vérifier.
@@ -126,14 +136,22 @@ class Partie:
             coord1 (tuple[int,int]): Position de la pièce à déplacer
             coord2 (tuple[int,int]): Position finale de la pièce
         Returns:
-            np.ndarray: Le plateau modifié
+            dict: Le plateau modifié
             """
-        
-        self.plateau[coord1[0],coord1[1]].coord=coord2
 
-        self.plateau[coord1[0],coord1[1]] , self.plateau[coord2[0],coord2[1]] = Piece(), self.plateau[coord1[0],coord1[1]]
+        self.plateau[f"({coord2[0]},{coord2[1]})"] = self.plateau.pop(f"({coord1[0]},{coord1[1]})")
+                
+    
+    def echec(self):
+        pass
+    
+    def echec_et_mat():
+        pass
+    
+    def gagnant(self):
         
-        
+        pass
+           
 
 
 
@@ -144,8 +162,4 @@ p=Partie(j1,j2)
 
 p.deplacer_piece((0,0),(3,3))
 print(p)
-for i in enumerate(j1.pieces):
-    print(i)
-   
-p.sauvegarder("sauvegarde")
-p2 = Partie(j1,j2,"sauvegarde")
+
