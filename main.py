@@ -7,7 +7,7 @@ def jouer_une_partie(joueur1,joueur2):
 
     Args:
         joueur1 (_type_): Le joueur 1. Peut être humain ou IA
-        joueur2 (_type_): Le joueur 2. Peut être humain ou IA
+        joueur2 (_type_): Le joueur 2. Peut être humain ou IA 
     """
     joueurs=[joueur1,joueur2]
     
@@ -37,7 +37,8 @@ def jouer_une_partie(joueur1,joueur2):
     draw= False
     while partie.gagnant() is None and not draw:
         
-        partie.deplacer_piece(joueurs[tour].jouer_coup(partie.plateau))
+        print(partie)
+        partie.deplacer_piece(joueurs[tour].jouer_coup(partie))
         
         tour = not tour
     
