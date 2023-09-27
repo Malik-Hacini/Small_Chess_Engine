@@ -226,6 +226,11 @@ class Cavalier(Piece):
             self.symbole="♘"
         else:
             self.symbole="♞"
+            
+    def coups_possibles(self, partie):
+        self.coups=[]
+        x,y=self.coord 
+        
 
 
 
