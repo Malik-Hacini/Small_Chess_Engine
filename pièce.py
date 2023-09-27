@@ -17,18 +17,8 @@ class Piece:
         self.premier_coup=True #Important de le savoir pour les pion le roi et les tours
     
 
-    def bouger_piece(self, x: int, y: int):
-        '''
-        Sers à bouger la pièce, lui change ses coordonnées avec les nouvelles qui correspondent à celles après s'être déplacé.
-        Input:
-            x: int nouvelle abcisse
-            y: int nouvelle ordonnée
-        '''
-        self.coord=(x,y)
-        if self.premier_coup:
-            self.premier_coup=False
-            
-    def tri_deplacement_echec(self, liste_deplacement: list, partie)->list:
+
+    def tri_deplacement_echec(self, liste_cases_controllees: list, partie)->list:
         """Fonction qui simule une liste de déplacements et suprime les déplacements qui mène à des echecs
 
         Args:
@@ -38,14 +28,15 @@ class Piece:
             list: La liste des déplacements triée des situations qui mettent en échec
         """
         x_i, y_i = self.coord
-        for deplacement in liste_deplacement:
-            x,y = deplacement
-            self.bouger_piece(x,y)
+        for deplacement in liste_cases_controllees:
+            self.coord=deplacement
+            print(self.coord)
             if partie.echec(self.couleur):
-                liste_deplacement.remove(deplacement)
-        self.bouger_piece(x_i, y_i)
+                liste_cases_controllees.remove(deplacement)
+                
+        self.coord=x_i,y_i
     
-        return liste_deplacement
+        return liste_cases_controllees
     
     def coups_possibles(self, partie):
         '''
@@ -55,6 +46,7 @@ class Piece:
         '''
         liste_cases_controllees=self.cases_controllees(partie)
         self.liste_coups= self.tri_deplacement_echec(liste_cases_controllees, partie)
+        
         return self.liste_coups
 
 

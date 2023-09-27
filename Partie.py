@@ -140,7 +140,7 @@ class Partie:
         Returns:
             dict: Le plateau modifié
             """
-        if isinstance(self.plateau[coord1] ,Pion):
+        if isinstance(self.plateau[coord1] ,Pion) or isinstance(self.plateau[coord1], Roi) or isinstance(self.plateau[coord1], Tour) :
             self.plateau[coord1].premier_coup=False
         
     
@@ -167,7 +167,6 @@ class Partie:
                     piece=self.plateau[case]
                     if piece.nom=="Roi" and couleur: #On vérifie si cette pièce 
                         return True
-                    
                 except: #Il n'y a pas de case à ces coordonnées
                     pass                
         
