@@ -45,7 +45,11 @@ class Fou(Piece):
         if self.couleur:
             self.symbole="♗"
         else:
-            self.symbole="♝"           
+            self.symbole="♝"        
+            
+    def coups_possibles(self, partie):
+        self.coups=[]
+        x,y=self.coord   
 
 class Cavalier(Piece):
     
@@ -57,6 +61,8 @@ class Cavalier(Piece):
             self.symbole="♘"
         else:
             self.symbole="♞"
+
+
 
 class Tour(Piece):
     
@@ -112,7 +118,9 @@ class Tour(Piece):
                     break
                 elif piece.couleur==self.couleur:
                     break
-            
+        return self.coups
+    
+
 class Pion(Piece):
     
     def __init__(self, couleur, coord=None):
