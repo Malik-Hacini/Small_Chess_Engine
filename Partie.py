@@ -159,11 +159,7 @@ class Partie:
         if couleur: #On regarde l'échec du roi Blanc
             print(self.j2.pieces)
             for piece in self.j2.pieces: #Pour les pièces noire en jeu
-                if piece is None:
-                    print("NONNE GFDP BHIZG")
-                #print(piece)
-                #print(liste_case_controllee)
-                print(piece.cases_controllees(self))
+
                 liste_case_controllee+=piece.cases_controllees(self) #On ajoute les case controllé par chaque pieces adverse à l'ensemble des cases controllé par l'adversaire
 
             for case in liste_case_controllee: # Pour chaque case controllé par l'adversaire

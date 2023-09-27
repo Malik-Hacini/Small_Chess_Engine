@@ -44,7 +44,7 @@ class Humain(Joueur):
             
             #donner les coups possibles pour cette pièce
             coups_possibles =partie.plateau[p].coups_possibles(partie)
-            print(f"vous pouvez déplacer votre {p.nom[0]} sur les cases suivantes : ", coups_possibles)
+            print(f"vous pouvez déplacer votre {partie.plateau[p].nom} sur les cases suivantes : ", coups_possibles)
             #vérifier si le joueur veut bien jouer cette piece ou modifier son coup
             coup = None
             while coup not in coups_possibles and p is not None:
