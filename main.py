@@ -9,7 +9,6 @@ def jouer_une_partie(joueur1,joueur2):
         joueur1 (_type_): Le joueur 1. Peut être humain ou IA
         joueur2 (_type_): Le joueur 2. Peut être humain ou IA 
     """
-    joueurs=[joueur1,joueur2]
     
     save=None
     while save not in ("O","N"):
@@ -21,26 +20,39 @@ def jouer_une_partie(joueur1,joueur2):
         while loop:
             try :
                 nom_save=input("Nom du fichier de sauvegarde : \n")
-                save_file=open(f"{nom_save}.txt")
                 print("Sauvegarde chargée \n")
                 loop=False
             except:
                 print("Fichier introuvable \n")
                 
-        partie = Partie(joueur1,joueur2,save_file)
+        partie = Partie(joueur1,joueur2,nom_save)
     
     else:
         partie= Partie(joueur1,joueur2)        
     
+    print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
         
-    tour = True
+    joueurs=[joueur1,joueur2]
+    tour = 0
     draw= False
     while partie.gagnant() is None and not draw:
         
         print(partie)
-        partie.deplacer_piece(joueurs[tour].jouer_coup(partie))
+        print(joueurs[int(tour)].nom)
+        deplacement=joueurs[int(tour)].jouer_coup(partie)
+        
+        if deplacement=="save" :
+            
+            partie.sauvegarder("save")
+            print("Sauvegarde effectuée.") 
+            return "N"
+            
+        coord_i, coord_f=deplacement[0],deplacement[1]
+
+        partie.deplacer_piece(coord_i,coord_f)
         
         tour = not tour
+        print(int(tour))
     
     print(f"{partie.gagnant().nom} a gagné la partie ! \n")
     
@@ -51,6 +63,8 @@ def main():
     la joue et répète tant que l'utilisateur veut rejouer."""
     
     while True:
+        
+        replay=None
         for i in range(1,3):
             type_joueur=None
             while type_joueur not in ("1","2"):
@@ -71,9 +85,8 @@ def main():
                 else:
                     joueur2=IA(nom,0)
 
-        jouer_une_partie(joueur1,joueur2)
+        replay=jouer_une_partie(joueur1,joueur2)
             
-        replay=None
         while replay not in ("O","N"):
             replay=input("Voulez vous rejouer ? (O/N) \n")
             
