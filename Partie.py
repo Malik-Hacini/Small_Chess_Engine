@@ -1,5 +1,5 @@
 from joueurs import*
-from pièce import*
+from piece import*
 import numpy as np
 
 class Partie:
@@ -182,7 +182,7 @@ class Partie:
         return False
 
 
-    def case_occupe(self, x,y, couleur: bool):
+    def case_occupe(self, coord , couleur: bool):
         '''
         Nous renvoie si la case de coordonnées coord est déjà occupé par une des pieces de la même couleur
         Input:
@@ -193,34 +193,19 @@ class Partie:
             La case est occupé par une piece de même couleur -> True
             La case n'est pas occupé par une piece de même couleur -> False
         '''
-        try:
-            piece=self.plateau[(x,y)]
+        piece=self.plateau.get(coord,None)
+        if piece is not None:
             if piece.couleur==couleur:
                 return True
             else:
                 return False
-        except:
-            return False
+        return False
+        
 
 
    
     def echec_et_mat(self,couleur):
-        if couleur:
-            for piece in self.j1.pieces:
-                if isinstance(piece, Roi):
-                    roi_blanc=piece
-                    
-            if roi_blanc.coups_possibles == []:
-                return True
-        else:  
-            for piece in self.j2.pieces:
-                if isinstance(piece, Roi):
-                    roi_noir=piece
-                    
-            if roi_noir.coups_possibles == []:
-                return True
-                
-        return False
+        pass
     
     def gagnant(self):
         
@@ -228,9 +213,4 @@ class Partie:
         
         elif self.echec_et_mat(False): return self.j2
         
-        return None
-           
-
-
-
-
+        return None  
