@@ -35,6 +35,111 @@ class Reine(Piece):
             self.symbole="♕"
         else:
             self.symbole="♛"
+            
+    def coups_possibles(self, partie):
+        self.coups=[]
+        x,y=self.coord
+        for i in range(x+1, 8):
+            piece=partie.plateau.get((i, y),None)
+            if piece==None:
+                self.coups.append((i,y))
+            else:
+                if piece.couleur!=self.couleur:
+                    self.coups.append((i,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+        for i in range(x-1, -1, -1):
+            piece=partie.plateau.get((i, y),None)
+            if piece==None:
+                self.coups.append((i,y))
+            else:
+                if piece.couleur!=self.couleur:
+                    self.coups.append((i,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+        for i in range(y+1, 8):
+            piece=partie.plateau.get((x, i),None)
+            if piece==None:
+                self.coups.append((x,i))
+            else:
+                if piece.couleur!=self.couleur:
+                    self.coups.append((x,i))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+        for i in range(y-1, -1, -1):
+            piece=partie.plateau.get((i, y),None)
+            if piece==None:
+                self.coups.append((x,i))
+            else:
+                if piece.couleur!=self.couleur:
+                    self.coups.append((x,i))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+        x,y=self.coord   
+        x+=1
+        y+=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x+=1
+            y+=1
+        x,y=self.coord   
+        x+=1
+        y-=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x+=1
+            y-=1
+        x,y=self.coord   
+        x-=1
+        y-=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x-=1
+            y-=1
+        x,y=self.coord
+        x-=1
+        y+=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x-=1
+            y+=1
+    return self.coups
 
 class Fou(Piece):
     
@@ -50,6 +155,66 @@ class Fou(Piece):
     def coups_possibles(self, partie):
         self.coups=[]
         x,y=self.coord   
+        x+=1
+        y+=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x+=1
+            y+=1
+        x,y=self.coord   
+        x+=1
+        y-=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x+=1
+            y-=1
+        x,y=self.coord   
+        x-=1
+        y-=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x-=1
+            y-=1
+        x,y=self.coord
+        x-=1
+        y+=1
+        while 0<=x<=7  and 0<=y<=7:
+            piece=partie.plateau.get((x,y),None)
+            if piece==None:
+                self.coups.append((x,y))
+            else:
+                if piece.couleur != self.couleur:
+                    self.coups.append((x,y))
+                    break
+                elif piece.couleur==self.couleur:
+                    break
+            x-=1
+            y+=1
+    return self.coups
 
 class Cavalier(Piece):
     
