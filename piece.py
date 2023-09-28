@@ -139,7 +139,7 @@ class Reine(Piece):
                     break
             x-=1
             y+=1
-    return self.coups
+        return self.coups
 
 class Fou(Piece):
     
@@ -214,7 +214,7 @@ class Fou(Piece):
                     break
             x-=1
             y+=1
-    return self.coups
+        return self.coups
 
 class Cavalier(Piece):
     
@@ -230,7 +230,40 @@ class Cavalier(Piece):
     def coups_possibles(self, partie):
         self.coups=[]
         x,y=self.coord 
+        if 0<=x+1<=7 and 0<=y+2<=7:
+            piece=partie.plateau.get((x+1,y+2),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x+1,y+2))
+        if 0<=x-1<=7 and 0<=y+2<=7:
+            piece=partie.plateau.get((x-1,y+2),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x-1,y+2))
+        if 0<=x-2<=7 and 0<=y+1<=7:
+            piece=partie.plateau.get((x-2,y+1),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x-2,y+1))
+        if 0<=x-2<=7 and 0<=y-1<=7:
+            piece=partie.plateau.get((x-2,y-1),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x-2,y-1))
+        if 0<=x-1<=7 and 0<=y-2<=7:
+            piece=partie.plateau.get((x-1,y-2),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x-1,y-2))
+        if 0<=x+1<=7 and 0<=y-2<=7:
+            piece=partie.plateau.get((x+1,y-2),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x+1,y-2))
+        if 0<=x+2<=7 and 0<=y-1<=7:
+            piece=partie.plateau.get((x+2,y-1),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x+2,y-1))
+        if 0<=x+2<=7 and 0<=y+1<=7:
+            piece=partie.plateau.get((x+2,y+1),None)
+            if piece==None or piece.couleur!=self.couleur:
+                self.coups.append((x+2,y+1))
         
+        return self.coups
 
 
 
