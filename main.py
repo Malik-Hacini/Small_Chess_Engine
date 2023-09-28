@@ -33,16 +33,15 @@ def jouer_une_partie(joueur1,joueur2):
     print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
         
     joueurs=[joueur1,joueur2]
+
     tour = 0
     draw= False
     while partie.gagnant() is None and not draw:
         
-        print(partie)
-        print(joueurs[int(tour)].nom)
+        partie.afficher(tour)
         deplacement=joueurs[int(tour)].jouer_coup(partie)
         
         if deplacement=="save" :
-            
             partie.sauvegarder("save")
             print("Sauvegarde effectuée.") 
             return "N"

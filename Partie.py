@@ -21,20 +21,22 @@ class Partie:
         #création des joueurs
         self.j1=j1
         self.j2=j2
+       
         #lecture du fichier de sauvegarde
         fichier = open(plateau+".txt", 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pionsj1,pionsj2 = sauv_txt.split("\n")
-        pionsj1 = pionsj1[10:]
-        pionsj2 = pionsj2[10:]
+        pieces_j1,pieces_j2 = sauv_txt.split("\n")
+        pieces_j1 = pieces_j1[10:]
+        pieces_j2 = pieces_j2[10:]
+        
         
         
         #dictionnaire de {coordonnées : objet piece}
         self.plateau = {}
-        for pionsj in (pionsj1,pionsj2):
-            for p in pionsj.split(";"):
+        for pieces_j in (pieces_j1,pieces_j2):
+            for p in pieces_j.split(";"):
                 p = p[1:-1]
                 p = p.split(",")
                 type_piece = p[0]
@@ -58,21 +60,30 @@ class Partie:
                 self.plateau[coord_piece] = piece
                 
                 #on ajoute la piece au bon joueur
-                if pionsj == pionsj1:
-                    self.j1.pieces.append(piece)
-                elif pionsj == pionsj2:
-                    self.j2.pieces.append(piece)
-                 
-                
-                
-                
-    def __str__(self)->str:
-        """Méthode print pour la partie. Affiche le plateau dans
-        son état actuel.
 
+                if pieces_j == pieces_j1:
+                    self.j1.pieces.append(piece)
+                elif pieces_j == pieces_j2:
+
+                    self.j2.pieces.append(piece)
+            
+                
+                
+    def afficher(self, tour: bool)->str:
+        """Méthode pour afficherla partie. Affiche le plateau dans
+        son état actuel.Nous n'utilisons pas la métohde spéciale __str__, car En fonction du tour, l'affichage
+        du plateau est renversé.
+        
+        Args:
+            tour (bool) :  True <=> Tour aux blancs 
         Returns:
             str: Le plateau.
         """
+        
+        if tour:
+            ordre_affichage_lignes=range(8)
+        else:
+            ordre_affichage_lignes=range(7,-1,-1)
         
         p=""
         i=0
@@ -81,7 +92,8 @@ class Partie:
                  "D","E" ,"F","G","H"]
         
         p+="    " +  "    ".join(nom_col) +"\n"
-        for i in range(7,-1,-1):
+        
+        for i in ordre_affichage_lignes:
            
             p+=num_ligne[i] + "   "
         
@@ -95,7 +107,8 @@ class Partie:
             i+=1
             p+=  "\n" + "   "+ "-"*41 + "\n"
         p+=" "*5 +  "    ".join(nom_col) 
-        return p
+        
+        print(p)
     
     
     def sauvegarder(self,nom_fichier : str = None) -> None:
