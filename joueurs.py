@@ -41,10 +41,8 @@ class Humain(Joueur):
                 else : 
                     #Transformation de la position de la pièce de notation algébrique aux coordonnées absolues dans le plateau.
                     #Pour la ligne, cela dépend de la couleur du joueur, l'affichage étant renversé quand les noirs jouent.
-                    if self.couleur:
-                        coord_p = (ord(coord_p[0])-65,int(coord_p[1])-1)
-                    else:
-                        coord_p = (ord(coord_p[0])-65,8-int(coord_p[1]))
+                    coord_p = (ord(coord_p[0])-65,int(coord_p[1])-1)
+                    
                     
                     
                     if coord_p not in partie.plateau.keys() : print("Cette case est vide.")
@@ -58,15 +56,10 @@ class Humain(Joueur):
             #donner les coups possibles pour cette pièce
             coups_possibles=partie.plateau[coord_p].coups_possibles(partie)
             
-            coups_a_afficher=coups_possibles.copy()
-            if not self.couleur:
-                for index,coup in enumerate(coups_a_afficher):
-
-                    coups_a_afficher[index]=(coup[0], 7 - coup[1])
             
                 
                 
-            coups_a_afficher_not_alg=[(chr(coup[0]+65)+str(coup[1]+1)) for coup in coups_a_afficher]
+            coups_a_afficher_not_alg=[(chr(coup[0]+65)+str(coup[1]+1)) for coup in coups_possibles]
             
             coups_a_afficher_output=""
             for coup in coups_a_afficher_not_alg:
@@ -84,10 +77,8 @@ class Humain(Joueur):
                 
                 #demander la case où le joueur veut déplacer le pion
                 coup = input("Quel coup voulez-vous jouer (None si vous voulez jouer une autre piece)? \n")
-                if self.couleur:
-                        coup_int = (ord(coup[0])-65,int(coup[1])-1)
-                else:
-                        coup_int = (ord(coup[0])-65,8-int(coup[1]))
+
+                coup_int = (ord(coup[0])-65,int(coup[1])-1)
                         
                 premier_passage=False
             coup_jouable=True

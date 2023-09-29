@@ -95,17 +95,16 @@ class Partie:
         
         for i in ordre_affichage_lignes:
            
-            p+=num_ligne[i] + "   "
-        
-            
-            for j in range(8):
+           p+=num_ligne[i] + "   "
+               
+           for j in range(8):
                 try:
                     p+=self.plateau[(j,i)].__str__() + "  | "
                 except KeyError:
                     p+= " " + "  | "
                 
-            i+=1
-            p+=  "\n" + "   "+ "-"*41 + "\n"
+           i+=1
+           p+=  "\n" + "   "+ "-"*41 + "\n"
         p+=" "*5 +  "    ".join(nom_col) 
         
         print(p)
@@ -156,7 +155,8 @@ class Partie:
         if isinstance(self.plateau[coord1] ,Pion) or isinstance(self.plateau[coord1], Roi) or isinstance(self.plateau[coord1], Tour) :
             self.plateau[coord1].premier_coup=False
         
-    
+        self.plateau[coord1].coord=coord2
+        
         self.plateau[coord2] = self.plateau.pop(coord1)
                 
     def echec(self,couleur: bool) -> bool:
@@ -192,26 +192,6 @@ class Partie:
                 if piece.nom=="Roi" and not piece.couleur:
                     return True
                 
-        return False
-
-
-    def case_occupe(self, coord , couleur: bool):
-        '''
-        Nous renvoie si la case de coordonnées coord est déjà occupé par une des pieces de la même couleur
-        Input:
-            coord (tuple[int,int]): coordonnées de la case
-            couleur: couleur de la piece concerné, on doit donc voir si la case est occupé par cette couleur
-
-        Output: Bool
-            La case est occupé par une piece de même couleur -> True
-            La case n'est pas occupé par une piece de même couleur -> False
-        '''
-        piece=self.plateau.get(coord,None)
-        if piece is not None:
-            if piece.couleur==couleur:
-                return True
-            else:
-                return False
         return False
         
 

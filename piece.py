@@ -1,5 +1,4 @@
 from Partie import*
-
 class Piece:
 
 
@@ -11,10 +10,8 @@ class Piece:
         
     def __str__(self):
         return self.symbole
-    
-    def deplacer_piece(self,x,y):
-        self.coord=(x,y)
 
+    
 class Roi(Piece): 
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
@@ -24,7 +21,6 @@ class Roi(Piece):
             self.symbole="♚"
         else:
             self.symbole="♔"
-        
 class Reine(Piece):
     
     def __init__(self, couleur, coord=None):
@@ -39,106 +35,42 @@ class Reine(Piece):
     def coups_possibles(self, partie):
         self.coups=[]
         x,y=self.coord
-        for i in range(x+1, 8):
-            piece=partie.plateau.get((i, y),None)
-            if piece==None:
-                self.coups.append((i,y))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((i,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        for i in range(x-1, -1, -1):
-            piece=partie.plateau.get((i, y),None)
-            if piece==None:
-                self.coups.append((i,y))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((i,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        for i in range(y+1, 8):
-            piece=partie.plateau.get((x, i),None)
-            if piece==None:
-                self.coups.append((x,i))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((x,i))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        for i in range(y-1, -1, -1):
-            piece=partie.plateau.get((i, y),None)
-            if piece==None:
-                self.coups.append((x,i))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((x,i))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        x,y=self.coord   
-        x+=1
-        y+=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
+        
+        for direction in [(1,1),(1,-1),(-1,-1),(-1,1),(1,0),(0,1),(-1,0),(0,-1)]:
+            x,y=self.coord   
+            x+=direction[0]
+            y+=direction[1]
+            while 0<=x<=7  and 0<=y<=7:
+                piece=partie.plateau.get((x,y),None)
+                if piece==None:
                     self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x+=1
-            y+=1
-        x,y=self.coord   
-        x+=1
-        y-=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
-                    self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x+=1
-            y-=1
-        x,y=self.coord   
-        x-=1
-        y-=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
-                    self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x-=1
-            y-=1
+                else:
+                    if piece.couleur != self.couleur:
+                        self.coups.append((x,y))
+                        break
+                    elif piece.couleur==self.couleur:
+                        break
+                x+=direction[0]
+                y+=direction[1]
+        """
         x,y=self.coord
-        x-=1
-        y+=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
-                    self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x-=1
-            y+=1
+        
+        for coord in (x,y):
+            for vect in [(1,8,1),(-1,-1,-1)]:
+                for i in range(coord+vect[0],vect[1],vect[2]):
+                    
+                    piece=partie.plateau.get((i, y),None)
+                    if piece==None:
+                        self.coups.append((i,y))
+                    else:
+                        if piece.couleur!=self.couleur:
+                            self.coups.append((i,y))
+                            break
+                        elif piece.couleur==self.couleur:
+                            break"""
+        
+                
+                
         return self.coups
 
 class Fou(Piece):
@@ -154,67 +86,28 @@ class Fou(Piece):
             
     def coups_possibles(self, partie):
         self.coups=[]
-        x,y=self.coord   
-        x+=1
-        y+=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
+        
+        for direction in [(1,1),(1,-1),(-1,-1),(-1,1)]:
+            x,y=self.coord   
+            x+=direction[0]
+            y+=direction[1]
+            while 0<=x<=7  and 0<=y<=7:
+                piece=partie.plateau.get((x,y),None)
+                if piece==None:
                     self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x+=1
-            y+=1
-        x,y=self.coord   
-        x+=1
-        y-=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
-                    self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x+=1
-            y-=1
-        x,y=self.coord   
-        x-=1
-        y-=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
-                    self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x-=1
-            y-=1
-        x,y=self.coord
-        x-=1
-        y+=1
-        while 0<=x<=7  and 0<=y<=7:
-            piece=partie.plateau.get((x,y),None)
-            if piece==None:
-                self.coups.append((x,y))
-            else:
-                if piece.couleur != self.couleur:
-                    self.coups.append((x,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-            x-=1
-            y+=1
+                else:
+                    if piece.couleur != self.couleur:
+                        self.coups.append((x,y))
+                        break
+                    elif piece.couleur==self.couleur:
+                        break
+                x+=direction[0]
+                y+=direction[1]
+    
+        
         return self.coups
+    
+
 
 class Cavalier(Piece):
     
@@ -231,6 +124,15 @@ class Cavalier(Piece):
         self.coups=[]
         x,y=self.coord 
         
+        for direction in [(1,2),(-1,2),(-2,1),(-2,-1),(-1,-2),(1,-2),(2,-1),(2,1)]:
+            
+            if 0<=x+direction[0]<=7 and 0<=y+direction[1]<=7:
+                piece=partie.plateau.get((x+direction[0],y+direction[1]),None)
+                if piece==None or piece.couleur!=self.couleur:
+                    self.coups.append((x+direction[0],y+direction[1]))
+        
+        
+        return self.coups
 
 
 
@@ -248,46 +150,23 @@ class Tour(Piece):
     def coups_possibles(self, partie):
         self.coups=[]
         x,y=self.coord
-        for i in range(x+1, 8):
-            piece=partie.plateau.get((i, y),None)
-            if piece==None:
-                self.coups.append((i,y))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((i,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        for i in range(x-1, -1, -1):
-            piece=partie.plateau.get((i, y),None)
-            if piece==None:
-                self.coups.append((i,y))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((i,y))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        for i in range(y+1, 8):
-            piece=partie.plateau.get((x, i),None)
-            if piece==None:
-                self.coups.append((x,i))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((x,i))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
-        for i in range(y-1, -1, -1):
-            piece=partie.plateau.get((i, y),None)
-            if piece==None:
-                self.coups.append((x,i))
-            else:
-                if piece.couleur!=self.couleur:
-                    self.coups.append((x,i))
-                    break
-                elif piece.couleur==self.couleur:
-                    break
+        
+        for direction in [(1,0),(0,1),(-1,0),(0,-1)]:
+            x,y=self.coord   
+            x+=direction[0]
+            y+=direction[1]
+            while 0<=x<=7  and 0<=y<=7:
+                piece=partie.plateau.get((x,y),None)
+                if piece==None:
+                    self.coups.append((x,y))
+                else:
+                    if piece.couleur != self.couleur:
+                        self.coups.append((x,y))
+                        break
+                    elif piece.couleur==self.couleur:
+                        break
+                x+=direction[0]
+                y+=direction[1]
         return self.coups
     
 
