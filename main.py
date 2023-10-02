@@ -32,9 +32,9 @@ def jouer_une_partie(joueur1,joueur2):
     
     print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
         
-    joueurs=[joueur1,joueur2]
+    joueurs=[joueur2,joueur1]
 
-    tour = 0
+    tour = 1
     draw= False
     while partie.gagnant() is None and not draw:
         
@@ -51,7 +51,7 @@ def jouer_une_partie(joueur1,joueur2):
         partie.deplacer_piece(coord_i,coord_f)
         
         tour = not tour
-        print(int(tour))
+        
     
     print(f"{partie.gagnant().nom} a gagné la partie ! \n")
     
@@ -66,12 +66,15 @@ def main():
         replay=None
         for i in range(1,3):
             type_joueur=None
+            if i==1: couleur="blanc"
+            else: couleur="noir"
+            
             while type_joueur not in ("1","2"):
-                type_joueur=input(f"De quel type est le Joueur {i} ? \n 1: Humain \n 2: IA \n")
+                type_joueur=input(f"De quel type est le Joueur {couleur} ? \n 1: Humain \n 2: IA \n")
             
                 
-            if type_joueur=="1": nom=input(f"Quel est le nom du Joueur {i} ? \n")
-            else: nom==f"IA {i}"
+            if type_joueur=="1": nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
+            else: nom==f"IA {couleur}"
             
             if type_joueur=="1":
                 if i==1:
