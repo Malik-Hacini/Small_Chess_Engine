@@ -81,7 +81,6 @@ class EtatJeu:
             ordre_affichage=range(8)
         
         p=""
-        i=0
         num_ligne=[str(x) for x in range(1,9)]
         nom_col=["A","B" ,"C",
                  "D","E" ,"F","G","H"]
@@ -91,15 +90,12 @@ class EtatJeu:
         
         for i in ordre_affichage:
            
-           p+=num_ligne[i] + "   "
+           p+=num_ligne[i] + "  | "
                
            for j in range(8):
-                try:
-                    p+=self.plateau[(j,i)].__str__() + "  | "
-                except KeyError:
-                    p+= " " + "  | "
-                
-           i+=1
+                symbole=self.plateau.get((j,i)," ").__str__()                
+                p+=symbole + "  | "
+
            p+=  "\n" + "   "+ "-"*41 + "\n"
            
         p+=" "*5 +  "    ".join(nom_col)
