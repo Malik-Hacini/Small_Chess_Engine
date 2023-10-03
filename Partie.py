@@ -6,7 +6,11 @@ class Partie:
     
     """Partie de jeu d'échecs
     """
+<<<<<<< HEAD
     def __init__(self,j1 :Joueur, j2:Joueur, plateau: str = "Plateau_base"):
+=======
+    def __init__(self,j1 :Joueur, j2:Joueur, plateau = "Plateau_base"):
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -21,20 +25,36 @@ class Partie:
         #création des joueurs
         self.j1=j1
         self.j2=j2
+<<<<<<< HEAD
+=======
+       
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
         #lecture du fichier de sauvegarde
         fichier = open(plateau+".txt", 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
+<<<<<<< HEAD
         pionsj1,pionsj2 = sauv_txt.split("\n")
         pionsj1 = pionsj1[10:]
         pionsj2 = pionsj2[10:]
+=======
+        pieces_j1,pieces_j2 = sauv_txt.split("\n")
+        pieces_j1 = pieces_j1[10:]
+        pieces_j2 = pieces_j2[10:]
+        
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
         
         
         #dictionnaire de {coordonnées : objet piece}
         self.plateau = {}
+<<<<<<< HEAD
         for pionsj in (pionsj1,pionsj2):
             for p in pionsj.split(";"):
+=======
+        for pieces_j in (pieces_j1,pieces_j2):
+            for p in pieces_j.split(";"):
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
                 p = p[1:-1]
                 p = p.split(",")
                 type_piece = p[0]
@@ -58,6 +78,7 @@ class Partie:
                 self.plateau[coord_piece] = piece
                 
                 #on ajoute la piece au bon joueur
+<<<<<<< HEAD
                 if pionsj == pionsj1:
                     self.j1.pieces.append(piece)
                 elif pionsj == pionsj2:
@@ -69,10 +90,32 @@ class Partie:
     def __str__(self)->str:
         """Méthode print pour la partie. Affiche le plateau dans
         son état actuel.
+=======
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
 
+                if pieces_j == pieces_j1:
+                    self.j1.pieces.append(piece)
+                elif pieces_j == pieces_j2:
+
+                    self.j2.pieces.append(piece)
+            
+                
+                
+    def afficher(self, tour: bool)->str:
+        """Méthode pour afficherla partie. Affiche le plateau dans
+        son état actuel.Nous n'utilisons pas la métohde spéciale __str__, car En fonction du tour, l'affichage
+        du plateau est renversé.
+        
+        Args:
+            tour (bool) :  True <=> Tour aux blancs 
         Returns:
             str: Le plateau.
         """
+        
+        if tour:
+            ordre_affichage_lignes=range(7,-1,-1)
+        else:
+            ordre_affichage_lignes=range(8)
         
         p=""
         i=0
@@ -80,6 +123,7 @@ class Partie:
         nom_col=["A","B" ,"C",
                  "D","E" ,"F","G","H"]
         
+<<<<<<< HEAD
         p+="    " +  "    ".join(nom_col) +"\n"
         for i in range(8):
            
@@ -87,15 +131,37 @@ class Partie:
         
             
             for j in range(8):
+=======
+        
+        if tour: p+=" "*5 +  "    ".join(nom_col) +"\n"
+        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) + "\n"
+      
+        
+        for i in ordre_affichage_lignes:
+           
+           p+=num_ligne[i] + "   "
+               
+           for j in range(8):
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
                 try:
                     p+=self.plateau[(j,i)].__str__() + "  | "
                 except KeyError:
                     p+= " " + "  | "
                 
+<<<<<<< HEAD
             i+=1
             p+=  "\n" + "   "+ "-"*41 + "\n"
         p+=" "*5 +  "    ".join(nom_col) 
         return p
+=======
+           i+=1
+           p+=  "\n" + "   "+ "-"*41 + "\n"
+           
+        if tour: p+=" "*5 +  "    ".join(nom_col) 
+        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) 
+        
+        print(p)
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
     
     
     def sauvegarder(self,nom_fichier : str = None) -> None:
@@ -143,7 +209,12 @@ class Partie:
         if isinstance(self.plateau[coord1] ,Pion) or isinstance(self.plateau[coord1], Roi) or isinstance(self.plateau[coord1], Tour) :
             self.plateau[coord1].premier_coup=False
         
+<<<<<<< HEAD
     
+=======
+        self.plateau[coord1].coord=coord2
+        
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
         self.plateau[coord2] = self.plateau.pop(coord1)
                 
     def echec(self,couleur: bool) -> bool:
@@ -180,6 +251,7 @@ class Partie:
                     return True
                 
         return False
+<<<<<<< HEAD
 
 
     def case_occupe(self, coord , couleur: bool):
@@ -200,6 +272,8 @@ class Partie:
             else:
                 return False
         return False
+=======
+>>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
         
 
 
