@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-Joueur1 : [Pion,True,0,0];[Pion,True,1,0];[Pion,True,1,1];[Pion,True,2,1];[Pion,True,3,1];[Pion,True,4,1];[Pion,True,5,1];[Pion,True,6,1];[Pion,True,7,1];[Pion,True,0,1];[Tour,True,0,0];[Cavalier,True,1,0];[Fou,True,2,0];[Reine,True,3,0];[Roi,True,4,0];[Fou,True,5,0];[Cavalier,True,6,0];[Tour,True,7,0]
-=======
-Joueur1 : [Pion,True,0,1];[Pion,True,1,0];[Pion,True,1,1];[Pion,True,2,1];[Pion,True,3,1];[Pion,True,4,1];[Pion,True,5,1];[Pion,True,6,1];[Pion,True,7,1];[Tour,True,0,0];[Cavalier,True,1,0];[Fou,True,2,0];[Reine,True,3,0];[Roi,True,4,0];[Fou,True,5,0];[Cavalier,True,6,0];[Tour,True,7,0]
->>>>>>> 06aa0641d03c54f8308ba535ab171ed14e815147
-Joueur2 : [Pion,False,0,6];[Pion,False,1,6];[Pion,False,2,6];[Pion,False,3,6];[Pion,False,4,6];[Pion,False,5,6];[Pion,False,6,6];[Pion,False,7,6];[Tour,False,0,7];[Cavalier,False,1,7];[Fou,False,2,7];[Reine,False,3,7];[Roi,False,4,7];[Fou,False,5,7];[Cavalier,False,6,7];[Tour,False,7,7]
