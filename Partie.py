@@ -6,7 +6,7 @@ class Partie:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,j1 :Joueur, j2:Joueur, plateau = "Plateau_base"):
+    def __init__(self,j1 : Joueur, j2 : Joueur, plateau = "Plateau_base", trait : bool = True):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -27,10 +27,10 @@ class Partie:
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pieces_j1,pieces_j2 = sauv_txt.split("\n")
+        pieces_j1,pieces_j2,trait = sauv_txt.split("\n")
         pieces_j1 = pieces_j1[10:]
         pieces_j2 = pieces_j2[10:]
-        
+        trait = trait[8:]
         
         
         #dictionnaire de {coordonnées : objet piece}
@@ -44,18 +44,12 @@ class Partie:
                 coord_piece = (int(p[2]),int(p[3]))
                 
                 #pion tour cavalier fou roi reine 
-                if type_piece == "Pion":
-                    piece = Pion(couleur_piece,coord_piece)
-                if type_piece == "Tour":
-                    piece = Tour(couleur_piece,coord_piece)
-                if type_piece == "Cavalier":
-                    piece = Cavalier(couleur_piece,coord_piece)
-                if type_piece == "Fou":
-                    piece = Fou(couleur_piece,coord_piece)
-                if type_piece == "Reine":
-                    piece = Reine(couleur_piece,coord_piece)
-                if type_piece == "Roi":
-                    piece = Roi(couleur_piece,coord_piece)
+                if type_piece == "Pion": piece = Pion(couleur_piece,coord_piece)
+                if type_piece == "Tour": piece = Tour(couleur_piece,coord_piece)
+                if type_piece == "Cavalier": piece = Cavalier(couleur_piece,coord_piece)
+                if type_piece == "Fou": piece = Fou(couleur_piece,coord_piece)
+                if type_piece == "Reine": piece = Reine(couleur_piece,coord_piece)
+                if type_piece == "Roi": piece = Roi(couleur_piece,coord_piece)
                 #on ajoute la piece au plateau
                 self.plateau[coord_piece] = piece
                 
@@ -64,10 +58,11 @@ class Partie:
                 if pieces_j == pieces_j1:
                     self.j1.pieces.append(piece)
                 elif pieces_j == pieces_j2:
-
                     self.j2.pieces.append(piece)
-            
-                
+                    
+        if trait == "blancs":self.trait = True
+        else : self.trait = False
+        self.valeur = 0
                 
     def afficher(self, tour: bool)->str:
         """Méthode pour afficherla partie. Affiche le plateau dans
@@ -94,12 +89,9 @@ class Partie:
         
         if tour: p+=" "*5 +  "    ".join(nom_col) +"\n"
         else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) + "\n"
-      
         
         for i in ordre_affichage_lignes:
-           
            p+=num_ligne[i] + "   "
-               
            for j in range(8):
                 try:
                     p+=self.plateau[(j,i)].__str__() + "  | "
@@ -111,7 +103,6 @@ class Partie:
            
         if tour: p+=" "*5 +  "    ".join(nom_col) 
         else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) 
-        
         print(p)
     
     
@@ -130,6 +121,11 @@ class Partie:
         for i in self.j1.pieces:
             sauvegarde+=f"[{i.nom},{i.couleur},{i.coord[0]},{i.coord[1]}];"
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
+        
+        sauvegarde+="\Trait : "
+        if self.trait == True:sauvegarde+="blancs"
+        else : sauvegarde+="noirs"
+        
         
         #demander le fichier a sauvegarder s'il n'est pas spécifier par le programme (sauvegarde de base du jeu)
         if sauvegarde is None:
@@ -164,7 +160,7 @@ class Partie:
         
         self.plateau[coord2] = self.plateau.pop(coord1)
                 
-    def echec(self,couleur: bool) -> bool:
+    def echec(self,couleur: bool ) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
 
         Args:
