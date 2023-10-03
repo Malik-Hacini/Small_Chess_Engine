@@ -173,33 +173,46 @@ class Partie:
         Returns:
             bool: True <=> Roi en échec
         """
-        liste_case_controllee=[]
-        if couleur: #On regarde l'échec du roi Blanc
-            print(self.j2.pieces)
-            for piece in self.j2.pieces: #Pour les pièces noire en jeu
-
-                liste_case_controllee+=piece.cases_controllees(self) #On ajoute les case controllé par chaque pieces adverse à l'ensemble des cases controllé par l'adversaire
-
-            for case in liste_case_controllee: # Pour chaque case controllé par l'adversaire
-                try:
-                    piece=self.plateau[case]
-                    if piece.nom=="Roi" and couleur: #On vérifie si cette pièce 
-                        return True
-                except: #Il n'y a pas de case à ces coordonnées
-                    pass                
-        
-        else:
-            for piece in self.j1.pieces:
-                liste_case_controllee+=piece.cases_controllees
-
-            for case in liste_case_controllee:
-                piece=self.plateau[case]
-                if piece.nom=="Roi" and not piece.couleur:
+        #il faut trouver qui est le joueur blanc?
+        for j in (self.j1,self.j2):
+            if j.couleur == couleur: 
+                #récupérer la case du roi
+                for piece in j.pieces : 
+                    if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
+            else : pieces_adversaire = j.pieces#on récupere les pieces de l'adversaire
+            
+        for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
+            for case in piece.cases_controllees(self):# Pour chaque case controllé par l'adversaire
+                if case == case_roi :#On vérifie si cette case est celle du roi
                     return True
-                
         return False
         
 
+
+   
+    def echec_et_mat(self,couleur):
+        #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
+        if not self.echec(couleur) : return False #si le roi n'est pas en echec il n'y a pas mat
+        for j in (self.j1,self.j2):
+            if j.couleur == couleur: 
+                #récupérer les pieces du joueur
+                pieces_joueur = j.pieces
+                #récupérer la case du roi
+                for piece in j.pieces : 
+                    if piece.nom == "Roi":case_roi = piece.coord; #on récupere la case occupée par le roi
+            else : pieces_adversaire = j.pieces#on récupere les pieces de l'adversaire
+            
+        for piece in pieces_joueur: #Pour les pièces de l'adversaire en jeu
+            for case in piece.cases_controllees(self):# Pour chaque coup possible de la piece sélectionnée
+                #simuler un coup et vérifier si le roi est toujours en échec
+                #comment faire une simulation?, on peut créer un nouveau plateau et vérifier s'il est en echec, ou on peut modifier le plateau de jeu actuel et inverser les coups après
+                #je pense qu'il vaut mieux créer un nouveau plateau car ca sera nécessaire dans l'étape de l'IA
+                plateau_sim = self.plateau.copy()
+                #on va jouer le coups suggéré sur la simulation 
+                pass
+                #vérifier si le roi est toujours en échec
+                #il va falloir changer la structure pour l'adapter au cours d'IA
+            return False
 
    
     def echec_et_mat(self,couleur):
