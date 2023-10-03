@@ -3,11 +3,11 @@ from piece import*
 import numpy as np
 import copy
 
-class Partie:
+class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,j1 : Joueur, j2 : Joueur, plateau = "Plateau_base"):
+    def __init__(self,j1 : Joueur, j2 : Joueur, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -21,11 +21,11 @@ class Partie:
         """
         print("Chargement de la partie")
         #création des joueurs
-        self.j1=j1
-        self.j2=j2
-       
+        self.joueurs=[j2,j1]
+        
+        
         #lecture du fichier de sauvegarde
-        fichier = open(plateau+".txt", 'r')
+        fichier = open(sauvegarde+".txt", 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
@@ -58,13 +58,14 @@ class Partie:
                 #on ajoute la piece au bon joueur
 
                 if pieces_j == pieces_j1:
-                    self.j1.pieces.append(piece)
+                    self.joueurs[1].pieces.append(piece)
                 elif pieces_j == pieces_j2:
-                    self.j2.pieces.append(piece)
+                    self.joueurs[0].pieces.append(piece)
                     
         if trait_texte == "blancs": self.trait = True
         else : self.trait = False
         self.valeur = 0
+            
                 
     def __str__(self)->str:
         """Méthode print pour lpartie. Affiche le plateau dans
@@ -76,14 +77,13 @@ class Partie:
         Returns:
             str: Le plateau.
         """
-        print(self.trait)
         if self.trait:
             ordre_affichage=range(7,-1,-1)
         else:
             ordre_affichage=range(8)
         
         p=""
-        i=0
+
         num_ligne=[str(x) for x in range(1,9)]
         nom_col=["A","B" ,"C",
                  "D","E" ,"F","G","H"]
@@ -93,15 +93,13 @@ class Partie:
         
         for i in ordre_affichage:
            
-           p+=num_ligne[i] + "   "
+           p+=num_ligne[i] + "  | "
                
            for j in range(8):
-                try:
-                    p+=self.plateau[(j,i)].__str__() + "  | "
-                except KeyError:
-                    p+= " " + "  | "
+               symbole=self.plateau.get((j,i)," ").__str__()
+               p+= symbole + "  | "
                 
-           i+=1
+
            p+=  "\n" + "   "+ "-"*41 + "\n"
            
         p+=" "*5 +  "    ".join(nom_col)
@@ -115,14 +113,14 @@ class Partie:
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
         sauvegarde = "Joueur1 : "
-        for piece in self.j1.pieces:
+        for piece in self.joueurs[1].pieces:
             sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"    
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au dernier
         
         #sauvegarder le deuxieme joueur
         
         sauvegarde+="\nJoueur2 : "
-        for piece in self.j2.pieces:
+        for piece in self.joueurs[0].pieces:
             sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
         
@@ -157,12 +155,7 @@ class Partie:
         Returns:
             dict: Le plateau modifié
             """
-        if isinstance(self.plateau[coord1] ,Pion) or isinstance(self.plateau[coord1], Roi) or isinstance(self.plateau[coord1], Tour) :
-            self.plateau[coord1].premier_coup=False
         
-        self.plateau[coord1].coord=coord2
-        
-        self.plateau[coord2] = self.plateau.pop(coord1)
                 
     def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
@@ -173,28 +166,38 @@ class Partie:
         Returns:
             bool: True <=> Roi en échec
         """
-        #il faut trouver qui est le joueur blanc?
-        for j in (self.j1,self.j2):
-            if j.couleur == self.trait: 
-                #récupérer la case du roi
-                for piece in j.pieces : 
-                    if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
-            else : pieces_adversaire = j.pieces#on récupere les pieces de l'adversaire
+        #il faut trouver qui est le joueur à qui c'est le tour
+        
+        for piece in self.joueurs[self.trait].pieces : 
+            if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
+            else : pieces_adversaire = self.joueurs[not (self.trait)].pieces#on récupere les pieces de l'adversaire
             
         for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
-            for case in piece.cases_controllees(self):# Pour chaque case controllé par l'adversaire
+            for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
                 if case == case_roi :#On vérifie si cette case est celle du roi
+                    print(piece.nom,piece.couleur)
                     return True
         return False
         
 
 
    
-    def echec_et_mat(self,couleur):
+    def echec_et_mat(self):
         #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
-        if not self.echec(couleur) : return False #si le roi n'est pas en echec il n'y a pas mat
+        if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
+        #on regarde s'il existe des pièces qui ont le droit de bouger
+        
+  
+        pieces_joueur = self.joueurs[self.trait].pieces
+        for piece in pieces_joueur:
+                print(piece, piece.coups_legaux(self),piece.coord)
+                if len(piece.coups_legaux(self))>0 :return False
+        return True
+                
+        
+        """ 
         for j in (self.j1,self.j2):
-            if j.couleur == couleur: 
+            if j.couleur == self.trait:
                 #récupérer les pieces du joueur
                 pieces_joueur = j.pieces
                 #récupérer la case du roi
@@ -202,26 +205,41 @@ class Partie:
                     if piece.nom == "Roi":case_roi = piece.coord; #on récupere la case occupée par le roi
             else : pieces_adversaire = j.pieces#on récupere les pieces de l'adversaire
             
+            
+            
         for piece in pieces_joueur: #Pour les pièces de l'adversaire en jeu
-            for case in piece.cases_controllees(self):# Pour chaque coup possible de la piece sélectionnée
+            for case in piece.coups_possible(self):# Pour chaque coup possible de la piece sélectionnée
                 #simuler un coup et vérifier si le roi est toujours en échec
                 #comment faire une simulation?, on peut créer un nouveau plateau et vérifier s'il est en echec, ou on peut modifier le plateau de jeu actuel et inverser les coups après
                 #je pense qu'il vaut mieux créer un nouveau plateau car ca sera nécessaire dans l'étape de l'IA
                 plateau_sim = copy.deepcopy(self.plateau)
-                #on va jouer le coups suggéré sur la simulation 
-                pass
+                #on va jouer le coups suggéré sur la simulation
+                #créer une nouvelle partie avec un nouveau plateau
+                bot1,bot2 = Joueur("Bot1",self.j1.couleur,copy.deepcopy(self.j1.pieces)),Joueur("Bot2",self.j1.couleur,copy.deepcopy(self.j2.pieces))
+                simu = Partie(bot1,bot2,plateau_sim,self.trait)
+                
+                for bot in (bot1,bot2):
+                    if bot.couleur == simu.trait:
+                        joueur = bot
+                for piece in bot.pieces :
+                    for coup in piece.coup_possible():
+                        #déplacer la piece
+                        piece.coord=coup
+                        simu.plateau[coup] = simu.plateau.pop(piece.coord)
+                        #regarder s'il est en echec
+                        if simu.
+                """
+                     
+                    
+                
+                
                 #vérifier si le roi est toujours en échec
                 #il va falloir changer la structure pour l'adapter au cours d'IA
-            return False
+                
+                
 
-   
-    def echec_et_mat(self,couleur):
-        pass
     
     def gagnant(self):
         
-        if self.echec_et_mat(True): return self.j1
-        
-        elif self.echec_et_mat(False): return self.j2
-        
-        return None  
+        if self.echec_et_mat(): 
+            return self.joueurs[self.trait]

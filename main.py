@@ -1,8 +1,8 @@
 from joueurs import*
-from Partie import*
+from EtatJeu import*
 import sys
 
-def jouer_une_partie(joueur1,joueur2):
+def partie(joueur1,joueur2):
     """Joue une partie d'échecs. 
 
     Args:
@@ -20,15 +20,14 @@ def jouer_une_partie(joueur1,joueur2):
         while loop:
             try :
                 nom_save=input("Nom du fichier de sauvegarde : \n")
-                print("Sauvegarde chargée \n")
+                partie = EtatJeu(joueur1,joueur2,nom_save)
                 loop=False
             except:
                 print("Fichier introuvable \n")
-                
-        partie = Partie(joueur1,joueur2,nom_save)
+        print("Sauvegarde chargée \n")
     
     else:
-        partie= Partie(joueur1,joueur2)        
+        partie= EtatJeu(joueur1,joueur2)        
     
     print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
         
@@ -45,10 +44,9 @@ def jouer_une_partie(joueur1,joueur2):
             partie.sauvegarder("save")
             print("Sauvegarde effectuée.") 
             return "N"
-            
-        coord_i, coord_f=deplacement[0],deplacement[1]
-
-        partie.deplacer_piece(coord_i,coord_f)
+        
+        partie.plateau[deplacement[0]].coord=deplacement[1]
+        partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
         
         partie.trait = not partie.trait
         
@@ -87,7 +85,7 @@ def main():
                 else:
                     joueur2=IA(nom,0)
 
-        replay=jouer_une_partie(joueur1,joueur2)
+        replay=partie(joueur1,joueur2)
             
         while replay not in ("O","N"):
             replay=input("Voulez vous rejouer ? (O/N) \n")
