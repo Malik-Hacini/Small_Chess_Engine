@@ -115,18 +115,18 @@ class Partie:
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
         sauvegarde = "Joueur1 : "
-        for i in self.j1.pieces:
-            sauvegarde+=f"[{i.nom},{i.couleur},{i.coord[0]},{i.coord[1]}];"    
+        for piece in self.j1.pieces:
+            sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"    
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au dernier
         
         #sauvegarder le deuxieme joueur
         
         sauvegarde+="\nJoueur2 : "
-        for i in self.j1.pieces:
-            sauvegarde+=f"[{i.nom},{i.couleur},{i.coord[0]},{i.coord[1]}];"
+        for piece in self.j2.pieces:
+            sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
         
-        sauvegarde+="\Trait : "
+        sauvegarde+="\nTrait : "
         if self.trait == True:sauvegarde+="blancs"
         else : sauvegarde+="noirs"
         
