@@ -1,4 +1,4 @@
-from Partie import*
+from EtatJeu import*
 class Piece:
 
 

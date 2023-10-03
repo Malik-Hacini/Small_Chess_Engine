@@ -2,7 +2,7 @@ from joueurs import*
 from piece import*
 import numpy as np
 
-class Partie:
+class EtatJeu:
     
     """Partie de jeu d'échecs
     """
@@ -139,29 +139,6 @@ class Partie:
         fichier.close()
     
         
-        
-        
-    
-    
-    
-    def deplacer_piece(self, coord1: tuple[int,int], coord2: tuple[int, int])->np.ndarray:
-        """Déplace une pièce du plateau à un autre endroit.
-        Cette méthode n'est exécutée que si le coup est valide,
-        il n'y a donc pas besoin de le vérifier.
-
-        Args:
-            coord1 (tuple[int,int]): Position de la pièce à déplacer
-            coord2 (tuple[int,int]): Position finale de la pièce
-        Returns:
-            dict: Le plateau modifié
-            """
-        if isinstance(self.plateau[coord1] ,Pion) or isinstance(self.plateau[coord1], Roi) or isinstance(self.plateau[coord1], Tour) :
-            self.plateau[coord1].premier_coup=False
-        
-        self.plateau[coord1].coord=coord2
-        
-        self.plateau[coord2] = self.plateau.pop(coord1)
-                
     def echec(self,couleur: bool ) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
 

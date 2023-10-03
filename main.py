@@ -1,5 +1,5 @@
 from joueurs import*
-from Partie import*
+from EtatJeu import*
 import sys
 
 def jouer_une_partie(joueur1,joueur2):
@@ -25,10 +25,10 @@ def jouer_une_partie(joueur1,joueur2):
             except:
                 print("Fichier introuvable \n")
                 
-        partie = Partie(joueur1,joueur2,nom_save)
+        partie = EtatJeu(joueur1,joueur2,nom_save)
     
     else:
-        partie= Partie(joueur1,joueur2)        
+        partie= EtatJeu(joueur1,joueur2)        
     
     print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
         
@@ -39,6 +39,8 @@ def jouer_une_partie(joueur1,joueur2):
     while partie.gagnant() is None and not draw:
         
         print(partie)
+        
+        #On obtient le coup.
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
         
         if deplacement=="save" :
@@ -47,9 +49,17 @@ def jouer_une_partie(joueur1,joueur2):
             return "N"
             
         coord_i, coord_f=deplacement[0],deplacement[1]
-
-        partie.deplacer_piece(coord_i,coord_f)
         
+        #On déplace effectivement la pièce.
+
+        if isinstance(partie.plateau[coord_i] ,Pion) or isinstance(partie.plateau[coord_i], Roi) or isinstance(partie.plateau[coord_i], Tour) :
+            partie.plateau[coord_i].premier_coup=False
+        
+        partie.plateau[coord_i].coord=coord_f
+        
+        partie.plateau[coord_f] = partie.plateau.pop(coord_i)
+        
+        #On change le trait
         partie.trait = not partie.trait
         
     
