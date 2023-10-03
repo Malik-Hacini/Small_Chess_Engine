@@ -81,9 +81,9 @@ class Partie:
         """
         
         if tour:
-            ordre_affichage_lignes=range(7,-1,-1)
+            ordre_affichage=range(7,-1,-1)
         else:
-            ordre_affichage_lignes=range(8)
+            ordre_affichage=range(8)
         
         p=""
         i=0
@@ -92,11 +92,9 @@ class Partie:
                  "D","E" ,"F","G","H"]
         
         
-        if tour: p+=" "*5 +  "    ".join(nom_col) +"\n"
-        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) + "\n"
-      
+        p+=" "*5 +  "    ".join(nom_col) +"\n"
         
-        for i in ordre_affichage_lignes:
+        for i in ordre_affichage:
            
            p+=num_ligne[i] + "   "
                
@@ -109,8 +107,7 @@ class Partie:
            i+=1
            p+=  "\n" + "   "+ "-"*41 + "\n"
            
-        if tour: p+=" "*5 +  "    ".join(nom_col) 
-        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) 
+        p+=" "*5 +  "    ".join(nom_col)
         
         print(p)
     
