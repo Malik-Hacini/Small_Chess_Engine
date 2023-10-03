@@ -10,6 +10,24 @@ class Piece:
         
     def __str__(self):
         return self.symbole
+    
+    def coups_legaux(self, partie):
+        """Fonction qui donene les coups légaux d'une pièce (cad possible et sans echec)
+
+        Args:
+            partie (_type_): _description_
+
+        Returns:
+            list: La liste des coordonnées ou la pièces peuts se déplacer 
+        """
+        self.coups=self.coups_possibles(partie)
+        x_i, y_i= self.coord
+        for coup in coups:
+            pass
+        
+        return self.coups
+
+        
 
     
 class Roi(Piece): 
@@ -21,8 +39,18 @@ class Roi(Piece):
             self.symbole="♚"
         else:
             self.symbole="♔"
+            
+    def coups_possibles(self, partie):
+        self.coups=[]
+        x,y=self.coord
+        for direction in [(1,0),(1,1),(0,1),(-1,1),(-1,0),(-1,-1),(0,-1),(1,-1)]:
+            if 0<=x+direction[0]<=7 and 0<=y+direction[1]<=7:
+                piece=partie.plateau.get((x+direction[0], y+direction[1]), None)
+                if piece==None or piece.couleur!=self.couleur:
+                    self.coups.append((x+direction[0], y+direction[1]))
+        return self.coups
+            
 class Reine(Piece):
-    
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Reine"
@@ -52,25 +80,6 @@ class Reine(Piece):
                         break
                 x+=direction[0]
                 y+=direction[1]
-        """
-        x,y=self.coord
-        
-        for coord in (x,y):
-            for vect in [(1,8,1),(-1,-1,-1)]:
-                for i in range(coord+vect[0],vect[1],vect[2]):
-                    
-                    piece=partie.plateau.get((i, y),None)
-                    if piece==None:
-                        self.coups.append((i,y))
-                    else:
-                        if piece.couleur!=self.couleur:
-                            self.coups.append((i,y))
-                            break
-                        elif piece.couleur==self.couleur:
-                            break"""
-        
-                
-                
         return self.coups
 
 class Fou(Piece):
@@ -103,8 +112,6 @@ class Fou(Piece):
                         break
                 x+=direction[0]
                 y+=direction[1]
-    
-        
         return self.coups
     
 
@@ -130,11 +137,7 @@ class Cavalier(Piece):
                 piece=partie.plateau.get((x+direction[0],y+direction[1]),None)
                 if piece==None or piece.couleur!=self.couleur:
                     self.coups.append((x+direction[0],y+direction[1]))
-        
-        
         return self.coups
-
-
 
 class Tour(Piece):
     
