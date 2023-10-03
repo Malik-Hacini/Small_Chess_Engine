@@ -7,7 +7,7 @@ class Partie:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,j1 : Joueur, j2 : Joueur, plateau = "Plateau_base", trait : bool = True):
+    def __init__(self,j1 : Joueur, j2 : Joueur, plateau = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -29,10 +29,10 @@ class Partie:
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pieces_j1,pieces_j2,trait = sauv_txt.split("\n")
+        pieces_j1,pieces_j2,trait_texte = sauv_txt.split("\n")
         pieces_j1 = pieces_j1[10:]
         pieces_j2 = pieces_j2[10:]
-        trait = trait[8:]
+        trait_texte = trait_texte[8:]
         
         
         #dictionnaire de {coordonnées : objet piece}
@@ -62,12 +62,12 @@ class Partie:
                 elif pieces_j == pieces_j2:
                     self.j2.pieces.append(piece)
                     
-        if trait == "blancs":self.trait = True
+        if trait_texte == "blancs": self.trait = True
         else : self.trait = False
         self.valeur = 0
                 
-    def afficher(self, tour: bool)->str:
-        """Méthode pour afficherla partie. Affiche le plateau dans
+    def __str__(self)->str:
+        """Méthode print pour lpartie. Affiche le plateau dans
         son état actuel.Nous n'utilisons pas la métohde spéciale __str__, car En fonction du tour, l'affichage
         du plateau est renversé.
         
@@ -76,11 +76,11 @@ class Partie:
         Returns:
             str: Le plateau.
         """
-        
-        if tour:
-            ordre_affichage_lignes=range(7,-1,-1)
+        print(self.trait)
+        if self.trait:
+            ordre_affichage=range(7,-1,-1)
         else:
-            ordre_affichage_lignes=range(8)
+            ordre_affichage=range(8)
         
         p=""
         i=0
@@ -89,11 +89,12 @@ class Partie:
                  "D","E" ,"F","G","H"]
         
         
-        if tour: p+=" "*5 +  "    ".join(nom_col) +"\n"
-        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) + "\n"
+        p+=" "*5 +  "    ".join(nom_col) +"\n"
         
-        for i in ordre_affichage_lignes:
+        for i in ordre_affichage:
+           
            p+=num_ligne[i] + "   "
+               
            for j in range(8):
                 try:
                     p+=self.plateau[(j,i)].__str__() + "  | "
@@ -103,9 +104,10 @@ class Partie:
            i+=1
            p+=  "\n" + "   "+ "-"*41 + "\n"
            
-        if tour: p+=" "*5 +  "    ".join(nom_col) 
-        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) 
-        print(p)
+        p+=" "*5 +  "    ".join(nom_col)
+        
+        return p
+        
     
     
     def sauvegarder(self,nom_fichier : str = None) -> None:
