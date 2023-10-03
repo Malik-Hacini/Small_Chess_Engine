@@ -1,6 +1,7 @@
 from joueurs import*
 from piece import*
 import numpy as np
+import copy
 
 class Partie:
     
@@ -16,6 +17,7 @@ class Partie:
             plateau (_type_, optional): Plateau de jeu. None si non fourni (nouvelle partie)
             j1 (Joueur) : Premier joueur de la partie, instance de la classe Joueur
             j2 (Joueur) : Second joueur de la partie, instance de la classe Joueur
+            trait (bool) : prochaine couleur à jouer
         """
         print("Chargement de la partie")
         #création des joueurs
@@ -160,7 +162,7 @@ class Partie:
         
         self.plateau[coord2] = self.plateau.pop(coord1)
                 
-    def echec(self,couleur: bool ) -> bool:
+    def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
 
         Args:
@@ -171,7 +173,7 @@ class Partie:
         """
         #il faut trouver qui est le joueur blanc?
         for j in (self.j1,self.j2):
-            if j.couleur == couleur: 
+            if j.couleur == self.trait: 
                 #récupérer la case du roi
                 for piece in j.pieces : 
                     if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
@@ -203,7 +205,7 @@ class Partie:
                 #simuler un coup et vérifier si le roi est toujours en échec
                 #comment faire une simulation?, on peut créer un nouveau plateau et vérifier s'il est en echec, ou on peut modifier le plateau de jeu actuel et inverser les coups après
                 #je pense qu'il vaut mieux créer un nouveau plateau car ca sera nécessaire dans l'étape de l'IA
-                plateau_sim = self.plateau.copy()
+                plateau_sim = copy.deepcopy(self.plateau)
                 #on va jouer le coups suggéré sur la simulation 
                 pass
                 #vérifier si le roi est toujours en échec
