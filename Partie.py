@@ -6,7 +6,7 @@ class Partie:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,j1 :Joueur, j2:Joueur, plateau = "Plateau_base"):
+    def __init__(self,j1 : Joueur, j2 : Joueur, plateau = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -27,10 +27,10 @@ class Partie:
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pieces_j1,pieces_j2 = sauv_txt.split("\n")
+        pieces_j1,pieces_j2,trait_texte = sauv_txt.split("\n")
         pieces_j1 = pieces_j1[10:]
         pieces_j2 = pieces_j2[10:]
-        
+        trait_texte = trait_texte[8:]
         
         
         #dictionnaire de {coordonnées : objet piece}
@@ -44,18 +44,12 @@ class Partie:
                 coord_piece = (int(p[2]),int(p[3]))
                 
                 #pion tour cavalier fou roi reine 
-                if type_piece == "Pion":
-                    piece = Pion(couleur_piece,coord_piece)
-                if type_piece == "Tour":
-                    piece = Tour(couleur_piece,coord_piece)
-                if type_piece == "Cavalier":
-                    piece = Cavalier(couleur_piece,coord_piece)
-                if type_piece == "Fou":
-                    piece = Fou(couleur_piece,coord_piece)
-                if type_piece == "Reine":
-                    piece = Reine(couleur_piece,coord_piece)
-                if type_piece == "Roi":
-                    piece = Roi(couleur_piece,coord_piece)
+                if type_piece == "Pion": piece = Pion(couleur_piece,coord_piece)
+                if type_piece == "Tour": piece = Tour(couleur_piece,coord_piece)
+                if type_piece == "Cavalier": piece = Cavalier(couleur_piece,coord_piece)
+                if type_piece == "Fou": piece = Fou(couleur_piece,coord_piece)
+                if type_piece == "Reine": piece = Reine(couleur_piece,coord_piece)
+                if type_piece == "Roi": piece = Roi(couleur_piece,coord_piece)
                 #on ajoute la piece au plateau
                 self.plateau[coord_piece] = piece
                 
@@ -64,13 +58,14 @@ class Partie:
                 if pieces_j == pieces_j1:
                     self.j1.pieces.append(piece)
                 elif pieces_j == pieces_j2:
-
                     self.j2.pieces.append(piece)
-            
+                    
+        if trait_texte == "blancs": self.trait = True
+        else : self.trait = False
+        self.valeur = 0
                 
-                
-    def afficher(self, tour: bool)->str:
-        """Méthode pour afficherla partie. Affiche le plateau dans
+    def __str__(self)->str:
+        """Méthode print pour lpartie. Affiche le plateau dans
         son état actuel.Nous n'utilisons pas la métohde spéciale __str__, car En fonction du tour, l'affichage
         du plateau est renversé.
         
@@ -79,11 +74,11 @@ class Partie:
         Returns:
             str: Le plateau.
         """
-        
-        if tour:
-            ordre_affichage_lignes=range(7,-1,-1)
+        print(self.trait)
+        if self.trait:
+            ordre_affichage=range(7,-1,-1)
         else:
-            ordre_affichage_lignes=range(8)
+            ordre_affichage=range(8)
         
         p=""
         i=0
@@ -92,11 +87,9 @@ class Partie:
                  "D","E" ,"F","G","H"]
         
         
-        if tour: p+=" "*5 +  "    ".join(nom_col) +"\n"
-        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) + "\n"
-      
+        p+=" "*5 +  "    ".join(nom_col) +"\n"
         
-        for i in ordre_affichage_lignes:
+        for i in ordre_affichage:
            
            p+=num_ligne[i] + "   "
                
@@ -109,10 +102,10 @@ class Partie:
            i+=1
            p+=  "\n" + "   "+ "-"*41 + "\n"
            
-        if tour: p+=" "*5 +  "    ".join(nom_col) 
-        else: p+=" "*5 +  "    ".join(nom_col[-1::-1]) 
+        p+=" "*5 +  "    ".join(nom_col)
         
-        print(p)
+        return p
+        
     
     
     def sauvegarder(self,nom_fichier : str = None) -> None:
@@ -130,6 +123,11 @@ class Partie:
         for i in self.j1.pieces:
             sauvegarde+=f"[{i.nom},{i.couleur},{i.coord[0]},{i.coord[1]}];"
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
+        
+        sauvegarde+="\Trait : "
+        if self.trait == True:sauvegarde+="blancs"
+        else : sauvegarde+="noirs"
+        
         
         #demander le fichier a sauvegarder s'il n'est pas spécifier par le programme (sauvegarde de base du jeu)
         if sauvegarde is None:
@@ -164,7 +162,7 @@ class Partie:
         
         self.plateau[coord2] = self.plateau.pop(coord1)
                 
-    def echec(self,couleur: bool) -> bool:
+    def echec(self,couleur: bool ) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
 
         Args:

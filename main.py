@@ -34,12 +34,12 @@ def jouer_une_partie(joueur1,joueur2):
         
     joueurs=[joueur2,joueur1]
 
-    tour = 1
+
     draw= False
     while partie.gagnant() is None and not draw:
         
-        partie.afficher(tour)
-        deplacement=joueurs[int(tour)].jouer_coup(partie)
+        print(partie)
+        deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
         
         if deplacement=="save" :
             partie.sauvegarder("save")
@@ -50,7 +50,7 @@ def jouer_une_partie(joueur1,joueur2):
 
         partie.deplacer_piece(coord_i,coord_f)
         
-        tour = not tour
+        partie.trait = not partie.trait
         
     
     print(f"{partie.gagnant().nom} a gagné la partie ! \n")
