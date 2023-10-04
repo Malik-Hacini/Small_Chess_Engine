@@ -1,7 +1,5 @@
-from Partie import*
+from EtatJeu import*
 class Piece:
-
-
     def __init__(self, couleur=None, coord=None):
         self.couleur=couleur
         self.coord=coord
@@ -10,24 +8,26 @@ class Piece:
         
     def __str__(self):
         return self.symbole
+    def coups_legaux(self,partie):
+        coups = []
+        
+        for coup in self.coups_possibles(partie):
+            #sauvegarde de l'ancien plateau
+            piece_potentiellement_mangée = partie.plateau.get(coup,None)
+            coordonnées = self.coord
+            #déplacement de la pièce
+            self.coord=coup
+            partie.plateau[coup] = partie.plateau.pop(coordonnées)
+            #vérification s'il y a echec
+            if not partie.echec():
+                coups.append(coup)
+            #retrait du coups
+            self.coord=coordonnées
+            partie.plateau[coordonnées] = partie.plateau.pop(coup)
+            if piece_potentiellement_mangée is not None:
+                partie.plateau[coup] = piece_potentiellement_mangée
+        return coups
     
-    def coups_legaux(self, partie):
-        """Fonction qui donene les coups légaux d'une pièce (cad possible et sans echec)
-
-        Args:
-            partie (_type_): _description_
-
-        Returns:
-            list: La liste des coordonnées ou la pièces peuts se déplacer 
-        """
-        self.coups=self.coups_possibles(partie)
-        x_i, y_i= self.coord
-        for coup in coups:
-            pass
-        
-        return self.coups
-
-        
 
     
 class Roi(Piece): 
@@ -39,26 +39,34 @@ class Roi(Piece):
             self.symbole="♚"
         else:
             self.symbole="♔"
-            
     def coups_possibles(self, partie):
-        self.coups=[]
+        self.coups = []
         x,y=self.coord
-        for direction in [(1,0),(1,1),(0,1),(-1,1),(-1,0),(-1,-1),(0,-1),(1,-1)]:
-            if 0<=x+direction[0]<=7 and 0<=y+direction[1]<=7:
-                piece=partie.plateau.get((x+direction[0], y+direction[1]), None)
-                if piece==None or piece.couleur!=self.couleur:
-                    self.coups.append((x+direction[0], y+direction[1]))
+        
+        for direction in [(1,1),(1,-1),(-1,-1),(-1,1),(1,0),(0,1),(-1,0),(0,-1)]:
+            x,y=self.coord   
+            x+=direction[0]
+            y+=direction[1]
+            if 0<=x<=7  and 0<=y<=7:
+                piece=partie.plateau.get((x,y),None)
+                if piece==None:
+                    self.coups.append((x,y))
+                else:
+                    if piece.couleur != self.couleur:
+                        self.coups.append((x,y))
         return self.coups
-            
 class Reine(Piece):
+    
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Reine"
         
         if self.couleur:
             self.symbole="♛"
+            self.valeur=10
         else:
             self.symbole="♕"
+            self.valeur=-10
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -89,9 +97,11 @@ class Fou(Piece):
         self.nom=("Fou")
         
         if self.couleur:
-            self.symbole="♝"        
+            self.symbole="♝"
+            self.valeur=3   
         else:
             self.symbole="♗"
+            self.valeur=-3
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -112,6 +122,8 @@ class Fou(Piece):
                         break
                 x+=direction[0]
                 y+=direction[1]
+    
+        
         return self.coups
     
 
@@ -124,8 +136,10 @@ class Cavalier(Piece):
         
         if self.couleur:
             self.symbole="♞"
+            self.valeur=3
         else:
             self.symbole="♘"
+            self.valeur=-3
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -139,6 +153,8 @@ class Cavalier(Piece):
                     self.coups.append((x+direction[0],y+direction[1]))
         return self.coups
 
+
+
 class Tour(Piece):
     
     def __init__(self, couleur, coord=None):
@@ -147,8 +163,10 @@ class Tour(Piece):
         
         if self.couleur:
             self.symbole="♜"
+            self.valeur=5
         else:
             self.symbole="♖"
+            self.valeur=-5
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -182,8 +200,10 @@ class Pion(Piece):
         
         if self.couleur:
             self.symbole="♟"
+            self.valeur=1
         else:
             self.symbole="♙"
+            self.valeur=-1
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -210,5 +230,5 @@ class Pion(Piece):
                     if 0<=x+dx<=7:
                         piece=partie.plateau.get((x+dx,y-1),None)
                         if piece != None and piece.couleur != self.couleur:
-                            self.coups.append((x+dx, y-1))        
+                            self.coups.append((x+dx, y-1))   
         return self.coups
