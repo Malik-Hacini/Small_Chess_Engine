@@ -20,14 +20,14 @@ def partie(joueur1,joueur2):
         while loop:
             try :
                 nom_save=input("Nom du fichier de sauvegarde : \n")
-                partie = EtatJeu(joueur1,joueur2,nom_save)
+                partie = EtatJeu(sauvegarde = nom_save)
                 loop=False
             except:
                 print("Fichier introuvable \n")
         print("Sauvegarde chargée \n")
     
     else:
-        partie= EtatJeu(joueur1,joueur2)        
+        partie= EtatJeu()        
     
     print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
         
@@ -45,17 +45,13 @@ def partie(joueur1,joueur2):
             print("Sauvegarde effectuée.") 
             return "N"
         
-        #PION PREMIER COUP FIX
-        if isinstance(partie.plateau[deplacement[0]],Pion):
-            partie.plateau[deplacement[0]].premier_coup=False
-            
         partie.plateau[deplacement[0]].coord=deplacement[1]
         partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
         
         partie.trait = not partie.trait
         
     
-    print(f"{partie.gagnant().nom} a gagné la partie ! \n")
+    print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
     
     
     
