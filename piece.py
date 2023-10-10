@@ -37,8 +37,10 @@ class Roi(Piece):
         
         if self.couleur:
             self.symbole="♚"
+            self.valeur=200
         else:
             self.symbole="♔"
+            self.valeur=-200
     def coups_possibles(self, partie):
         self.coups = []
         x,y=self.coord
@@ -63,8 +65,10 @@ class Reine(Piece):
         
         if self.couleur:
             self.symbole="♛"
+            self.valeur=9
         else:
             self.symbole="♕"
+            self.valeur=-9
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -86,27 +90,6 @@ class Reine(Piece):
                         break
                 x+=direction[0]
                 y+=direction[1]
-                
-                
-        """
-        x,y=self.coord
-        
-        for coord in (x,y):
-            for vect in [(1,8,1),(-1,-1,-1)]:
-                for i in range(coord+vect[0],vect[1],vect[2]):
-                    
-                    piece=partie.plateau.get((i, y),None)
-                    if piece==None:
-                        self.coups.append((i,y))
-                    else:
-                        if piece.couleur!=self.couleur:
-                            self.coups.append((i,y))
-                            break
-                        elif piece.couleur==self.couleur:
-                            break"""
-        
-                
-                
         return self.coups
 
 class Fou(Piece):
@@ -116,9 +99,11 @@ class Fou(Piece):
         self.nom=("Fou")
         
         if self.couleur:
-            self.symbole="♝"        
+            self.symbole="♝"
+            self.valeur=3   
         else:
             self.symbole="♗"
+            self.valeur=-3
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -153,8 +138,10 @@ class Cavalier(Piece):
         
         if self.couleur:
             self.symbole="♞"
+            self.valeur=3
         else:
             self.symbole="♘"
+            self.valeur=-3
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -166,8 +153,6 @@ class Cavalier(Piece):
                 piece=partie.plateau.get((x+direction[0],y+direction[1]),None)
                 if piece==None or piece.couleur!=self.couleur:
                     self.coups.append((x+direction[0],y+direction[1]))
-        
-        
         return self.coups
 
 
@@ -180,8 +165,10 @@ class Tour(Piece):
         
         if self.couleur:
             self.symbole="♜"
+            self.valeur=5
         else:
             self.symbole="♖"
+            self.valeur=-5
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -215,8 +202,10 @@ class Pion(Piece):
         
         if self.couleur:
             self.symbole="♟"
+            self.valeur=1
         else:
             self.symbole="♙"
+            self.valeur=-1
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -245,8 +234,3 @@ class Pion(Piece):
                         if piece != None and piece.couleur != self.couleur:
                             self.coups.append((x+dx, y-1))   
         return self.coups
-    
-    
-
-
-        

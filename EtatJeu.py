@@ -68,7 +68,7 @@ class EtatJeu:
             
                 
     def __str__(self)->str:
-        """Méthode print pour lpartie. Affiche le plateau dans
+        """Méthode print pour la partie. Affiche le plateau dans
         son état actuel.Nous n'utilisons pas la métohde spéciale __str__, car En fonction du tour, l'affichage
         du plateau est renversé.
         
@@ -112,20 +112,20 @@ class EtatJeu:
         #ouvrir un fichier de sauvegarde en ecriture
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
-        sauvegarde = "Joueur1 : "
+        sauvegarde = f"{self.joueurs[1].nom} : "
         for piece in self.joueurs[1].pieces:
             sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"    
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au dernier
         
         #sauvegarder le deuxieme joueur
         
-        sauvegarde+="\nJoueur2 : "
+        sauvegarde+=f"\n{self.joueurs[0].nom} : "
         for piece in self.joueurs[0].pieces:
             sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
         
         sauvegarde+="\nTrait : "
-        if self.trait == True:sauvegarde+="blancs"
+        if self.trait :sauvegarde+="blancs"
         else : sauvegarde+="noirs"
         
         
@@ -137,7 +137,7 @@ class EtatJeu:
         fichier = open(nom_fichier+".txt", 'w')
         fichier.write(sauvegarde)
         fichier.close()
-    
+        
         
         
         
@@ -235,11 +235,38 @@ class EtatJeu:
                 
                 #vérifier si le roi est toujours en échec
                 #il va falloir changer la structure pour l'adapter au cours d'IA
-                
-                
-
-    
     def gagnant(self):
         
         if self.echec_et_mat(): 
             return self.joueurs[self.trait]
+        
+        
+    def calcul_valeur(self)->float:
+        """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
+        les noirs ont l'avantage 
+
+        Returns:
+            float: valeur du jeu
+        """
+        valeur=0
+        for pieces in [self.pieces_j1, self.pieces_j2]:
+            cases_controllees=set()
+            for piece in pieces:
+                
+                valeur+=piece.valeur
+                cases_controllees.add(set(piece.coups_legaux))            
+            
+                for centre in [(3,3),(3,4),(4,4),(4,3)]:
+                    if piece==self.plateau.get(centre,None):
+                        valeur+=(0.75*piece.valeur)
+                
+                for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
+                    if piece==self.plateau.get(sous_centre, None):
+                        valeur+=(0,33*piece.valeur)
+                    
+            if pieces==self.pieces_j1:
+                valeur+=len(cases_controllees)
+            else:
+                valeur-=len(cases_controllees)
+        
+        self.valeur=valeur
