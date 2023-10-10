@@ -45,6 +45,10 @@ def partie(joueur1,joueur2):
             print("Sauvegarde effectuée.") 
             return "N"
         
+        #PION PREMIER COUP FIX
+        if isinstance(partie.plateau[deplacement[0]],Pion):
+            partie.plateau[deplacement[0]].premier_coup=False
+            
         partie.plateau[deplacement[0]].coord=deplacement[1]
         partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
         
