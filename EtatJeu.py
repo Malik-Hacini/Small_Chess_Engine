@@ -210,7 +210,7 @@ class EtatJeu:
             float: valeur du jeu
         """
         valeur=0
-        for pieces in [self.pieces_j1, self.pieces_j2]:
+        for pieces in [self.pieces[0], self.pieces[1]]:
             cases_controllees=set()
             pions_blanc=[]
             pions_noir=[]
