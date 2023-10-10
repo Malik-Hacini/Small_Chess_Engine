@@ -1,4 +1,5 @@
 import pytest
+import os
 
 from joueurs import*
 from EtatJeu import*
@@ -8,7 +9,8 @@ from piece import*
 def init_partie_test(nom_test):
     j1=Joueur("J1", True)
     j2=Joueur("J2", False)
-    partie=EtatJeu(j1,j2, nom_test)
+    chemin_fichier = os.path.join("Sauvegarde_Test_Piece", nom_test)
+    partie=EtatJeu(j1,j2, chemin_fichier)
     print(partie)
     return  j1, j2, partie
 

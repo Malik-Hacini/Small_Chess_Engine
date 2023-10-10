@@ -9,7 +9,6 @@ class Joueur():
         """
         self.nom = nom
         self.couleur = couleur
-        self.pieces = []
 
 
 class Humain(Joueur):
@@ -32,7 +31,7 @@ class Humain(Joueur):
                 if coord_p == "save" : return "save"
                 # vérifier que le coup est au bon format cad (a:h),(1:8)
                 if not len(coord_p)==2:
-                    print("ce n'est pas un coup valide! IL DOIT Y AVOIR 2 CHARACTERES \n")
+                    print("ce n'est pas un coup valide, veuillez respecter ce format : e2 \n")
                 
                 elif coord_p[0] not in ("a","b","c","d","e","f","g","h") or coord_p[1] not in ("1","2","3","4","5","6","7","8"):
                     print("Ce n'est pas un coup valide! \n")
@@ -42,12 +41,9 @@ class Humain(Joueur):
                     #Transformation de la position de la pièce de notation algébrique aux coordonnées absolues dans le plateau.
                     #Pour la ligne, cela dépend de la couleur du joueur, l'affichage étant renversé quand les noirs jouent.
                     coord_p = (ord(coord_p[0])-97,int(coord_p[1])-1)
-                    
-                    
-                    
                     if coord_p not in partie.plateau.keys() : print("Cette case est vide.")
                     
-                    elif partie.plateau[coord_p] not in self.pieces: print("Cette case ne comporte pas de piece de votre couleur. \n")
+                    elif partie.plateau[coord_p] not in partie.pieces[self.couleur]: print("Cette case ne comporte pas de piece de votre couleur. \n")
                     #vérifier que la piece peut etre bougée
                     elif partie.plateau[coord_p].coups_legaux(partie) == [] : print("Cette pièce ne peut pas être bougée. \n")
                     #la piece peut etre déplacée
@@ -55,10 +51,6 @@ class Humain(Joueur):
             
             #donner les coups possibles pour cette pièce
             coups_possibles=partie.plateau[coord_p].coups_legaux(partie)
-            
-            
-                
-                
             coups_a_afficher_not_alg=[(chr(coup[0]+97)+str(coup[1]+1)) for coup in coups_possibles]
             
             coups_a_afficher_output=""
@@ -84,6 +76,8 @@ class Humain(Joueur):
             coup_jouable=True
 
         return coord_p,coup_int
+        
+        
         
 class IA(Joueur):
     def __init__(self, nom: str, couleur: bool, pieces:list = []) -> None:

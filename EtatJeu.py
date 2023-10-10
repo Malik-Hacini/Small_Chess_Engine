@@ -1,13 +1,13 @@
 from joueurs import*
 from piece import*
 import numpy as np
-import copy
+
 
 class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,j1 : Joueur, j2 : Joueur, sauvegarde : str = "Plateau_base"):
+    def __init__(self,plateau  = None, trait = None, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -19,25 +19,26 @@ class EtatJeu:
             j2 (Joueur) : Second joueur de la partie, instance de la classe Joueur
             trait (bool) : prochaine couleur à jouer
         """
+        
         print("Chargement de la partie")
         #création des joueurs
-        self.joueurs=[j2,j1]
+        self.pieces=[[],[]]
         
         
         #lecture du fichier de sauvegarde
-        fichier = open(sauvegarde+".txt", 'r')
+        fichier = open("sauvegardes\\"+sauvegarde+".txt", 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pieces_j1,pieces_j2,trait_texte = sauv_txt.split("\n")
-        pieces_j1 = pieces_j1[10:]
-        pieces_j2 = pieces_j2[10:]
-        trait_texte = trait_texte[8:]
+        pieces_blanches,pieces_noires,trait_texte = sauv_txt.split("\n")
+        pieces_blanches = pieces_blanches.split(" : ")[1]
+        pieces_noires = pieces_noires.split(" : ")[1]
+        trait_texte = trait_texte.split(" : ")[1]
         
         
         #dictionnaire de {coordonnées : objet piece}
         self.plateau = {}
-        for pieces_j in (pieces_j1,pieces_j2):
+        for pieces_j in (pieces_blanches,pieces_noires):
             for p in pieces_j.split(";"):
                 p = p[1:-1]
                 p = p.split(",")
@@ -57,10 +58,10 @@ class EtatJeu:
                 
                 #on ajoute la piece au bon joueur
 
-                if pieces_j == pieces_j1:
-                    self.joueurs[1].pieces.append(piece)
-                elif pieces_j == pieces_j2:
-                    self.joueurs[0].pieces.append(piece)
+                if pieces_j == pieces_blanches:
+                    self.pieces[1].append(piece)
+                elif pieces_j == pieces_noires:
+                    self.pieces[0].append(piece)
                     
         if trait_texte == "blancs": self.trait = True
         else : self.trait = False
@@ -112,15 +113,15 @@ class EtatJeu:
         #ouvrir un fichier de sauvegarde en ecriture
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
-        sauvegarde = f"{self.joueurs[1].nom} : "
-        for piece in self.joueurs[1].pieces:
+        sauvegarde = "blancs : "
+        for piece in self.pieces[1]:
             sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"    
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au dernier
         
-        #sauvegarder le deuxieme joueur
+        #sauvegarder les pieces noires
         
-        sauvegarde+=f"\n{self.joueurs[0].nom} : "
-        for piece in self.joueurs[0].pieces:
+        sauvegarde+=f"\nnoirs : "
+        for piece in self.pieces[0]:
             sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"
         sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
         
@@ -134,7 +135,7 @@ class EtatJeu:
             nom_fichier = input("nom du fichier de sauvegarde : ")
             
         #écriture dans le fichier spécifier (écrase le texte déja existant ou crée un nouveau fichier)
-        fichier = open(nom_fichier+".txt", 'w')
+        fichier = open("sauvegardes\\"+nom_fichier+".txt", 'w')
         fichier.write(sauvegarde)
         fichier.close()
         
@@ -168,9 +169,9 @@ class EtatJeu:
         """
         #il faut trouver qui est le joueur à qui c'est le tour
         
-        for piece in self.joueurs[self.trait].pieces : 
+        for piece in self.pieces[self.trait] : 
             if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
-            else : pieces_adversaire = self.joueurs[not (self.trait)].pieces#on récupere les pieces de l'adversaire
+            else : pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
             
         for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
             for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
@@ -188,57 +189,17 @@ class EtatJeu:
         #on regarde s'il existe des pièces qui ont le droit de bouger
         
   
-        pieces_joueur = self.joueurs[self.trait].pieces
+        pieces_joueur = self.pieces[self.trait]
         for piece in pieces_joueur:
-                print(piece, piece.coups_legaux(self),piece.coord)
                 if len(piece.coups_legaux(self))>0 :return False
         return True
-                
-        
-        """ 
-        for j in (self.j1,self.j2):
-            if j.couleur == self.trait:
-                #récupérer les pieces du joueur
-                pieces_joueur = j.pieces
-                #récupérer la case du roi
-                for piece in j.pieces : 
-                    if piece.nom == "Roi":case_roi = piece.coord; #on récupere la case occupée par le roi
-            else : pieces_adversaire = j.pieces#on récupere les pieces de l'adversaire
-            
-            
-            
-        for piece in pieces_joueur: #Pour les pièces de l'adversaire en jeu
-            for case in piece.coups_possible(self):# Pour chaque coup possible de la piece sélectionnée
-                #simuler un coup et vérifier si le roi est toujours en échec
-                #comment faire une simulation?, on peut créer un nouveau plateau et vérifier s'il est en echec, ou on peut modifier le plateau de jeu actuel et inverser les coups après
-                #je pense qu'il vaut mieux créer un nouveau plateau car ca sera nécessaire dans l'étape de l'IA
-                plateau_sim = copy.deepcopy(self.plateau)
-                #on va jouer le coups suggéré sur la simulation
-                #créer une nouvelle partie avec un nouveau plateau
-                bot1,bot2 = Joueur("Bot1",self.j1.couleur,copy.deepcopy(self.j1.pieces)),Joueur("Bot2",self.j1.couleur,copy.deepcopy(self.j2.pieces))
-                simu = Partie(bot1,bot2,plateau_sim,self.trait)
-                
-                for bot in (bot1,bot2):
-                    if bot.couleur == simu.trait:
-                        joueur = bot
-                for piece in bot.pieces :
-                    for coup in piece.coup_possible():
-                        #déplacer la piece
-                        piece.coord=coup
-                        simu.plateau[coup] = simu.plateau.pop(piece.coord)
-                        #regarder s'il est en echec
-                        if simu.
-                """
-                     
-                    
-                
-                
-                #vérifier si le roi est toujours en échec
-                #il va falloir changer la structure pour l'adapter au cours d'IA
+    
+    
     def gagnant(self):
         
         if self.echec_et_mat(): 
-            return self.joueurs[self.trait]
+            return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
+        
         
         
     def calcul_valeur(self)->float:
