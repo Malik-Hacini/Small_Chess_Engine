@@ -1,4 +1,6 @@
 import numpy as np
+import math
+import EtatJeu
 class Joueur():
     def __init__(self,nom : str,couleur : bool) -> None:
         """création d'un joueur
@@ -83,6 +85,31 @@ class IA(Joueur):
     def __init__(self, nom: str, couleur: bool, pieces:list = []) -> None:
         super().__init__(nom, couleur, pieces)      
     pass    
+
+    #déterminer le meilleur coup grace à minimax
+
+
+
+
+def minimax( etat : EtatJeu ,profondeur : int,trait : bool):
+    if profondeur==0 or etat.echec_et_mat():
+        return etat.valeur()
+    if trait:
+        valeur = -math.inf
+        for coord_i,coords_f in etat.mouvements().items():
+            
+            
+            valeur = max(valeur,minimax(etat.jouer_coups(coup),profondeur-1, False))
+            
+            
+
+        return valeur            
+    else : 
+        valeur  = math.inf
+        for coup in etat.coup_possibles():
+            valeur = min(valeur, minimax(etat.jouer_coups(coup),profondeur-1))
+        return valeur
+    
         
         
         

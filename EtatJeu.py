@@ -156,52 +156,15 @@ class EtatJeu:
         Returns:
             dict: Le plateau modifié
             """
-        
-                
-    def echec(self) -> bool:
-        """Fonction qui nous dis si le roi de la couleur demandé est en échec
-
-        Args:
-            couleur (bool): Couleur de du roi dont on veut savoir si il est en échec (True<=> Blanc et False <=> Noir)
-
-        Returns:
-            bool: True <=> Roi en échec
-        """
-        #il faut trouver qui est le joueur à qui c'est le tour
-        
-        for piece in self.pieces[self.trait] : 
-            if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
-            else : pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
-            
-        for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
-            for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
-                if case == case_roi :#On vérifie si cette case est celle du roi
-                    print(piece.nom,piece.couleur)
-                    return True
-        return False
-        
-
-
-   
-    def echec_et_mat(self):
-        #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
-        if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
-        #on regarde s'il existe des pièces qui ont le droit de bouger
-        
-  
-        pieces_joueur = self.pieces[self.trait]
-        for piece in pieces_joueur:
-                if len(piece.coups_legaux(self))>0 :return False
-        return True
     
     
-    def gagnant(self):
-        
-        if self.echec_et_mat(): 
-            return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
-        
-        
-        
+    def mouvements(self) -> dict[tuple(int,int),list[tuple(int,int)]]:
+        mouv = dict()
+        for coord_piece in self.plateau.keys():
+            mouv[coord_piece] = coord_piece.coups_possibles()
+        return mouv
+    
+    
     def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
@@ -248,3 +211,53 @@ class EtatJeu:
                         else:
                             valeur+=0.1
         self.valeur=valeur
+                
+                
+    
+                
+    def echec(self) -> bool:
+        """Fonction qui nous dis si le roi de la couleur demandé est en échec
+
+        Args:
+            couleur (bool): Couleur de du roi dont on veut savoir si il est en échec (True<=> Blanc et False <=> Noir)
+
+        Returns:
+            bool: True <=> Roi en échec
+        """
+        #il faut trouver qui est le joueur à qui c'est le tour
+        
+        for piece in self.pieces[self.trait] : 
+            if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
+            else : pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
+            
+        for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
+            for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
+                if case == case_roi :#On vérifie si cette case est celle du roi
+                    print(piece.nom,piece.couleur)
+                    return True
+        return False
+        
+
+
+   
+    def echec_et_mat(self):
+        #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
+        if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
+        #on regarde s'il existe des pièces qui ont le droit de bouger
+        
+  
+        pieces_joueur = self.pieces[self.trait]
+        for piece in pieces_joueur:
+                if len(piece.coups_legaux(self))>0 :return False
+        return True
+    
+    
+    def gagnant(self):
+        
+        if self.echec_et_mat(): 
+            return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
+     
+        
+        
+        
+        
