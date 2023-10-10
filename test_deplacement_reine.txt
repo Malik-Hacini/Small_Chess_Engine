@@ -1,3 +1,0 @@
-Joueur1: [Reine,True,4,3];[Pion,True,6,3];[Pion,True,2,1]
-Joueur2: [Pion,False,4,1];[Pion,False,2,5]
-Trait: Blanc
