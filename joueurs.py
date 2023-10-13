@@ -109,8 +109,8 @@ class IA(Joueur):
         for coord_i,coords_f in partie.mouvements(self.couleur).items():
             chargement+=1/taille
             print(f'{round(chargement*100)}% effectués')
-            print(f" analyse du {partie.plateau[coord_i].nom} en {chr(97+coord_i[0])}{coord_i[1]+1}",end = ", ")
-            print(f'déplacementst possible : {coords_f}'  )
+            #print(f" analyse du {partie.plateau[coord_i].nom} en {chr(97+coord_i[0])}{coord_i[1]+1}",end = ", ")
+            #print(f'déplacementst possible : {coords_f}'  )
             
             for coord_f in coords_f:
                 #créer un nouvel état où on bouge une piece
@@ -120,7 +120,7 @@ class IA(Joueur):
                 #on bouge une piece
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
-                val_minimax = minimax(simu,1,not self.couleur)
+                val_minimax = minimax(simu,0,not self.couleur)
                 #le joueur noir veut le minimum, le joueur blanc le maximum
                 if (val_minimax > max_valeur and self.couleur) or (val_minimax < max_valeur and not self.couleur):
                     meilleur_coup = (coord_i,coord_f)
