@@ -1,1 +1,1 @@
-projet poo
+projet poo/ia : échecs (python)
