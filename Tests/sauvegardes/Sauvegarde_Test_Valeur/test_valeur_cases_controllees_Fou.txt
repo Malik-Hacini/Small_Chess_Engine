@@ -1,0 +1,3 @@
+Joueur1 : [Roi,True,0,0]
+Joueur2 : [Roi,False,0,7];[Fou,False,4,7]
+Trait : blancs

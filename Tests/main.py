@@ -35,9 +35,9 @@ def partie(joueur1,joueur2):
 
 
     draw= False
-    print(partie)
     while partie.gagnant() is None and not draw:
         
+        print(partie)
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
         
         if deplacement=="save" :
@@ -54,7 +54,6 @@ def partie(joueur1,joueur2):
         partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
         
         partie.trait = not partie.trait
-        print(partie)
         
     
     print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")

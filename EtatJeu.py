@@ -160,7 +160,7 @@ class EtatJeu:
         #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
         if coord_f in self.plateau.keys() :
             #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
-            self.pieces[self.plateau[coord_f].couleur].remove(self.plateau[coord_f])
+            self.pieces[not self.trait].remove(self.plateau[coord_f])
         self.plateau[coord_i].coord=coord_f
         self.plateau[coord_f] = self.plateau.pop(coord_i)
         self.trait = not self.trait
@@ -177,16 +177,16 @@ class EtatJeu:
             mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
     
-    def calcul_valeur(self):
-        """if self.echec_et_mat():self.valeur = math.inf
-        else : """
-        self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
+    def calcul_valeur_test(self):
+        if self.echec_et_mat():self.valeur = math.inf
+        else : 
+            self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
     
     
      
     
     
-    def calcul_valeur_tim(self)->float:
+    def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
 
@@ -194,44 +194,49 @@ class EtatJeu:
             float: valeur du jeu
         """
         valeur=0
+        if self.echec_et_mat():
+            if self.gagnant:
+                valeur+=1000
+            else:
+                valeur-=1000
+                
+        
         for pieces in [self.pieces[1], self.pieces[0]]:
             cases_controllees=set()
-            pions_blanc=[]
-            pions_noir=[]
+            pions=[]
+            
             for piece in pieces:
                 valeur+=piece.valeur
                 
-                if isinstance(piece,Pion) and piece.couleur:
-                    pions_blanc.append(piece)
-                elif isinstance(piece, Pion) and not piece.couleur:
-                    pions_noir.append(piece)
-                
-                cases_controllees |= set(piece.coups_legaux(self))        
-            
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
-                        valeur+=(0.33*piece.valeur)
+                        valeur+=(0.5)
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
-                        valeur+=(0.10*piece.valeur)
-                    
-            if pieces==self.pieces[1]:
-                valeur+=len(cases_controllees)
-            else:
-                valeur-=len(cases_controllees)
+                        valeur+=(0.1)
+
+    
+                if isinstance(piece,Pion):
+                    pions.append(piece)
                 
-            for pions in [pions_blanc, pions_noir]:
-                collones=[]
-                for pion in pions:
-                    if pion.coord[0] not in collones:
-                        collones.append(pion.coord[0])
+                cases_controllees |= set(piece.coups_possibles(self))
+                 
+            if pieces==self.pieces[1]:
+                valeur+=0.1*len(cases_controllees)
+            else:
+                valeur-=0.1*len(cases_controllees)
+            
+            collones=[]
+            for pion in pions:
+                if pion.coord[0] not in collones:
+                    collones.append(pion.coord[0])
+                else:
+                    if pion.couleur:
+                        valeur-=0.1
                     else:
-                        if pion.couleur:
-                            valeur-=0.1
-                        else:
-                            valeur+=0.1
-        self.valeur=valeur
+                        valeur+=0.1
+        self.valeur=round(valeur,3)
         
                 
                 
@@ -247,11 +252,13 @@ class EtatJeu:
             bool: True <=> Roi en échec
         """
         #il faut trouver qui est le joueur à qui c'est le tour
-        
-        for piece in self.pieces[self.trait] : 
+        case_roi = None
+        for piece in self.pieces[self.trait]:
             if piece.nom == "Roi":
                 case_roi = piece.coord#on récupere la case occupée par le roi
-                
+        if case_roi is None:
+            print([piece.nom for piece in self.pieces[self.trait]])
+            print(self)
         pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
         for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
             for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
