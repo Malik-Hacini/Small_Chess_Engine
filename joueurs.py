@@ -99,13 +99,16 @@ class IA(Joueur):
         for coord_i,coords_f in partie.mouvements(self.couleur).items():
             chargement+=1/taille
             print(f'{round(chargement*100)}% effectués')
+            print(partie.plateau[coord_i].nom,coord_i,coords_f)
             for coord_f in coords_f:
                 #créer un nouvel état où on bouge une piece
                 simu = copy.deepcopy(partie)
                 #on bouge une piece
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
-                val_minimax = minimax(simu,2,self.couleur)
+                val_minimax = minimax(simu,2,not self.couleur)
+                
+                print(meilleur_coup,val_minimax)
                 if val_minimax > max_valeur:
                     meilleur_coup = (coord_i,coord_f)
                     max_valeur = val_minimax
@@ -132,6 +135,7 @@ def minimax( etat : EtatJeu ,profondeur : int,trait : bool):
                 #on bouge une piece
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
+                
                 valeur = max(valeur,minimax(simu,profondeur-1, not trait))
             
         return valeur            

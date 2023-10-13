@@ -176,15 +176,17 @@ class EtatJeu:
         for piece in self.pieces[couleur]:
             mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
-    """
+    
     def calcul_valeur(self):
+        """if self.echec_et_mat():self.valeur = math.inf
+        else : """
         self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
-    """
     
     
+     
     
     
-    def calcul_valeur(self)->float:
+    def calcul_valeur_tim(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
 
