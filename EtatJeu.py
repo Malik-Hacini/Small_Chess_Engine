@@ -160,7 +160,7 @@ class EtatJeu:
         #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
         if coord_f in self.plateau.keys() :
             #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
-            self.pieces[self.plateau[coord_f].couleur].remove(self.plateau[coord_f])
+            self.pieces[not self.trait].remove(self.plateau[coord_f])
         self.plateau[coord_i].coord=coord_f
         self.plateau[coord_f] = self.plateau.pop(coord_i)
         self.trait = not self.trait
@@ -178,9 +178,9 @@ class EtatJeu:
         return mouv
     
     def calcul_valeur(self):
-        """if self.echec_et_mat():self.valeur = math.inf
-        else : """
-        self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
+        if self.echec_et_mat():self.valeur = math.inf
+        else : 
+            self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
     
     
      
@@ -247,11 +247,9 @@ class EtatJeu:
             bool: True <=> Roi en échec
         """
         #il faut trouver qui est le joueur à qui c'est le tour
-        
-        for piece in self.pieces[self.trait] : 
+        for piece in self.pieces[self.trait]:
             if piece.nom == "Roi":
                 case_roi = piece.coord#on récupere la case occupée par le roi
-                
         pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
         for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
             for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire

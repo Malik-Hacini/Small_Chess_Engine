@@ -93,7 +93,8 @@ class IA(Joueur):
     def jouer_coup(self,partie: dict) -> tuple[int,int]:
         
         meilleur_coup = None
-        max_valeur = -math.inf
+        max_valeur = ((-1)**(self.couleur))*math.inf
+        
         chargement = 0
         taille = len(partie.mouvements(self.couleur).items())
         for coord_i,coords_f in partie.mouvements(self.couleur).items():
@@ -107,9 +108,8 @@ class IA(Joueur):
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
                 val_minimax = minimax(simu,2,not self.couleur)
-                
-                print(meilleur_coup,val_minimax)
-                if val_minimax > max_valeur:
+                #le joueur noir veut le minimum, le joueur blanc le maximum
+                if (val_minimax > max_valeur and self.couleur) or (val_minimax < max_valeur and not self.couleur):
                     meilleur_coup = (coord_i,coord_f)
                     max_valeur = val_minimax
         return meilleur_coup
@@ -122,13 +122,13 @@ class IA(Joueur):
 
 
 
-def minimax( etat : EtatJeu ,profondeur : int,trait : bool):
+def minimax( etat : EtatJeu ,profondeur : int,couleur : bool):
     if profondeur==0 or etat.echec_et_mat():
         etat.calcul_valeur()
         return etat.valeur
-    if trait:
+    if couleur:
         valeur = -math.inf
-        for coord_i,coords_f in etat.mouvements(trait).items():
+        for coord_i,coords_f in etat.mouvements(couleur).items():
             for coord_f in coords_f:
                 #créer un nouvel état où on bouge une piece, penser à changer le tour
                 simu = copy.deepcopy(etat)
@@ -136,19 +136,19 @@ def minimax( etat : EtatJeu ,profondeur : int,trait : bool):
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
                 
-                valeur = max(valeur,minimax(simu,profondeur-1, not trait))
+                valeur = max(valeur,minimax(simu,profondeur-1, not couleur))
             
         return valeur            
     else : 
         valeur  = math.inf
-        for coord_i,coords_f in etat.mouvements(trait).items():
+        for coord_i,coords_f in etat.mouvements(couleur).items():
             for coord_f in coords_f:
                 #créer un nouvel état où on bouge une piece, penser à changer le tour
                 simu = copy.deepcopy(etat)
                 #on bouge une piece
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
-                valeur = min(valeur,minimax(simu,profondeur-1, not trait))
+                valeur = min(valeur,minimax(simu,profondeur-1, not couleur))
         return valeur
     
         

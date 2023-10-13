@@ -10,23 +10,26 @@ class Piece:
         return self.symbole
     def coups_legaux(self,partie):
         coups = []
-        
         for coup in self.coups_possibles(partie):
-            print(coup)
             #sauvegarde de l'ancien plateau
             piece_potentiellement_mangée = partie.plateau.get(coup,None)
             coordonnées = self.coord
             #déplacement de la pièce
             self.coord=coup
             partie.plateau[coup] = partie.plateau.pop(coordonnées)
+            #retirer la piece des pieces de l'adversaire
+            if piece_potentiellement_mangée is not None:
+                partie.pieces[not self.couleur].remove(piece_potentiellement_mangée)
             #vérification s'il y a echec
             if not partie.echec():
                 coups.append(coup)
             #retrait du coups
             self.coord=coordonnées
             partie.plateau[coordonnées] = partie.plateau.pop(coup)
+            #remettre la piece mangée
             if piece_potentiellement_mangée is not None:
                 partie.plateau[coup] = piece_potentiellement_mangée
+                partie.pieces[not self.couleur].append(piece_potentiellement_mangée)
         return coups
     
 
