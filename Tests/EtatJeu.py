@@ -176,14 +176,9 @@ class EtatJeu:
         for piece in self.pieces[couleur]:
             mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
-    
-    def calcul_valeur(self):
-        """if self.echec_et_mat():self.valeur = math.inf
-        else : """
-        self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
 
 
-    def calcul_valeur_tim(self)->float:
+    def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
 
@@ -204,14 +199,17 @@ class EtatJeu:
             
             for piece in pieces:
                 valeur+=piece.valeur
+                print(valeur)
                 
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
                         valeur+=(0.15*piece.valeur)
+                        print(valeur)
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
                         valeur+=(0.5*piece.valeur)
+                        print(valeur)
 
     
                 if isinstance(piece,Pion):
@@ -221,8 +219,10 @@ class EtatJeu:
                  
             if pieces==self.pieces[1]:
                 valeur+=0.1*len(cases_controllees)
+                print(valeur)
             else:
                 valeur-=0.1*len(cases_controllees)
+                print(valeur)
             
             collones=[]
             for pion in pions:
@@ -231,8 +231,11 @@ class EtatJeu:
                 else:
                     if pion.couleur:
                         valeur-=0.1
+                        print(valeur)
                     else:
                         valeur+=0.1
+                        print(valeur)
+            
         self.valeur=round(valeur,3)
                 
     def echec(self) -> bool:
