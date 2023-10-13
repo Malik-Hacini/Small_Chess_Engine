@@ -60,10 +60,19 @@ def test_valeur_cases_controllees():
     partie.calcul_valeur()
     assert partie.valeur==-3.7
 
-def test_valeur_centre():
+def test_valeur_position():
     partie=init_partie_test("test_valeur_centre_blancs")
     partie.calcul_valeur()
     assert partie.valeur==1.35
     partie=init_partie_test("test_valeur_centre_noirs")
     partie.calcul_valeur()
     assert partie.valeur==-1.35
+    partie=init_partie_test("test_valeur_sous_centre_blancs")
+    partie.calcul_valeur()
+    assert partie.valeur==1.25
+    partie=init_partie_test("test_valeur_sous_centre_noirs")
+    partie.calcul_valeur()
+    assert partie.valeur==-1.25
+    
+def test_valeur_pions_doubles():
+    pass

@@ -208,7 +208,7 @@ class EtatJeu:
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
-                        valeur+=(0.5*piece.valeur)
+                        valeur+=(0.05*piece.valeur)
                         print(valeur)
 
     
@@ -279,8 +279,3 @@ class EtatJeu:
         
         if self.echec_et_mat(): 
             return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
-     
-        
-        
-        
-        
