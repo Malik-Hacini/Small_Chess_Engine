@@ -7,7 +7,7 @@ class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,plateau  = None, trait = None, sauvegarde : str = "Plateau_base"):
+    def __init__(self,plateau : list = None, trait : bool = None, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -21,7 +21,7 @@ class EtatJeu:
         """
         
         print("Chargement de la partie")
-        #création des joueurs
+        #création des pieces
         self.pieces=[[],[]]
         
         
@@ -145,24 +145,43 @@ class EtatJeu:
     
     
     
-    def deplacer_piece(self, coord1: tuple[int,int], coord2: tuple[int, int])->np.ndarray:
+    def deplacer_piece(self, coord_i: tuple, coord_f: tuple)->np.ndarray:
         """Déplace une pièce du plateau à un autre endroit.
         Cette méthode n'est exécutée que si le coup est valide,
         il n'y a donc pas besoin de le vérifier.
 
         Args:
-            coord1 (tuple[int,int]): Position de la pièce à déplacer
-            coord2 (tuple[int,int]): Position finale de la pièce
+            coord_i (tuple[int,int]): Position de la pièce à déplacer
+            coord_f (tuple[int,int]): Position finale de la pièce
         Returns:
             dict: Le plateau modifié
             """
+            
+        #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
+        if coord_f in self.plateau.keys() :
+            #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
+            self.pieces[self.plateau[coord_f].couleur].remove(self.plateau[coord_f])
+        self.plateau[coord_i].coord=coord_f
+        self.plateau[coord_f] = self.plateau.pop(coord_i)
+        self.trait = not self.trait
     
     
-    def mouvements(self) -> dict[tuple(int,int),list[tuple(int,int)]]:
+    def mouvements(self,couleur) -> dict[tuple[int,int],list[tuple[int,int]]]:
+        #dictionnaire contenant les coups possibles dans l'état pour une certaine couleur
         mouv = dict()
+        """ ancien code qui pue un peu la merde mais je le garde juste au cas où
         for coord_piece in self.plateau.keys():
-            mouv[coord_piece] = coord_piece.coups_possibles()
+            if self.plateau[coord_piece].couleur == couleur:
+                mouv[coord_piece] = self.plateau[coord_piece].coups_legaux(self)"""
+        for piece in self.pieces[couleur]:
+            mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
+    """
+    def calcul_valeur(self):
+        self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
+    """
+    
+    
     
     
     def calcul_valeur(self)->float:
@@ -173,19 +192,19 @@ class EtatJeu:
             float: valeur du jeu
         """
         valeur=0
-        for pieces in [self.pieces_j1, self.pieces_j2]:
+        for pieces in [self.pieces[1], self.pieces[0]]:
             cases_controllees=set()
             pions_blanc=[]
             pions_noir=[]
             for piece in pieces:
+                valeur+=piece.valeur
                 
-                if isinstance(Pion,piece) and piece.couleur:
+                if isinstance(piece,Pion) and piece.couleur:
                     pions_blanc.append(piece)
-                elif isinstance(Pion, piece) and not piece.couleur:
+                elif isinstance(piece, Pion) and not piece.couleur:
                     pions_noir.append(piece)
                 
-                valeur+=piece.valeur
-                cases_controllees.add(set(piece.coups_legaux))            
+                cases_controllees |= set(piece.coups_legaux(self))        
             
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
@@ -195,7 +214,7 @@ class EtatJeu:
                     if piece==self.plateau.get(sous_centre, None):
                         valeur+=(0.10*piece.valeur)
                     
-            if pieces==self.pieces_j1:
+            if pieces==self.pieces[1]:
                 valeur+=len(cases_controllees)
             else:
                 valeur-=len(cases_controllees)
@@ -211,6 +230,7 @@ class EtatJeu:
                         else:
                             valeur+=0.1
         self.valeur=valeur
+        
                 
                 
     
@@ -227,13 +247,13 @@ class EtatJeu:
         #il faut trouver qui est le joueur à qui c'est le tour
         
         for piece in self.pieces[self.trait] : 
-            if piece.nom == "Roi":case_roi = piece.coord#on récupere la case occupée par le roi
-            else : pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
-            
+            if piece.nom == "Roi":
+                case_roi = piece.coord#on récupere la case occupée par le roi
+                
+        pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
         for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
             for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
                 if case == case_roi :#On vérifie si cette case est celle du roi
-                    print(piece.nom,piece.couleur)
                     return True
         return False
         
