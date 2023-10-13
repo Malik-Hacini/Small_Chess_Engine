@@ -1,0 +1,3 @@
+Joueur1 : [Fou,True,4,4];[Pion,True,6,2]
+Joueur2 : [Pion,False,1,1]
+Trait : blancs
