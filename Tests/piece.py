@@ -37,10 +37,11 @@ class Roi(Piece):
         
         if self.couleur:
             self.symbole="♚"
-            self.valeur=200
+            self.valeur=0
         else:
             self.symbole="♔"
-            self.valeur=-200
+            self.valeur=-0
+
     def coups_possibles(self, partie):
         self.coups = []
         x,y=self.coord
