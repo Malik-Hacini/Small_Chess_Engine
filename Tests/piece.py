@@ -12,6 +12,7 @@ class Piece:
         coups = []
         
         for coup in self.coups_possibles(partie):
+            print(coup)
             #sauvegarde de l'ancien plateau
             piece_potentiellement_mangée = partie.plateau.get(coup,None)
             coordonnées = self.coord
