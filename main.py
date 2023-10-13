@@ -1,6 +1,7 @@
 from joueurs import*
 from EtatJeu import*
 import sys
+import time
 
 def partie(joueur1,joueur2):
     """Joue une partie d'échecs. 
@@ -38,7 +39,7 @@ def partie(joueur1,joueur2):
     while partie.gagnant() is None and not draw:
         
         print(partie)
-        deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
+        deplacement=joueurs[partie.trait].jouer_coup(partie)
         
         if deplacement=="save" :
             partie.sauvegarder("save")
