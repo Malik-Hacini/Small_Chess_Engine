@@ -2,7 +2,7 @@ import numpy as np
 import math
 import EtatJeu
 import copy
-import tqdm
+import time
 
 
 class Joueur():
@@ -26,7 +26,7 @@ class Humain(Joueur):
 
         #demander la case à jouer
         #vérifier si elle possedes des coups possibles
-        print(minimax(partie, 2, partie.trait))
+        #print(minimax(partie, 2, partie.trait))
         coup_jouable  = False
         while not coup_jouable:
             
@@ -91,6 +91,15 @@ class IA(Joueur):
         super().__init__(nom, couleur)      
         
     def jouer_coup(self,partie: dict) -> tuple[int,int]:
+        """Permet a l'ia de jouer un coup, cela calcule toutes les possibilités
+
+        Args:
+            partie (dict): Etat du Jeu a l'instant
+
+        Returns:
+            tuple[int,int]: coup joué
+        """
+        durées = []
         
         meilleur_coup = None
         max_valeur = ((-1)**(self.couleur))*math.inf
@@ -100,18 +109,23 @@ class IA(Joueur):
         for coord_i,coords_f in partie.mouvements(self.couleur).items():
             chargement+=1/taille
             print(f'{round(chargement*100)}% effectués')
-            print(partie.plateau[coord_i].nom,coord_i,coords_f)
+            print(f" analyse du {partie.plateau[coord_i].nom} en {chr(97+coord_i[0])}{coord_i[1]+1}",end = ", ")
+            print(f'déplacementst possible : {coords_f}'  )
+            
             for coord_f in coords_f:
                 #créer un nouvel état où on bouge une piece
+                départ = time.time()
                 simu = copy.deepcopy(partie)
+                durées.append(time.time()-départ)
                 #on bouge une piece
                 simu.deplacer_piece(coord_i,coord_f)
                 #max
-                val_minimax = minimax(simu,2,not self.couleur)
+                val_minimax = minimax(simu,1,not self.couleur)
                 #le joueur noir veut le minimum, le joueur blanc le maximum
                 if (val_minimax > max_valeur and self.couleur) or (val_minimax < max_valeur and not self.couleur):
                     meilleur_coup = (coord_i,coord_f)
                     max_valeur = val_minimax
+        print(sum(durées)/len(durées))
         return meilleur_coup
                     
             
@@ -134,12 +148,13 @@ def minimax( etat : EtatJeu ,profondeur : int,couleur : bool):
                 simu = copy.deepcopy(etat)
                 #on bouge une piece
                 simu.deplacer_piece(coord_i,coord_f)
+                
                 #max
                 
                 valeur = max(valeur,minimax(simu,profondeur-1, not couleur))
             
         return valeur            
-    else : 
+    else :
         valeur  = math.inf
         for coord_i,coords_f in etat.mouvements(couleur).items():
             for coord_f in coords_f:

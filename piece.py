@@ -10,25 +10,26 @@ class Piece:
         return self.symbole
     def coups_legaux(self,partie):
         coups = []
-        for coup in self.coups_possibles(partie):
+        for coord_f in self.coups_possibles(partie):
             #sauvegarde de l'ancien plateau
-            piece_potentiellement_mangée = partie.plateau.get(coup,None)
-            coordonnées = self.coord
+            piece_potentiellement_mangée = partie.plateau.get(coord_f,None)
+            coord_i = self.coord
             #déplacement de la pièce
-            self.coord=coup
-            partie.plateau[coup] = partie.plateau.pop(coordonnées)
+            self.coord=coord_f
+            partie.plateau[coord_f] = partie.plateau.pop(coord_i)
             #retirer la piece des pieces de l'adversaire
             if piece_potentiellement_mangée is not None:
                 partie.pieces[not self.couleur].remove(piece_potentiellement_mangée)
+            
             #vérification s'il y a echec
             if not partie.echec():
-                coups.append(coup)
+                coups.append(coord_f)
             #retrait du coups
-            self.coord=coordonnées
-            partie.plateau[coordonnées] = partie.plateau.pop(coup)
+            self.coord=coord_i
+            partie.plateau[coord_i] = partie.plateau.pop(coord_f)
             #remettre la piece mangée
             if piece_potentiellement_mangée is not None:
-                partie.plateau[coup] = piece_potentiellement_mangée
+                partie.plateau[coord_f] = piece_potentiellement_mangée
                 partie.pieces[not self.couleur].append(piece_potentiellement_mangée)
         return coups
     
@@ -41,10 +42,10 @@ class Roi(Piece):
         
         if self.couleur:
             self.symbole="♚"
-            self.valeur=200
+            self.valeur=0
         else:
             self.symbole="♔"
-            self.valeur=-200
+            self.valeur=0
     def coups_possibles(self, partie):
         self.coups = []
         x,y=self.coord
