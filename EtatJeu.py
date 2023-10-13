@@ -191,48 +191,49 @@ class EtatJeu:
             float: valeur du jeu
         """
         valeur=0
+        if self.echec_et_mat():
+            if self.gagnant:
+                valeur+=1000
+            else:
+                valeur-=1000
+                
+        
         for pieces in [self.pieces[1], self.pieces[0]]:
             cases_controllees=set()
-            pions_blanc=[]
-            pions_noir=[]
+            pions=[]
+            
             for piece in pieces:
                 valeur+=piece.valeur
                 
-                if isinstance(piece,Pion) and piece.couleur:
-                    pions_blanc.append(piece)
-                elif isinstance(piece, Pion) and not piece.couleur:
-                    pions_noir.append(piece)
-                
-                cases_controllees |= set(piece.coups_legaux(self))        
-            
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
-                        valeur+=(0.33*piece.valeur)
+                        valeur+=(0.15*piece.valeur)
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
-                        valeur+=(0.10*piece.valeur)
-                    
-            if pieces==self.pieces[1]:
-                valeur+=len(cases_controllees)
-            else:
-                valeur-=len(cases_controllees)
-                
-            for pions in [pions_blanc, pions_noir]:
-                collones=[]
-                for pion in pions:
-                    if pion.coord[0] not in collones:
-                        collones.append(pion.coord[0])
-                    else:
-                        if pion.couleur:
-                            valeur-=0.1
-                        else:
-                            valeur+=0.1
-        self.valeur=valeur
-        
-                
-                
+                        valeur+=(0.5*piece.valeur)
+
     
+                if isinstance(piece,Pion):
+                    pions.append(piece)
+                
+                cases_controllees |= set(piece.coups_legaux(self))
+                 
+            if pieces==self.pieces[1]:
+                valeur+=0.1*len(cases_controllees)
+            else:
+                valeur-=0.1*len(cases_controllees)
+            
+            collones=[]
+            for pion in pions:
+                if pion.coord[0] not in collones:
+                    collones.append(pion.coord[0])
+                else:
+                    if pion.couleur:
+                        valeur-=0.1
+                    else:
+                        valeur+=0.1
+        self.valeur=round(valeur,3)
                 
     def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec

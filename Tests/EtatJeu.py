@@ -204,17 +204,15 @@ class EtatJeu:
             
             for piece in pieces:
                 valeur+=piece.valeur
-                print(valeur)
                 
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
                         valeur+=(0.15*piece.valeur)
-                        print(valeur)
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
                         valeur+=(0.5*piece.valeur)
-                        print(valeur)
+
     
                 if isinstance(piece,Pion):
                     pions.append(piece)
@@ -223,10 +221,8 @@ class EtatJeu:
                  
             if pieces==self.pieces[1]:
                 valeur+=0.1*len(cases_controllees)
-                print(valeur)
             else:
                 valeur-=0.1*len(cases_controllees)
-                print(valeur)
             
             collones=[]
             for pion in pions:
@@ -235,10 +231,8 @@ class EtatJeu:
                 else:
                     if pion.couleur:
                         valeur-=0.1
-                        print(valeur)
                     else:
                         valeur+=0.1
-                        print(valeur)
         self.valeur=round(valeur,3)
                 
     def echec(self) -> bool:
