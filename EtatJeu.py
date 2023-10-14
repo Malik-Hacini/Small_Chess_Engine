@@ -286,7 +286,14 @@ class EtatJeu:
         if self.echec_et_mat(): 
             return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
      
-        
-        
-        
-        
+    def pat(self)->bool:
+        deplacement=set()
+        for piece in self.pieces[self.trait]:
+            deplacement |= set(piece.coups_legaux())
+        return not echec and len(deplacement)==0
+    
+    def prommotion(self):
+        for piece in self.pieces[not self.trait]:
+            if isinstance(Pion, piece) and (piece.coord[1]==7 or piece.coord[1])==0:
+                coord=piece.coord
+                pass
