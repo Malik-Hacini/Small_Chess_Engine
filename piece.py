@@ -220,7 +220,7 @@ class Pion(Piece):
             if y+1<=7:
                 if partie.plateau.get((x,y+1),None)==None:
                     self.coups.append((x,y+1))
-                    if self.premier_coup and partie.plateau.get((x,y+2),None)==None and y+2<=7:
+                    if self.coord[1]==1 and partie.plateau.get((x,y+2),None)==None and y+2<=7:
                         self.coups.append((x,y+2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
@@ -231,7 +231,7 @@ class Pion(Piece):
             if y-1>=0:
                 if partie.plateau.get((x,y-1),None)==None:
                     self.coups.append((x,y-1))
-                    if self.premier_coup and partie.plateau.get((x,y-2),None)==None and y-2>=0:
+                    if self.coord[1]==6 and partie.plateau.get((x,y-2),None)==None and y-2>=0:
                         self.coups.append((x,y-2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
