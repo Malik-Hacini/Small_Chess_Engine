@@ -42,10 +42,8 @@ class Roi(Piece):
         
         if self.couleur:
             self.symbole="♚"
-            self.valeur=0
         else:
             self.symbole="♔"
-            self.valeur=0
     def coups_possibles(self, partie):
         self.coups = []
         x,y=self.coord
@@ -70,10 +68,8 @@ class Reine(Piece):
         
         if self.couleur:
             self.symbole="♛"
-            self.valeur=9
         else:
             self.symbole="♕"
-            self.valeur=-9
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -105,10 +101,8 @@ class Fou(Piece):
         
         if self.couleur:
             self.symbole="♝"
-            self.valeur=3   
         else:
             self.symbole="♗"
-            self.valeur=-3
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -143,10 +137,8 @@ class Cavalier(Piece):
         
         if self.couleur:
             self.symbole="♞"
-            self.valeur=3
         else:
             self.symbole="♘"
-            self.valeur=-3
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -170,10 +162,8 @@ class Tour(Piece):
         
         if self.couleur:
             self.symbole="♜"
-            self.valeur=5
         else:
             self.symbole="♖"
-            self.valeur=-5
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -207,10 +197,8 @@ class Pion(Piece):
         
         if self.couleur:
             self.symbole="♟"
-            self.valeur=1
         else:
             self.symbole="♙"
-            self.valeur=-1
             
     def coups_possibles(self, partie):
         self.coups=[]
@@ -220,7 +208,7 @@ class Pion(Piece):
             if y+1<=7:
                 if partie.plateau.get((x,y+1),None)==None:
                     self.coups.append((x,y+1))
-                    if self.premier_coup and partie.plateau.get((x,y+2),None)==None and y+2<=7:
+                    if self.coord[1]==1 and partie.plateau.get((x,y+2),None)==None and y+2<=7:
                         self.coups.append((x,y+2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
@@ -231,7 +219,7 @@ class Pion(Piece):
             if y-1>=0:
                 if partie.plateau.get((x,y-1),None)==None:
                     self.coups.append((x,y-1))
-                    if self.premier_coup and partie.plateau.get((x,y-2),None)==None and y-2>=0:
+                    if self.coord[1]==6 and partie.plateau.get((x,y-2),None)==None and y-2>=0:
                         self.coups.append((x,y-2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
