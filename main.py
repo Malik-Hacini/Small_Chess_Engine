@@ -37,7 +37,6 @@ def partie(joueur1,joueur2):
     draw= False
     print(partie)
     while partie.gagnant() is None and not draw:
-        
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
         
         if deplacement=="save" :
@@ -104,3 +103,10 @@ def main():
         
 if __name__== "__main__":
     main()
+    
+    
+    
+    
+    
+    
+    
