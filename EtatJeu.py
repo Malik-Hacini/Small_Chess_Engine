@@ -138,13 +138,8 @@ class EtatJeu:
         fichier = open("sauvegardes\\"+nom_fichier+".txt", 'w')
         fichier.write(sauvegarde)
         fichier.close()
-        
-        
-        
-        
     
-    
-    
+        
     def deplacer_piece(self, coord_i: tuple, coord_f: tuple)->np.ndarray:
         """Déplace une pièce du plateau à un autre endroit.
         Cette méthode n'est exécutée que si le coup est valide,
@@ -233,7 +228,7 @@ class EtatJeu:
                 else:
                     valeur+=0.1*((-1)**piece.couleur)
         self.valeur=round(valeur,3)
-                
+            
     def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
 
