@@ -114,17 +114,30 @@ class IA(Joueur):
         chargement = 0
         taille = len(partie.mouvements(self.couleur).items())
         for coord_i,coords_f in partie.mouvements(self.couleur).items():
+            #affichage d'un chargement basique
             chargement+=1/taille
             print(f'{round(chargement*100)}% effectués')
+            
+            #pour chaque coups possible dans les déplacement disponibles de la piece
             for coord_f in coords_f:
+                conv(coord_i,coord_f)
                 #créer un nouvel état où on bouge une piece
-                simu = copy.deepcopy(partie)
+                #simu = copy.deepcopy(partie)
+                piece_retirée = partie.plateau.get(coord_f,None)
                 #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
+                partie.deplacer_piece(coord_i,coord_f)
                 #max
-                valeur = negamax_ab(simu,2,-math.inf, math.inf, partie.trait)
+                #valeur = negamax_ab(simu,2,-math.inf, math.inf, partie.trait)
+                valeur = negamax(partie,3, self.couleur)
+                
+                #retirer coup
+                partie.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
+                if piece_retirée is not None:
+                    partie.plateau[coord_f] = piece_retirée
+                    partie.pieces[not partie.trait].append(piece_retirée)
+                
                 #le joueur noir veut le minimum, le joueur blanc le maximum
-                print(coord_i, coords_f, valeur)
+                print(valeur)
                 if valeur> max_valeur:
                     meilleur_coup = (coord_i,coord_f)
                     max_valeur = valeur
@@ -132,9 +145,105 @@ class IA(Joueur):
         print("durée premier coup profondeur 3 negamax : ",time.time()-début)
         return meilleur_coup
     
+
+def conv(C1,C2):
+    "converti 2 coordonnées numérique en coordonnées sur plateau"
+    print(f"{chr(97+C1[0])}{C1[1]+1}-{chr(97+C2[0])}{C2[1]+1}", end = " : ")
+
     
-        
 def negamax(etat, profondeur,couleur):
+    if profondeur==0 or etat.echec_et_mat():
+        etat.calcul_valeur()
+        return etat.valeur*(-1)**(not couleur)
+    valeur = -math.inf
+    for coord_i,coords_f in etat.mouvements(etat.trait).items():
+        for coord_f in coords_f:
+            #créer un nouvel état où on bouge une piece, penser à changer le tour
+            piece_retirée = etat.plateau.get(coord_f,None)
+            #on bouge une piece
+            etat.deplacer_piece(coord_i,coord_f)
+            #max
+            valeur = max(valeur,-negamax(etat,profondeur-1, not couleur))
+            #retirer coup
+            etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
+            if piece_retirée is not None:
+                etat.plateau[coord_f] = piece_retirée
+                etat.pieces[not etat.trait].append(piece_retirée)
+    return valeur      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+
+    def jouer_coup_negamaxb(self,partie: dict) -> tuple[int,int]:
+        '''Permet a l'ia de jouer un coup, cela calcule toutes les possibilités
+
+        Args:
+            partie (dict): Etat du Jeu a l'instant
+
+        Returns:
+            tuple[int,int]: coup joué
+        '''
+        début = time.time()
+        
+        meilleur_coup = None
+        #expliquer ce calcul
+        max_valeur = -math.inf
+        
+        chargement = 0
+        taille = len(partie.mouvements(self.couleur).items())
+        for coord_i,coords_f in partie.mouvements(self.couleur).items():
+            #affichage d'un chargement basique
+            chargement+=1/taille
+            print(f'{round(chargement*100)}% effectués')
+            
+            #pour chaque coups possible dans les déplacement disponibles de la piece
+            for coord_f in coords_f:
+                #créer un nouvel état où on bouge une piece
+                simu = copy.deepcopy(partie)
+                #on bouge une piece
+                simu.deplacer_piece(coord_i,coord_f)
+                #max
+                #valeur = negamax_ab(simu,2,-math.inf, math.inf, partie.trait)
+                valeur = negamax(simu,2, self.couleur)
+                #le joueur noir veut le minimum, le joueur blanc le maximum
+                conv(coord_i,coord_f,valeur)
+                if valeur> max_valeur:
+                    meilleur_coup = (coord_i,coord_f)
+                    max_valeur = valeur
+                    
+        print("durée premier coup profondeur 3 negamax : ",time.time()-début)
+        return meilleur_coup
+        
+def negamaxb(etat, profondeur,couleur):
     if profondeur==0 or etat.echec_et_mat():
         etat.calcul_valeur()
         return etat.valeur*(-1)**(not couleur)
@@ -171,11 +280,7 @@ def negamax_ab(etat, profondeur, alpha , beta, couleur):
     return valeur   
 
 
-
-
-
-
-
+"""
 
 
 

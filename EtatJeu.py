@@ -208,11 +208,11 @@ class EtatJeu:
                 
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
-                        valeur+=(0.5)*(-1)**(not piece.couleur)
+                        valeur+=(0.5)*((-1)**(not piece.couleur))
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
-                        valeur+=(0.1)*(-1)**(not piece.couleur)
+                        valeur+=(0.1)*((-1)**(not piece.couleur))
 
     
                 if isinstance(piece,Pion):
@@ -220,20 +220,15 @@ class EtatJeu:
                 
                 cases_controllees |= set(piece.coups_possibles(self))
                  
-            if pieces==self.pieces[1]:
-                valeur+=0.1*len(cases_controllees)
-            else:
-                valeur-=0.1*len(cases_controllees)
+            valeur+=0.05*len(cases_controllees)*((-1)**(not piece.couleur))
+            
             
             collones=[]
             for pion in pions:
                 if pion.coord[0] not in collones:
                     collones.append(pion.coord[0])
                 else:
-                    if pion.couleur:
-                        valeur-=0.1
-                    else:
-                        valeur+=0.1
+                    valeur+=0.1*((-1)**piece.couleur)
         self.valeur=round(valeur,3)
         
                 
