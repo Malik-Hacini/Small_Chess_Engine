@@ -45,15 +45,9 @@ def partie(joueur1,joueur2):
             print("Sauvegarde effectuée.") 
             return "N"
         
-        #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
-        if deplacement[1] in partie.plateau.keys() :
-            #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
-            partie.pieces[partie.plateau[deplacement[1]].couleur].remove(partie.plateau[deplacement[1]])
-            
-        partie.plateau[deplacement[0]].coord=deplacement[1]
-        partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
+        partie.deplacer_piece(deplacement[0],deplacement[1])
         
-        partie.trait = not partie.trait
+        
         print(partie)
         
     

@@ -239,3 +239,13 @@ class Pion(Piece):
                         if piece != None and piece.couleur != self.couleur:
                             self.coups.append((x+dx, y-1))   
         return self.coups
+    
+    def promotion(self, partie):
+        if self.couleur and self.coord[1]==7:
+            partie.plateau[self.coord]=Reine(self.couleur, self.coord)
+            partie.pieces[1].remove(self)
+            partie.pieces[1].append(partie.plateau[self.coord])
+        elif not self.couleur and self.coord[1]==0:
+            partie.plateau[self.coord]=Reine(self.couleur, self.coord)
+            partie.pieces[0].remove(self)
+            partie.pieces[0].append(partie.plateau[self.coord])

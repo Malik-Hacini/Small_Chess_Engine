@@ -163,6 +163,10 @@ class EtatJeu:
             self.pieces[not self.trait].remove(self.plateau[coord_f])
         self.plateau[coord_i].coord=coord_f
         self.plateau[coord_f] = self.plateau.pop(coord_i)
+        
+        if isinstance(self.plateau[coord_f], Pion):
+            self.plateau[coord_f].promotion(self)
+        
         self.trait = not self.trait
     
     
@@ -181,11 +185,8 @@ class EtatJeu:
         if self.echec_et_mat():self.valeur = math.inf
         else : 
             self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
-    
-    
-     
-    
-    
+
+  
     def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
@@ -199,30 +200,22 @@ class EtatJeu:
                 valeur+=1000
             else:
                 valeur-=1000
-        print(valeur)
+                
         
-        if self.game_phase()=="Middlegame":
-            valeur+=self.valeur_pieces_middlegame()
-        elif self.game_phase()=="Treshold":
-            valeur+=self.valeur_pieces_threshold()
-        else:
-            valeur+=self.valeur_pieces_endgame()
-        print(valeur)
-            
         for pieces in [self.pieces[1], self.pieces[0]]:
             cases_controllees=set()
             pions=[]
             
-            for piece in pieces:                
+            for piece in pieces:
+                valeur+=piece.valeur
+                
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
                         valeur+=(0.5)*((-1)**(not piece.couleur))
-                        print(valeur)
                 
-                for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(5,4),(5,3),(5,2),(4,2),(3,2)]:
+                for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
                         valeur+=(0.1)*((-1)**(not piece.couleur))
-                        print(valeur)
 
     
                 if isinstance(piece,Pion):
@@ -230,129 +223,16 @@ class EtatJeu:
                 
                 cases_controllees |= set(piece.coups_possibles(self))
                  
-            if pieces==self.pieces[1]:
-                valeur+=0.1*len(cases_controllees)
-                print(valeur)
-            else:
-                valeur-=0.1*len(cases_controllees)
-                print(valeur)
+            valeur+=0.05*len(cases_controllees)*((-1)**(not piece.couleur))
+            
             
             collones=[]
             for pion in pions:
                 if pion.coord[0] not in collones:
                     collones.append(pion.coord[0])
                 else:
-                    if pion.couleur:
-                        valeur-=0.1
-                    else:
-                        valeur+=0.1
-                print(valeur)
+                    valeur+=0.1*((-1)**piece.couleur)
         self.valeur=round(valeur,3)
-      
-    def valeur_pieces_middlegame(self):
-        valeur=0
-        for pieces in [self.pieces[0],self.pieces[1]]:
-            compteur_fou=0
-            compteur_tour=0
-            for piece in pieces:
-                if isinstance(piece,Pion):
-                    valeur+=0.8*((-1)**(not piece.couleur))
-                elif isinstance(piece,Cavalier):
-                    valeur+=3.2*((-1)**(not piece.couleur))
-                elif isinstance(piece,Fou):
-                    valeur+=3.3*((-1)**(not piece.couleur))
-                    compteur_fou+=1
-                    if compteur_fou>1:
-                        valeur+=0.3*((-1)**(not piece.couleur))
-                elif isinstance(piece,Tour):
-                    valeur+=4.7*((-1)**(not piece.couleur))
-                    compteur_tour+=1
-                    if compteur_tour>1:
-                        valeur-=0.2*((-1)**(not piece.couleur))
-                elif isinstance(piece,Reine):
-                    valeur+=9.4*((-1)**(not piece.couleur))
-                else:
-                    valeur+=0
-        return valeur
-            
-    def valeur_pieces_threshold(self):
-        valeur=0
-        for pieces in [self.pieces[0],self.pieces[1]]:
-            compteur_fou=0
-            compteur_tour=0
-            compteur_reine=0
-            for piece in pieces:
-                if isinstance(piece,Pion):
-                    valeur+=0.9*((-1)**(not piece.couleur))
-                elif isinstance(piece,Cavalier):
-                    valeur+=3.2*((-1)**(not piece.couleur))
-                elif isinstance(piece,Fou):
-                    valeur+=3.3*((-1)**(not piece.couleur))
-                    compteur_fou+=1
-                    if compteur_fou>1:
-                        valeur+=0.4*((-1)**(not piece.couleur))
-                elif isinstance(piece,Tour):
-                    valeur+=4.8*((-1)**(not piece.couleur))
-                    compteur_tour+=1
-                    if compteur_tour>1:
-                        valeur+=0.1*((-1)**(not piece.couleur))
-                elif isinstance(piece,Reine):
-                    valeur+=9.4*((-1)**(not piece.couleur))
-                    compteur_reine+=1
-                    if compteur_reine>1:
-                        valeur+=8.7*((-1)**(not piece.couleur))
-                else:
-                    valeur+=0
-        return valeur
-
-    def valeur_pieces_endgame(self):
-                valeur=0
-                for pieces in [self.pieces[0],self.pieces[1]]:
-                    compteur_fou=0
-                    compteur_tour=0
-                    for piece in pieces:
-                        if isinstance(piece,Pion):
-                            valeur+=1*((-1)**(not piece.couleur))
-                        elif isinstance(piece,Cavalier):
-                            valeur+=3.2*((-1)**(not piece.couleur))
-                        elif isinstance(piece,Fou):
-                            valeur+=3.3*((-1)**(not piece.couleur))
-                            compteur_fou+=1
-                            if compteur_fou>1:
-                                valeur+=0.5*((-1)**(not piece.couleur))
-                        elif isinstance(piece,Tour):
-                            valeur+=5.3*((-1)**(not piece.couleur))
-                            compteur_tour+=1
-                            if compteur_tour>1:
-                                valeur-=5*((-1)**(not piece.couleur))
-                        elif isinstance(piece,Reine):
-                            valeur+=1000*((-1)**(not piece.couleur))
-                        else:
-                            valeur+=0
-                return valeur
-        
-    def game_phase(self):
-        compteur_reine_blanche=0
-        compteur_reine_noire=0
-        for pieces in [self.pieces[0],self.pieces[1]]:
-            for piece in pieces:
-                if isinstance(piece, Reine):
-                    if piece.couleur:
-                        compteur_reine_blanche+=1
-                    else:
-                        compteur_reine_noire+=1
-        if compteur_reine_blanche==0 and compteur_reine_noire==0:
-            return "Endgame"
-        elif compteur_reine_blanche==compteur_reine_noire and compteur_reine_blanche!=0:
-            return "Middlegame"
-        else:
-            return "Treshold"
-
-        
-        
-        
-                
-    
                 
     def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
@@ -377,16 +257,12 @@ class EtatJeu:
                 if case == case_roi :#On vérifie si cette case est celle du roi
                     return True
         return False
-        
-
 
    
     def echec_et_mat(self):
         #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
         if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
         #on regarde s'il existe des pièces qui ont le droit de bouger
-        
-  
         pieces_joueur = self.pieces[self.trait]
         for piece in pieces_joueur:
                 if len(piece.coups_legaux(self))>0 :return False
@@ -394,6 +270,11 @@ class EtatJeu:
     
     
     def gagnant(self):
-        
         if self.echec_et_mat(): 
             return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
+     
+    def pat(self)->bool:
+        deplacement=set()
+        for piece in self.pieces[self.trait]:
+            deplacement |= set(piece.coups_legaux())
+        return not echec and len(deplacement)==0

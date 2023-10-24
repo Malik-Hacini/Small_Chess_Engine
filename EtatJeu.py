@@ -163,6 +163,10 @@ class EtatJeu:
             self.pieces[not self.trait].remove(self.plateau[coord_f])
         self.plateau[coord_i].coord=coord_f
         self.plateau[coord_f] = self.plateau.pop(coord_i)
+        
+        if isinstance(self.plateau[coord_f], Pion):
+            self.plateau[coord_f].promotion(self)
+        
         self.trait = not self.trait
     
     
@@ -181,11 +185,8 @@ class EtatJeu:
         if self.echec_et_mat():self.valeur = math.inf
         else : 
             self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
-    
-    
-     
-    
-    
+
+  
     def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
@@ -232,10 +233,6 @@ class EtatJeu:
                 else:
                     valeur+=0.1*((-1)**piece.couleur)
         self.valeur=round(valeur,3)
-        
-                
-                
-    
                 
     def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
@@ -260,16 +257,12 @@ class EtatJeu:
                 if case == case_roi :#On vérifie si cette case est celle du roi
                     return True
         return False
-        
-
 
    
     def echec_et_mat(self):
         #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
         if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
         #on regarde s'il existe des pièces qui ont le droit de bouger
-        
-  
         pieces_joueur = self.pieces[self.trait]
         for piece in pieces_joueur:
                 if len(piece.coups_legaux(self))>0 :return False
@@ -277,7 +270,6 @@ class EtatJeu:
     
     
     def gagnant(self):
-        
         if self.echec_et_mat(): 
             return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
      
@@ -286,9 +278,3 @@ class EtatJeu:
         for piece in self.pieces[self.trait]:
             deplacement |= set(piece.coups_legaux())
         return not echec and len(deplacement)==0
-    
-    def prommotion(self):
-        for piece in self.pieces[not self.trait]:
-            if isinstance(Pion, piece) and (piece.coord[1]==7 or piece.coord[1])==0:
-                coord=piece.coord
-                pass
