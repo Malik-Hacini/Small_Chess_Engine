@@ -1,5 +1,6 @@
 from joueurs import*
 from EtatJeu import*
+import os
 import sys
 
 def partie(joueur1,joueur2):
@@ -16,15 +17,23 @@ def partie(joueur1,joueur2):
         save=input("Voulez vous charger une sauvegarde ? (O/N) \n")
     
     if save=="O":
-        loop=True
-        while loop:
-            try :
-                nom_save=input("Nom du fichier de sauvegarde : \n")
-                partie = EtatJeu(sauvegarde = nom_save)
-                loop=False
-            except:
-                print("Fichier introuvable \n")
-        print("Sauvegarde chargée \n")
+        nom_correct=False
+        liste_fichiers=[fichier for fichier in os.listdir("./sauvegardes") if os.path.splitext(fichier)[-1].lower()==".fen"]
+            
+        print("Voici les sauvegardes disponibles: ")
+        for fichier in liste_fichiers:
+            print("-", fichier[:-4])
+        
+
+        while not nom_correct:
+            try:
+                nom_projet=input("Nom de la sauvegarde : \n")
+                partie=EtatJeu(nom_projet)
+                print("Chargement de la partie")
+                nom_correct=True
+            except OSError:
+                print("Fichier introuvable.")
+            
     
     else:
         partie= EtatJeu()        
