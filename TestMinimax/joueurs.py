@@ -87,16 +87,13 @@ class Humain(Joueur):
         
         
 class IA(Joueur):
-    def __init__(self, nom: str, couleur: bool) -> None:
-        super().__init__(nom, couleur)      
+    def __init__(self, nom: str, couleur: bool,profondeur = 0) -> None:
+        super().__init__(nom, couleur)
+        self.profondeur = profondeur
     
     
-    def jouer_coup(self, partie):
-        if 1:
-            return IA.jouer_coup_negamax(self, partie)
-        #else: return IA.jouer_coup_mini(self,partie)
     
-    def jouer_coup_negamax(self,partie: dict) -> tuple[int,int]:
+    def jouer_coup(self,partie: dict) -> tuple[int,int]:
         """Permet a l'ia de jouer un coup, cela calcule toutes les possibilités
 
         Args:
@@ -128,7 +125,7 @@ class IA(Joueur):
                 partie.deplacer_piece(coord_i,coord_f)
                 #max
                 #valeur = negamax_ab(simu,2,-math.inf, math.inf, partie.trait)
-                valeur = negamax(partie,3, self.couleur)
+                valeur = -negamax(partie,self.profondeur, self.couleur)
                 
                 #retirer coup
                 partie.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
@@ -139,7 +136,7 @@ class IA(Joueur):
                 #le joueur noir veut le minimum, le joueur blanc le maximum
                 print(valeur)
                 if valeur> max_valeur:
-                    meilleur_coup = (coord_i,coord_f)
+                    meilleur_coup = coord_i,coord_f
                     max_valeur = valeur
                     
         print("durée premier coup profondeur 3 negamax : ",time.time()-début)
@@ -153,8 +150,7 @@ def conv(C1,C2):
     
 def negamax(etat, profondeur,couleur):
     if profondeur==0 or etat.echec_et_mat():
-        etat.calcul_valeur()
-        return etat.valeur*(-1)**(not couleur)
+        return etat.calcul_valeur()*(-1)**(not couleur)
     valeur = -math.inf
     for coord_i,coords_f in etat.mouvements(etat.trait).items():
         for coord_f in coords_f:
