@@ -62,11 +62,11 @@ class Roi(Piece):
                     if piece.couleur != self.couleur:
                         self.coups.append((x,y))
         return self.coups
-class Reine(Piece):
+class Dame(Piece):
     
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
-        self.nom="Reine"
+        self.nom="Dame"
         
         if self.couleur:
             self.symbole="♛"

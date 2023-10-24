@@ -113,30 +113,39 @@ class EtatJeu:
         #ouvrir un fichier de sauvegarde en ecriture
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
-        sauvegarde = "blancs : "
-        for piece in self.pieces[1]:
-            sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"    
-        sauvegarde = sauvegarde[:-1]#enlever le point virgule au dernier
+        pion=["p","P"]
+        cavalier=["n","N"]
+        fou=["b","B"]
+        tour=["r","R"]
+        dame=["q","Q"]
+        roi=["k","K"]
         
-        #sauvegarder les pieces noires
+        save=""
+        for ligne in range(8):
+            vides=["",0]
+            for col in range(7,-1,-1):
+                piece=self.plateau.get((col,ligne),"vide")
+
+                if piece=="vide":
+                    vides[1]+=1
+                    vides[0]=f"{vides[1]}"
+                if vides==8:
+                    save+="8//"
+                
+                if isinstance(piece,Pion): save+=f"{vides[0]}{pion[piece.couleur]}//" 
+                if isinstance(piece,Cavalier): save+=f"{vides[0]}{cavalier[piece.couleur]}//" 
+                if isinstance(piece,Fou): save+=f"{vides[0]}{fou[piece.couleur]}//" 
+                if isinstance(piece,Tour): save+=f"{vides[0]}{tour[piece.couleur]}//" 
+                if isinstance(piece,Dame): save+=f"{vides[0]}{dame[piece.couleur]}//" 
+                if isinstance(piece,Roi): save+=f"{vides[0]}{roi[piece.couleur]}//" 
+            
+        trait=["b","w"]
         
-        sauvegarde+=f"\nnoirs : "
-        for piece in self.pieces[0]:
-            sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"
-        sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
-        
-        sauvegarde+="\nTrait : "
-        if self.trait :sauvegarde+="blancs"
-        else : sauvegarde+="noirs"
-        
-        
-        #demander le fichier a sauvegarder s'il n'est pas spécifier par le programme (sauvegarde de base du jeu)
-        if sauvegarde is None:
-            nom_fichier = input("nom du fichier de sauvegarde : ")
+        save+=f" {trait[self.trait]} 0 0"
             
         #écriture dans le fichier spécifier (écrase le texte déja existant ou crée un nouveau fichier)
-        fichier = open("sauvegardes\\"+nom_fichier+".txt", 'w')
-        fichier.write(sauvegarde)
+        fichier = open("sauvegardes\\"+nom_fichier+".fen", 'w')
+        fichier.write(save)
         fichier.close()
         
         
