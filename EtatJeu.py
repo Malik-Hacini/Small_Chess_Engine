@@ -158,11 +158,16 @@ class EtatJeu:
             """
             
         #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
+        #s'il y a une piece sur la case d'arrivée
         if coord_f in self.plateau.keys() :
-            #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
+            #retirer la piece du set de l'adversaire
             self.pieces[not self.trait].remove(self.plateau[coord_f])
+            
+        #changer les coordonnées dans la classe piece
         self.plateau[coord_i].coord=coord_f
+        #on déplace la piece sur le plateau
         self.plateau[coord_f] = self.plateau.pop(coord_i)
+        #le trait change de joueur
         self.trait = not self.trait
     
     
@@ -177,15 +182,8 @@ class EtatJeu:
             mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
     
-    def calcul_valeur_test(self):
-        if self.echec_et_mat():self.valeur = math.inf
-        else : 
-            self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
-    
-    
-     
-    
-    
+
+
     def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
@@ -210,11 +208,11 @@ class EtatJeu:
                 
                 for centre in [(3,3),(3,4),(4,4),(4,3)]:
                     if piece==self.plateau.get(centre,None):
-                        valeur+=(0.5)
+                        valeur+=(0.5)*((-1)**(not piece.couleur))
                 
                 for sous_centre in [(2,2),(2,3),(2,4),(2,5),(3,5),(4,5),(5,5),(6,5),(6,4),(6,3),(6,2),(5,2),(3,2)]:
                     if piece==self.plateau.get(sous_centre, None):
-                        valeur+=(0.1)
+                        valeur+=(0.1)*((-1)**(not piece.couleur))
 
     
                 if isinstance(piece,Pion):
@@ -222,20 +220,15 @@ class EtatJeu:
                 
                 cases_controllees |= set(piece.coups_possibles(self))
                  
-            if pieces==self.pieces[1]:
-                valeur+=0.1*len(cases_controllees)
-            else:
-                valeur-=0.1*len(cases_controllees)
+            valeur+=0.05*len(cases_controllees)*((-1)**(not piece.couleur))
+            
             
             collones=[]
             for pion in pions:
                 if pion.coord[0] not in collones:
                     collones.append(pion.coord[0])
                 else:
-                    if pion.couleur:
-                        valeur-=0.1
-                    else:
-                        valeur+=0.1
+                    valeur+=0.1*((-1)**piece.couleur)
         self.valeur=round(valeur,3)
         
                 

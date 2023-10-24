@@ -37,7 +37,6 @@ def partie(joueur1,joueur2):
     draw= False
     print(partie)
     while partie.gagnant() is None and not draw:
-        
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
         
         if deplacement=="save" :
@@ -49,8 +48,10 @@ def partie(joueur1,joueur2):
         if deplacement[1] in partie.plateau.keys() :
             #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
             partie.pieces[partie.plateau[deplacement[1]].couleur].remove(partie.plateau[deplacement[1]])
-            
+       
+        #changement des coordonnées de la pièce  
         partie.plateau[deplacement[0]].coord=deplacement[1]
+        #changement de la pièce dans le plateau
         partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
         
         partie.trait = not partie.trait
@@ -104,3 +105,10 @@ def main():
         
 if __name__== "__main__":
     main()
+    
+    
+    
+    
+    
+    
+    
