@@ -7,7 +7,7 @@ class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,plateau : list = None, trait : bool = None, sauvegarde : str = "Plateau_base"):
+    def __init__(self, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -23,50 +23,40 @@ class EtatJeu:
         print("Chargement de la partie")
         #création des pieces
         self.pieces=[[],[]]
+        self.plateau = dict()
         
         
         #lecture du fichier de sauvegarde
-        fichier = open("sauvegardes\\"+sauvegarde+".txt", 'r')
+        fichier = open("sauvegardes\\"+sauvegarde+".fen", 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pieces_blanches,pieces_noires,trait_texte = sauv_txt.split("\n")
-        pieces_blanches = pieces_blanches.split(" : ")[1]
-        pieces_noires = pieces_noires.split(" : ")[1]
-        trait_texte = trait_texte.split(" : ")[1]
+        lignes, trait, roque, en_passant, demi_coup, coup_complet  = sauv_txt.split(" ")
         
-        
-        #dictionnaire de {coordonnées : objet piece}
-        self.plateau = {}
-        for pieces_j in (pieces_blanches,pieces_noires):
-            for p in pieces_j.split(";"):
-                p = p[1:-1]
-                p = p.split(",")
-                type_piece = p[0]
-                couleur_piece = True if p[1] == "True" else False
-                coord_piece = (int(p[2]),int(p[3]))
-                
-                #pion tour cavalier fou roi reine 
-                if type_piece == "Pion": piece = Pion(couleur_piece,coord_piece)
-                if type_piece == "Tour": piece = Tour(couleur_piece,coord_piece)
-                if type_piece == "Cavalier": piece = Cavalier(couleur_piece,coord_piece)
-                if type_piece == "Fou": piece = Fou(couleur_piece,coord_piece)
-                if type_piece == "Reine": piece = Reine(couleur_piece,coord_piece)
-                if type_piece == "Roi": piece = Roi(couleur_piece,coord_piece)
-                #on ajoute la piece au plateau
-                self.plateau[coord_piece] = piece
-                
-                #on ajoute la piece au bon joueur
-
-                if pieces_j == pieces_blanches:
-                    self.pieces[1].append(piece)
-                elif pieces_j == pieces_noires:
-                    self.pieces[0].append(piece)
+        y=7
+        for ligne in lignes.split("/"):
+            x=0
+            for element in ligne:
+                if element in "123456789":
+                    x+=int(element)
+                else : 
+                    if element.lower() == "k": piece = Roi(element.isupper(),(x,y))
+                    if element.lower() == "q": piece = Dame(element.isupper(),(x,y))
+                    if element.lower() == "b": piece = Fou(element.isupper(),(x,y))
+                    if element.lower() == "n": piece = Cavalier(element.isupper(),(x,y))
+                    if element.lower() == "r": piece = Tour(element.isupper(),(x,y))
+                    if element.lower() == "p": piece = Pion(element.isupper(),(x,y))
+                    #on ajoute la piece au plateau
+                    self.plateau[(x,y)] = piece
                     
-        if trait_texte == "blancs": self.trait = True
-        else : self.trait = False
-        self.valeur = 0
-            
+                    if element.isupper():
+                        self.pieces[1].append(piece)
+                    else:
+                        self.pieces[0].append(piece)
+                    x+=1
+            y-=1
+        self.trait = (trait == "w")
+        
                 
     def __str__(self)->str:
         """Méthode print pour la partie. Affiche le plateau dans
@@ -229,7 +219,7 @@ class EtatJeu:
                     collones.append(pion.coord[0])
                 else:
                     valeur+=0.1*((-1)**piece.couleur)
-        self.valeur=round(valeur,3)
+        return round(valeur,3)
         
                 
                 
@@ -247,7 +237,7 @@ class EtatJeu:
         #il faut trouver qui est le joueur à qui c'est le tour
         case_roi = None
         for piece in self.pieces[self.trait]:
-            if piece.nom == "Roi":
+            if isinstance(piece,Roi):
                 case_roi = piece.coord#on récupere la case occupée par le roi
         if case_roi is None:
             print([piece.nom for piece in self.pieces[self.trait]])
