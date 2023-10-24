@@ -1,3 +1,0 @@
-blancs : [Reine,True,6,5];[Roi,True,4,0]
-noirs : [Reine,False,3,7];[Roi,False,4,7];[Pion,False,5,6]
-Trait : noirs
