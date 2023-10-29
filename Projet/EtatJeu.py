@@ -99,11 +99,7 @@ class EtatJeu:
         
     
     
-    
-    def sauvegarder(self,nom_fichier : str = None) -> None:
-        #ouvrir un fichier de sauvegarde en ecriture
-        #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
-        #fermer le fichier
+    def fen_position(self):
         pion=["p","P"]
         cavalier=["n","N"]
         fou=["b","B"]
@@ -111,36 +107,40 @@ class EtatJeu:
         dame=["q","Q"]
         roi=["k","K"]
         
-        save=""
-        for ligne in range(8):
+        fen=""
+        for ligne in range(7,-1,-1):
             vides=0
-            for col in range(7,-1,-1):
+            for col in range(8):
                 piece=self.plateau.get((col,ligne),None)
 
                 if piece==None:
                     vides+=1
                 else :
                     if vides !=0:
-                        print("vide")
-                        save+=str(vides)
+                        fen+=str(vides)
                         vides = 0
-                    if isinstance(piece,Pion): save+=f"{pion[piece.couleur]}" 
-                    if isinstance(piece,Cavalier): save+=f"{cavalier[piece.couleur]}" 
-                    if isinstance(piece,Fou): save+=f"{fou[piece.couleur]}" 
-                    if isinstance(piece,Tour): save+=f"{tour[piece.couleur]}" 
-                    if isinstance(piece,Dame): save+=f"{dame[piece.couleur]}" 
-                    if isinstance(piece,Roi): save+=f"{roi[piece.couleur]}" 
+                    if isinstance(piece,Pion): fen+=f"{pion[piece.couleur]}" 
+                    if isinstance(piece,Cavalier): fen+=f"{cavalier[piece.couleur]}" 
+                    if isinstance(piece,Fou): fen+=f"{fou[piece.couleur]}" 
+                    if isinstance(piece,Tour): fen+=f"{tour[piece.couleur]}" 
+                    if isinstance(piece,Dame): fen+=f"{dame[piece.couleur]}" 
+                    if isinstance(piece,Roi): fen+=f"{roi[piece.couleur]}" 
             if vides !=0:
-                print("vide")
-                save+=str(vides)
-            save+="/"
+                fen+=str(vides)
+            fen+="/"
         trait=["b","w"]
         
-        save+=f" {trait[self.trait]} - - 0 0"
-            
+        fen+=f" {trait[self.trait]} - - 0 0"
+        return fen
+        
+    def sauvegarder(self,nom_fichier : str = None) -> None:
+        #ouvrir un fichier de sauvegarde en ecriture
+        #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
+        #fermer le fichier
+        
         #écriture dans le fichier spécifier (écrase le texte déja existant ou crée un nouveau fichier)
         fichier = open("sauvegardes\\"+nom_fichier+".fen", 'w')
-        fichier.write(save)
+        fichier.write(self.fen_position())
         fichier.close()
         
         

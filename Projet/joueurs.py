@@ -3,6 +3,11 @@ import math
 import EtatJeu
 import copy
 import time
+from stockfish import Stockfish
+
+stockfish = Stockfish(path="..\stockfish\stockfish-windows-x86-64-avx2.exe")
+
+
 
 
 class Joueur():
@@ -84,13 +89,24 @@ class Humain(Joueur):
 
         return coord_p,coup_int
         
+class Stockfish(Joueur):
+    
+    def __init__(self, nom: str, couleur: bool) -> None:
+        super().__init__(nom, couleur)
+    
+    def jouer_coup(self,partie: dict) -> tuple[int,int]:
+        stockfish.set_fen_position(partie.fen_position())
+        move = stockfish.get_best_move()
+        print(move[:2]+"-"+move[2:])
+        return (conv_str(move[:2]),conv_str(move[2:]))
+        
+        
         
         
 class IA(Joueur):
     def __init__(self, nom: str, couleur: bool,profondeur = 0) -> None:
         super().__init__(nom, couleur)
         self.profondeur = profondeur
-    
     
     
     def jouer_coup(self,partie: dict) -> tuple[int,int]:
@@ -124,8 +140,8 @@ class IA(Joueur):
                 #on bouge une piece
                 partie.deplacer_piece(coord_i,coord_f)
                 #max
-                #valeur = negamax_ab(simu,2,-math.inf, math.inf, partie.trait)
-                valeur = -negamax(partie,self.profondeur, not self.couleur)
+                valeur = -negamax(partie,self.profondeur-1, not self.couleur)
+                #valeur = -neagalphabeta(partie,self.profondeur-1,-math.inf,math.inf, not self.couleur)
                 
                 #retirer coup
                 partie.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
@@ -139,9 +155,20 @@ class IA(Joueur):
                     meilleur_coup = coord_i,coord_f
                     max_valeur = valeur
                     
-        #print("durée premier coup profondeur 3 negamax : ",time.time()-début)
+        print("durée du coup : ",time.time()-début)
         return meilleur_coup
     
+def conv_str(coord):
+    """converti une chaine de charactere lettre, chiffre en coordonnées x,y
+
+    Args:
+        coord (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    return (ord(coord[0])-97,int(coord[1])-1)
+
 
 def conv(C1,C2):
     "converti 2 coordonnées numérique en coordonnées sur plateau"
@@ -168,7 +195,30 @@ def negamax(etat, profondeur,couleur):
     return valeur      
 
 
-
+def neagalphabeta(etat, profondeur,alpha, beta, couleur):
+    if profondeur==0 or etat.echec_et_mat():
+        return etat.calcul_valeur()*(-1)**(not couleur)
+    
+    valeur = -math.inf
+    for coord_i,coords_f in etat.mouvements(etat.trait).items():
+        for coord_f in coords_f:
+            #créer un nouvel état où on bouge une piece, penser à changer le tour
+            piece_retirée = etat.plateau.get(coord_f,None)
+            #on bouge une piece
+            etat.deplacer_piece(coord_i,coord_f)
+            #max
+            valeur = max(valeur,-neagalphabeta(etat,profondeur-1,-beta, -alpha, not couleur))
+            #retirer coup
+            etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
+            if piece_retirée is not None:
+                etat.plateau[coord_f] = piece_retirée
+                etat.pieces[not etat.trait].append(piece_retirée)
+                
+            alpha = max(alpha, valeur)
+            if alpha >= beta:
+                break
+            
+    return valeur 
 
 
 

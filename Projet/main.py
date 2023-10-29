@@ -69,7 +69,8 @@ def main():
     while True:
         
         replay=None
-        for i in range(1,3):
+        joueurs = []
+        for i in (1,0):
             type_joueur=None
             if i==1: couleur="blanc"
             else: couleur="noir"
@@ -80,21 +81,18 @@ def main():
                 
             if type_joueur=="1":
                 nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
-                if i==1:
-                    joueur1=Humain(nom, 1)
-                else:
-                    joueur2=Humain(nom,0)
+                joueurs.append(Humain(nom,i))
             
             
             else:
-                
+                niveau=input(f"Quel est le niveau de l'IA {couleur} souhaité? \n")
                 nom=f"IA {couleur}"
-                if i==1:
-                    joueur1=IA(nom, 1, 1)
-                else:
-                    joueur2=IA(nom,0, 0)
+                if niveau == "9":
+                    joueurs.append(Stockfish(nom, i))
+                else :   
+                    joueurs.append(IA(nom, i, int(niveau)))
 
-        replay=partie(joueur1,joueur2)
+        replay=partie(joueurs[0],joueurs[1])
             
         while replay not in ("O","N"):
             replay=input("Voulez vous rejouer ? (O/N) \n")
