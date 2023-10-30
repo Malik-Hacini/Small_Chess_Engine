@@ -7,7 +7,7 @@ class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,plateau : list = None, trait : bool = None, sauvegarde : str = "Plateau_base"):
+    def __init__(self, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -20,7 +20,6 @@ class EtatJeu:
             trait (bool) : prochaine couleur à jouer
         """
         
-        print("Chargement de la partie")
         #création des pieces
         self.pieces=[[],[]]
         
@@ -130,15 +129,15 @@ class EtatJeu:
                     vides[1]+=1
                     vides[0]=f"{vides[1]}"
                 if vides==8:
-                    save+="8//"
+                    save+="8"
                 
-                if isinstance(piece,Pion): save+=f"{vides[0]}{pion[piece.couleur]}//" 
-                if isinstance(piece,Cavalier): save+=f"{vides[0]}{cavalier[piece.couleur]}//" 
-                if isinstance(piece,Fou): save+=f"{vides[0]}{fou[piece.couleur]}//" 
-                if isinstance(piece,Tour): save+=f"{vides[0]}{tour[piece.couleur]}//" 
-                if isinstance(piece,Dame): save+=f"{vides[0]}{dame[piece.couleur]}//" 
-                if isinstance(piece,Roi): save+=f"{vides[0]}{roi[piece.couleur]}//" 
-            
+                if isinstance(piece,Pion): save+=f"{vides[0]}{pion[piece.couleur]}" 
+                if isinstance(piece,Cavalier): save+=f"{vides[0]}{cavalier[piece.couleur]}" 
+                if isinstance(piece,Fou): save+=f"{vides[0]}{fou[piece.couleur]}" 
+                if isinstance(piece,Tour): save+=f"{vides[0]}{tour[piece.couleur]}" 
+                if isinstance(piece,Dame): save+=f"{vides[0]}{dame[piece.couleur]}" 
+                if isinstance(piece,Roi): save+=f"{vides[0]}{roi[piece.couleur]}" 
+            save+="/"
         trait=["b","w"]
         
         save+=f" {trait[self.trait]} 0 0"
