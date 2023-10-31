@@ -9,6 +9,7 @@ def partie(joueur1,joueur2):
         joueur1 (_type_): Le joueur 1. Peut être humain ou IA
         joueur2 (_type_): Le joueur 2. Peut être humain ou IA 
     """
+    début = time.time()
     
     save=None
     while save not in ("O","N"):
@@ -44,20 +45,10 @@ def partie(joueur1,joueur2):
             print("Sauvegarde effectuée.") 
             return "N"
         
-        #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
-        if deplacement[1] in partie.plateau.keys() :
-            #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
-            partie.pieces[partie.plateau[deplacement[1]].couleur].remove(partie.plateau[deplacement[1]])
-       
-        #changement des coordonnées de la pièce  
-        partie.plateau[deplacement[0]].coord=deplacement[1]
-        #changement de la pièce dans le plateau
-        partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
-        
-        partie.trait = not partie.trait
+        partie.deplacer_piece(deplacement[0],deplacement[1])
         print(partie)
         
-    
+    print("durée de la partie : ",time.time()-début)
     print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
     
     
@@ -105,10 +96,3 @@ def main():
         
 if __name__== "__main__":
     main()
-    
-    
-    
-    
-    
-    
-    

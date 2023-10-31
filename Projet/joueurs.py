@@ -91,13 +91,16 @@ class Humain(Joueur):
         
 class Stockfish(Joueur):
     
-    def __init__(self, nom: str, couleur: bool) -> None:
+    def __init__(self, nom: str, couleur: bool, elo : int = 1350) -> None:
         super().__init__(nom, couleur)
-    
+        #stockfish.set_elo_rating(elo)
+        stockfish.set_skill_level(elo)
+        
     def jouer_coup(self,partie: dict) -> tuple[int,int]:
+        
         stockfish.set_fen_position(partie.fen_position())
+        
         move = stockfish.get_best_move()
-        print(move[:2]+"-"+move[2:])
         return (conv_str(move[:2]),conv_str(move[2:]))
         
         
@@ -140,8 +143,8 @@ class IA(Joueur):
                 #on bouge une piece
                 partie.deplacer_piece(coord_i,coord_f)
                 #max
-                valeur = -negamax(partie,self.profondeur-1, not self.couleur)
-                #valeur = -neagalphabeta(partie,self.profondeur-1,-math.inf,math.inf, not self.couleur)
+                #valeur = -negamax(partie,self.profondeur-1, not self.couleur)
+                valeur = -neagalphabeta(partie,self.profondeur-1,-math.inf,math.inf, not self.couleur)
                 
                 #retirer coup
                 partie.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
@@ -155,24 +158,18 @@ class IA(Joueur):
                     meilleur_coup = coord_i,coord_f
                     max_valeur = valeur
                     
-        print("durée du coup : ",time.time()-début)
+        #print("durée du coup : ",time.time()-début)
         return meilleur_coup
     
 def conv_str(coord):
     """converti une chaine de charactere lettre, chiffre en coordonnées x,y
-
-    Args:
-        coord (_type_): _description_
-
-    Returns:
-        _type_: _description_
     """
     return (ord(coord[0])-97,int(coord[1])-1)
 
 
-def conv(C1,C2):
+def conv_int(coord):
     "converti 2 coordonnées numérique en coordonnées sur plateau"
-    print(f"{chr(97+C1[0])}{C1[1]+1}-{chr(97+C2[0])}{C2[1]+1}", end = " : ")
+    return(chr(97+coord[0])+str(coord[1]+1))
 
     
 def negamax(etat, profondeur,couleur):

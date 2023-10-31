@@ -12,7 +12,7 @@ def test_minimax_0_profond():
     partie,bot1,bot2 = initialiser_plateau_bots()
     
 def test_minimax_plus_profond():
-    partie,bot_blanc,bot_noir = initialiser_plateau_bots("mat_en_2")
+    partie,bot_blanc,bot_noir = initialiser_plateau_bots("suicide")
     coup = bot_blanc.jouer_coup(partie)
     partie.deplacer_piece(coup[0],coup[1])
     print(partie)

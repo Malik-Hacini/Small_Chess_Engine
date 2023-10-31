@@ -130,7 +130,6 @@ class EtatJeu:
             fen+="/"
         trait=["b","w"]
         
-        fen+=f" {trait[self.trait]} - - 0 0"
         return fen
         
     def sauvegarder(self,nom_fichier : str = None) -> None:
@@ -196,10 +195,7 @@ class EtatJeu:
         """
         valeur=0
         if self.echec_et_mat():
-            if self.gagnant:
-                valeur+=1000
-            else:
-                valeur-=1000
+            valeur = 1000*((-1)**(not self.gagnant()))
                 
         
         for pieces in [self.pieces[1], self.pieces[0]]:
@@ -280,7 +276,7 @@ class EtatJeu:
     def gagnant(self):
         
         if self.echec_et_mat(): 
-            return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
+            return not self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
      
         
         
