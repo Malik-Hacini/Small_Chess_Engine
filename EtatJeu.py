@@ -7,7 +7,7 @@ class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self,plateau : list = None, trait : bool = None, sauvegarde : str = "Plateau_base"):
+    def __init__(self, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Commence par créer un plateau si il n'est pas fourni,
         puis attribue les pièces de ce plateau aux joueurs
@@ -23,50 +23,40 @@ class EtatJeu:
         print("Chargement de la partie")
         #création des pieces
         self.pieces=[[],[]]
+        self.plateau = dict()
         
         
         #lecture du fichier de sauvegarde
-        fichier = open("sauvegardes\\"+sauvegarde+".txt", 'r')
+        fichier = open("sauvegardes\\"+sauvegarde+".fen", 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #maintenant il faut extraire le texte important : 
-        pieces_blanches,pieces_noires,trait_texte = sauv_txt.split("\n")
-        pieces_blanches = pieces_blanches.split(" : ")[1]
-        pieces_noires = pieces_noires.split(" : ")[1]
-        trait_texte = trait_texte.split(" : ")[1]
+        lignes, trait, roque, en_passant, demi_coup, coup_complet  = sauv_txt.split(" ")
         
-        
-        #dictionnaire de {coordonnées : objet piece}
-        self.plateau = {}
-        for pieces_j in (pieces_blanches,pieces_noires):
-            for p in pieces_j.split(";"):
-                p = p[1:-1]
-                p = p.split(",")
-                type_piece = p[0]
-                couleur_piece = True if p[1] == "True" else False
-                coord_piece = (int(p[2]),int(p[3]))
-                
-                #pion tour cavalier fou roi reine 
-                if type_piece == "Pion": piece = Pion(couleur_piece,coord_piece)
-                if type_piece == "Tour": piece = Tour(couleur_piece,coord_piece)
-                if type_piece == "Cavalier": piece = Cavalier(couleur_piece,coord_piece)
-                if type_piece == "Fou": piece = Fou(couleur_piece,coord_piece)
-                if type_piece == "Reine": piece = Reine(couleur_piece,coord_piece)
-                if type_piece == "Roi": piece = Roi(couleur_piece,coord_piece)
-                #on ajoute la piece au plateau
-                self.plateau[coord_piece] = piece
-                
-                #on ajoute la piece au bon joueur
-
-                if pieces_j == pieces_blanches:
-                    self.pieces[1].append(piece)
-                elif pieces_j == pieces_noires:
-                    self.pieces[0].append(piece)
+        y=7
+        for ligne in lignes.split("/"):
+            x=0
+            for element in ligne:
+                if element in "123456789":
+                    x+=int(element)
+                else : 
+                    if element.lower() == "k": piece = Roi(element.isupper(),(x,y))
+                    if element.lower() == "q": piece = Dame(element.isupper(),(x,y))
+                    if element.lower() == "b": piece = Fou(element.isupper(),(x,y))
+                    if element.lower() == "n": piece = Cavalier(element.isupper(),(x,y))
+                    if element.lower() == "r": piece = Tour(element.isupper(),(x,y))
+                    if element.lower() == "p": piece = Pion(element.isupper(),(x,y))
+                    #on ajoute la piece au plateau
+                    self.plateau[(x,y)] = piece
                     
-        if trait_texte == "blancs": self.trait = True
-        else : self.trait = False
-        self.valeur = 0
-            
+                    if element.isupper():
+                        self.pieces[1].append(piece)
+                    else:
+                        self.pieces[0].append(piece)
+                    x+=1
+            y-=1
+        self.trait = (trait == "w")
+        
                 
     def __str__(self)->str:
         """Méthode print pour la partie. Affiche le plateau dans
@@ -109,37 +99,50 @@ class EtatJeu:
         
     
     
+    def fen_position(self):
+        pion=["p","P"]
+        cavalier=["n","N"]
+        fou=["b","B"]
+        tour=["r","R"]
+        dame=["q","Q"]
+        roi=["k","K"]
+        
+        fen=""
+        for ligne in range(7,-1,-1):
+            vides=0
+            for col in range(8):
+                piece=self.plateau.get((col,ligne),None)
+
+                if piece==None:
+                    vides+=1
+                else :
+                    if vides !=0:
+                        fen+=str(vides)
+                        vides = 0
+                    if isinstance(piece,Pion): fen+=f"{pion[piece.couleur]}" 
+                    if isinstance(piece,Cavalier): fen+=f"{cavalier[piece.couleur]}" 
+                    if isinstance(piece,Fou): fen+=f"{fou[piece.couleur]}" 
+                    if isinstance(piece,Tour): fen+=f"{tour[piece.couleur]}" 
+                    if isinstance(piece,Dame): fen+=f"{dame[piece.couleur]}" 
+                    if isinstance(piece,Roi): fen+=f"{roi[piece.couleur]}" 
+            if vides !=0:
+                fen+=str(vides)
+            fen+="/"
+        trait=["b","w"]
+        
+        fen+=f" {trait[self.trait]} - - 0 0"
+        return fen
+        
     def sauvegarder(self,nom_fichier : str = None) -> None:
         #ouvrir un fichier de sauvegarde en ecriture
         #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
         #fermer le fichier
-        sauvegarde = "blancs : "
-        for piece in self.pieces[1]:
-            sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"    
-        sauvegarde = sauvegarde[:-1]#enlever le point virgule au dernier
         
-        #sauvegarder les pieces noires
-        
-        sauvegarde+=f"\nnoirs : "
-        for piece in self.pieces[0]:
-            sauvegarde+=f"[{piece.nom},{piece.couleur},{piece.coord[0]},{piece.coord[1]}];"
-        sauvegarde = sauvegarde[:-1]#enlever le point virgule au  dernier 
-        
-        sauvegarde+="\nTrait : "
-        if self.trait :sauvegarde+="blancs"
-        else : sauvegarde+="noirs"
-        
-        
-        #demander le fichier a sauvegarder s'il n'est pas spécifier par le programme (sauvegarde de base du jeu)
-        if sauvegarde is None:
-            nom_fichier = input("nom du fichier de sauvegarde : ")
-            
         #écriture dans le fichier spécifier (écrase le texte déja existant ou crée un nouveau fichier)
-        fichier = open("sauvegardes\\"+nom_fichier+".txt", 'w')
-        fichier.write(sauvegarde)
-        fichier.close()
+        fichier = open("sauvegardes\\"+nom_fichier+".fen", 'w')
+        fichier.write(self.fen_position())
+        fichier.close()    
     
-        
     def deplacer_piece(self, coord_i: tuple, coord_f: tuple)->np.ndarray:
         """Déplace une pièce du plateau à un autre endroit.
         Cette méthode n'est exécutée que si le coup est valide,
@@ -153,16 +156,24 @@ class EtatJeu:
             """
             
         #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
+        #s'il y a une piece sur la case d'arrivée
         if coord_f in self.plateau.keys() :
-            #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
+            #retirer la piece du set de l'adversaire
             self.pieces[not self.trait].remove(self.plateau[coord_f])
+        
+        
+        if isinstance(self.plateau[coord_i],Roi):
+            print("+1")
+            self.plateau[coord_i].odometre+=1
+        else:
+            for piece in self.pieces[self.trait]:
+                if isinstance(piece,Roi):
+                    piece.odometre=0
+        
+        #changer les coordonnées dans la classe piece
         self.plateau[coord_i].coord=coord_f
+        #on déplace la piece sur le plateau
         self.plateau[coord_f] = self.plateau.pop(coord_i)
-        
-        if isinstance(self.plateau[coord_f], Pion):
-            self.plateau[coord_f].promotion(self)
-        
-        self.trait = not self.trait
     
     
     def mouvements(self,couleur) -> dict[tuple[int,int],list[tuple[int,int]]]:
@@ -176,12 +187,8 @@ class EtatJeu:
             mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
     
-    def calcul_valeur_test(self):
-        if self.echec_et_mat():self.valeur = math.inf
-        else : 
-            self.valeur = sum([piece.valeur for piece in self.pieces[1]+self.pieces[0]])
 
-  
+
     def calcul_valeur(self)->float:
         """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
         les noirs ont l'avantage 
@@ -227,8 +234,12 @@ class EtatJeu:
                     collones.append(pion.coord[0])
                 else:
                     valeur+=0.1*((-1)**piece.couleur)
-        self.valeur=round(valeur,3)
-            
+        return round(valeur,3)
+        
+                
+                
+    
+                
     def echec(self) -> bool:
         """Fonction qui nous dis si le roi de la couleur demandé est en échec
 
@@ -241,7 +252,7 @@ class EtatJeu:
         #il faut trouver qui est le joueur à qui c'est le tour
         case_roi = None
         for piece in self.pieces[self.trait]:
-            if piece.nom == "Roi":
+            if isinstance(piece,Roi):
                 case_roi = piece.coord#on récupere la case occupée par le roi
         if case_roi is None:
             print([piece.nom for piece in self.pieces[self.trait]])
@@ -252,12 +263,16 @@ class EtatJeu:
                 if case == case_roi :#On vérifie si cette case est celle du roi
                     return True
         return False
+        
+
 
    
     def echec_et_mat(self):
         #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
         if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
         #on regarde s'il existe des pièces qui ont le droit de bouger
+        
+  
         pieces_joueur = self.pieces[self.trait]
         for piece in pieces_joueur:
                 if len(piece.coups_legaux(self))>0 :return False
@@ -265,11 +280,17 @@ class EtatJeu:
     
     
     def gagnant(self):
+        
         if self.echec_et_mat(): 
             return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
-     
-    def pat(self)->bool:
-        deplacement=set()
-        for piece in self.pieces[self.trait]:
-            deplacement |= set(piece.coups_legaux())
-        return not echec and len(deplacement)==0
+        
+    def pat(self):
+        odometre=0
+        coups=[]
+        pieces_joueur = self.pieces[self.trait]
+        for piece in pieces_joueur:
+            coups+=piece.coups_legaux(self)
+            if isinstance(piece,Roi):
+                odometre=piece.odometre
+        print(odometre)
+        return (not self.echec_et_mat()and len(coups)==0) or (odometre>=30)

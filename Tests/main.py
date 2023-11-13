@@ -34,10 +34,8 @@ def partie(joueur1,joueur2):
     joueurs=[joueur2,joueur1]
 
 
-    draw= False
     print(partie)
-    while partie.gagnant() is None and not draw:
-        
+    while partie.gagnant() is None and not partie.pat():
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
         
         if deplacement=="save" :
@@ -45,13 +43,16 @@ def partie(joueur1,joueur2):
             print("Sauvegarde effectuée.") 
             return "N"
         
+        print(deplacement)
         partie.deplacer_piece(deplacement[0],deplacement[1])
         
-        
+        partie.trait = not partie.trait
         print(partie)
-        
     
-    print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
+    if partie.pat():
+        print("Egalite")
+    else:
+        print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
     
     
     
@@ -62,7 +63,8 @@ def main():
     while True:
         
         replay=None
-        for i in range(1,3):
+        joueurs = []
+        for i in (1,0):
             type_joueur=None
             if i==1: couleur="blanc"
             else: couleur="noir"
@@ -71,21 +73,20 @@ def main():
                 type_joueur=input(f"De quel type est le Joueur {couleur} ? \n 1: Humain \n 2: IA \n")
             
                 
-            if type_joueur=="1": nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
-            else: nom=f"IA {couleur}"
-            
             if type_joueur=="1":
-                if i==1:
-                    joueur1=Humain(nom, 1)
-                else:
-                    joueur2=Humain(nom,0)
+                nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
+                joueurs.append(Humain(nom,i))
+            
+            
             else:
-                if i==1:
-                    joueur1=IA(nom, 1)
-                else:
-                    joueur2=IA(nom,0)
+                niveau=input(f"Quel est le niveau de l'IA {couleur} souhaité? \n")
+                nom=f"IA {couleur}"
+                if niveau == "9":
+                    joueurs.append(Stockfish(nom, i))
+                else :   
+                    joueurs.append(IA(nom, i, int(niveau)))
 
-        replay=partie(joueur1,joueur2)
+        replay=partie(joueurs[0],joueurs[1])
             
         while replay not in ("O","N"):
             replay=input("Voulez vous rejouer ? (O/N) \n")

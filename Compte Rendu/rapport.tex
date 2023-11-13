@@ -1,6 +1,9 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
 \documentclass{article}
 \usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{amsmath,amssymb,enumerate,graphicx,pgf,tikz,fancyhdr}
+\usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{tabvar}
 \usepackage{fontspec}
@@ -36,10 +39,18 @@ d’échecs qui permet à deux joueurs de s’affronter,
 chaque joueur peut être soit un humain, soit l’ordinateur via une IA
  (intelligence artificielle) . Le jeu se jouera dans un terminal, 
  et si les deux joueurs sont humains, ils utiliseront le même clavier.
+ \section{Collaboration}
+ 
+Pour ce projet, nous avons mis en place un \href{https://github.com/Zertag/Projet-POO}{\textcolor{blue}{dépôt GitHub}}, qui a nous a permis
+de chacun travailler sur sa propre version du projet avec VS Code (dépôt cloné localement) et 
+ensuite de plus facilement mettre a jour le projet pour tout le monde.
+Cependant, ce projet était pour nous tous notre premier contact avec Git et Github, donc
+nous n'avons certainement pas utilisé l'outil à son plein potentiel. Nous avons notamment
+plusieurs fois du traiter manuellement des conflits de fusion, lorsque la répartition
+des tâches n'était pas assez bien réalisée.
 \section{Conception}
 \subsection{Règles traitées}
-traitées: promotion, roque
-non traitées : en passant
+Le jeu d'échecs comporte plusieurs règles spéciales.
 \subsection{Architecture}
 Ce projet a été réalisé en utilisant les outils de la programmation orientée objet (POO).
 Les différentes composantes d'un jeu d'échecs (joueurs, pieces) sont donc 
@@ -50,6 +61,7 @@ a mettre
 \section{Conception}
 Il y eu 2 grandes phases de développement du projet : La conception du jeu entre humains
 et la mise en place de l'IA. Chaque phase à donné lieu à plusieurs algorithmes principaux que nous allons détailler.
+Evidemment, nous avons rencontré de nombreuses difficultés, que nous détaillerons, durant chaque étape de la conception.
 
 \subsection{Conception du Jeu d'échecs}
 Nous avons commencé par créer en parallèle les 3 classes constituantes du jeu:
@@ -60,10 +72,15 @@ La classe Piece et ses sous-classes sont les lieux ou les règles du jeu sont d�
 On représente chaque type de pièce par une sous-classe de la classe Piece.
 Chacune de ses pieces possède sa propre méthode (overwrite) coups-possibles, qui encode les règles du jeu
 qui lui sont relatives. Ces méthodes nécéssitent évidemment d'avoir accès a l'état du jeu.
-
 Enfin, la classe Piece possède une méthode coups-légaux (donc identique pour tout les types de pièces)
 qui trie une liste de coups possibles en enlevant ceux qui mettent en échec le roi.
 Ces méthodes nécéssitent évidemment d'avoir accès a l'état du jeu, que nous avons donc défini par la suite.
+\paragraph{Difficultés}
+Nous avons débuté  l'implémentation de la classe Piece très tôt dans la conception. Cependant, la méthode 
+coups-légaux était très compliquée à mettre en place : nous n'avions pas encore
+de moyen de vérifier si un roi était un échec. Nous avons donc du mettre en pause
+la conception de la classe Piece. A ce stade là, voici son corps : 
+
 
 \begin{minted}[mathescape,
     linenos,
@@ -77,7 +94,6 @@ Ces méthodes nécéssitent évidemment d'avoir accès a l'état du jeu, que nou
 
 \subsubsection{Classe EtatJeu}
 Nous avons d'abord mis en place le plateau, ainsi que l'affichage et la sauvegarde de celui-ci.
-
 \begin{minted}[mathescape,
     linenos,
     numbersep=5pt,
@@ -98,9 +114,24 @@ Aussi, un objet EtatJeu possède une liste de deux listes de pièces, les blanch
 L'accès au pièces noires ou blanches est réalisé en accédant au bone indice de la liste pieces via
 le trait.
 
+Pour la sauvegarde, A FAIRE.
 
-Nous avons ensuite ajouté les fonctions relatives à la vérification de l'état du jeu
-(échec, échec et mat, égalité).
+
+Nous devions donc maintenant ajouter les fonctions relatives à la vérification de l'état du jeu
+: échec, échec et mat, égalité. 
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+
+    #PLACEHOLDER
+\end{minted}
+
+\subsubsection{Finalisation de la classe Piece}
+Une fois l'EtatJeu mis en place, nous pouvons écrire la méthode coups-légaux.
 
 \begin{minted}[mathescape,
     linenos,
@@ -113,9 +144,14 @@ Nous avons ensuite ajouté les fonctions relatives à la vérification de l'éta
 \end{minted}
 
 \subsubsection{Classe Joueurs}
+A ce stade, le noyau du jeu d'échecs est terminé. Pour le rendre jouable,
+nous devons implémenter la classe Joueurs
 C'est la classe Joueurs qui sera l'interface entre le programme main et les
 classes Piece et EtatJeu, via la méthode jouer-coup. En prévision de l'implémentation de l'IA,
 on implémente une sous classe Humain, qui a sa propre méthode jouer-coup, car celle de l'IA sera différente.
+Pour la classe Humain, la méthode jouer-coup doit interagir avec l'utilisateur. On 
+doit notamment effectuer la conversion des coordonnées du plateau en notation algébrique.
+
 
 \begin{minted}[mathescape,
     linenos,
@@ -127,15 +163,27 @@ on implémente une sous classe Humain, qui a sa propre méthode jouer-coup, car 
     #PLACEHOLDER
 \end{minted}
 
-\subsection{IA}
-A FAIRE
 
 \subsection{Le Programme main}
 Au final, le jeu doit se joueur depuis un simple script main, qui utilise nos classes
 définies dans des fichiers annexes.
+Nous avons décidé d'implémenter ce programme avant de concevoir l'IA, 
+afin de faciliter les tests.
 On définit alors une fonction partie, qui créee (à partir des choix de l'utilisateur) et fait jouer une partie à l'utilisateur.
-On place ensuite cette fonction dans une boucle, et le jeu est prêt.
+L'utilisateur
+On place ensuite cette fonction dans une boucle, en demandant à l'utilisateur si il veut rejouer
+à chaque fin de partie.
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
 
+    #PLACEHOLDER
+\end{minted}
+\subsection{IA}
+A FAIRE
 \begin{minted}[mathescape,
     linenos,
     numbersep=5pt,

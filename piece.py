@@ -46,6 +46,8 @@ class Roi(Piece):
         else:
             self.symbole="♔"
             self.valeur=0
+        self.odometre=0    
+        
     def coups_possibles(self, partie):
         self.coups = []
         x,y=self.coord
@@ -62,11 +64,11 @@ class Roi(Piece):
                     if piece.couleur != self.couleur:
                         self.coups.append((x,y))
         return self.coups
-class Reine(Piece):
+class Dame(Piece):
     
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
-        self.nom="Reine"
+        self.nom="Dame"
         
         if self.couleur:
             self.symbole="♛"
@@ -220,7 +222,7 @@ class Pion(Piece):
             if y+1<=7:
                 if partie.plateau.get((x,y+1),None)==None:
                     self.coups.append((x,y+1))
-                    if self.premier_coup and partie.plateau.get((x,y+2),None)==None and y+2<=7:
+                    if self.coord[1]==1 and partie.plateau.get((x,y+2),None)==None and y+2<=7:
                         self.coups.append((x,y+2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
@@ -231,7 +233,7 @@ class Pion(Piece):
             if y-1>=0:
                 if partie.plateau.get((x,y-1),None)==None:
                     self.coups.append((x,y-1))
-                    if self.premier_coup and partie.plateau.get((x,y-2),None)==None and y-2>=0:
+                    if self.coord[1]==6 and partie.plateau.get((x,y-2),None)==None and y-2>=0:
                         self.coups.append((x,y-2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
@@ -239,13 +241,3 @@ class Pion(Piece):
                         if piece != None and piece.couleur != self.couleur:
                             self.coups.append((x+dx, y-1))   
         return self.coups
-    
-    def promotion(self, partie):
-        if self.couleur and self.coord[1]==7:
-            partie.plateau[self.coord]=Reine(self.couleur, self.coord)
-            partie.pieces[1].remove(self)
-            partie.pieces[1].append(partie.plateau[self.coord])
-        elif not self.couleur and self.coord[1]==0:
-            partie.plateau[self.coord]=Reine(self.couleur, self.coord)
-            partie.pieces[0].remove(self)
-            partie.pieces[0].append(partie.plateau[self.coord])

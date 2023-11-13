@@ -36,3 +36,12 @@ def test_sauvegarde():
     #vérification
     
     assert sauv2.split("\n")[2].split(": ")[1] == "noirs"
+    
+    
+    
+#Def Valeur
+def init_partie_test(nom_test):
+    chemin_fichier = os.path.join("Sauvegarde_Test_Valeur", nom_test)
+    partie=EtatJeu(sauvegarde=chemin_fichier)
+    print(partie)
+    return partie
