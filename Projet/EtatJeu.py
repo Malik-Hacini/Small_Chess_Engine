@@ -1,8 +1,6 @@
 from joueurs import*
 from piece import*
 import numpy as np
-
-
 class EtatJeu:
     
     """Partie de jeu d'échecs
@@ -199,9 +197,12 @@ class EtatJeu:
         valeur=0
         if self.echec_et_mat():
             if self.gagnant:
-                valeur+=1000
+                return 1000
             else:
-                valeur-=1000
+                return -1000
+
+        if self.pat():
+            return 0
                 
         
         for pieces in [self.pieces[1], self.pieces[0]]:
@@ -282,7 +283,7 @@ class EtatJeu:
     def gagnant(self):
         
         if self.echec_et_mat(): 
-            return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
+            return not self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
         
     def pat(self):
         odometre=0
