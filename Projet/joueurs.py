@@ -1,11 +1,11 @@
 import numpy as np
 import math
 import EtatJeu
-import copy
-import time
-from stockfish import Stockfish
 
-stockfish = Stockfish(path="..\stockfish\stockfish-windows-x86-64-avx2.exe")
+import time
+"""from stockfish import Stockfish"""
+
+"""stockfish = Stockfish(path="..\stockfish\stockfish-windows-x86-64-avx2.exe")"""
 
 
 
@@ -40,9 +40,9 @@ class Humain(Joueur):
             while not piece_deplacable:
                 coord_p = input(f"{self.nom}, ou est la pièce à bouger ? \n")
                 
-                if coord_p == "save" : return "save"
+                if coord_p == "save" or coord_p=="nulle": return coord_p #Les actions spéciales qu'un joueur peut effectuer
                 # vérifier que le coup est au bon format cad (a:h),(1:8)
-                if not len(coord_p)==2:
+                if len(coord_p)!=2:
                     print("ce n'est pas un coup valide, veuillez respecter ce format : e2 \n")
                 
                 elif coord_p[0] not in ("a","b","c","d","e","f","g","h") or coord_p[1] not in ("1","2","3","4","5","6","7","8"):
@@ -89,7 +89,7 @@ class Humain(Joueur):
 
         return coord_p,coup_int
         
-class Stockfish(Joueur):
+"""class Stockfish(Joueur):
     
     def __init__(self, nom: str, couleur: bool) -> None:
         super().__init__(nom, couleur)
@@ -100,7 +100,7 @@ class Stockfish(Joueur):
         print(move[:2]+"-"+move[2:])
         return (conv_str(move[:2]),conv_str(move[2:]))
         
-        
+"""        
         
         
 class IA(Joueur):

@@ -141,12 +141,7 @@ class EtatJeu:
         #écriture dans le fichier spécifier (écrase le texte déja existant ou crée un nouveau fichier)
         fichier = open("sauvegardes\\"+nom_fichier+".fen", 'w')
         fichier.write(self.fen_position())
-        fichier.close()
-        
-        
-        
-    
-    
+        fichier.close()    
     
     def deplacer_piece(self, coord_i: tuple, coord_f: tuple)->np.ndarray:
         """Déplace une pièce du plateau à un autre endroit.
@@ -165,13 +160,20 @@ class EtatJeu:
         if coord_f in self.plateau.keys() :
             #retirer la piece du set de l'adversaire
             self.pieces[not self.trait].remove(self.plateau[coord_f])
-            
+        
+        
+        if isinstance(self.plateau[coord_i],Roi):
+            print("+1")
+            self.plateau[coord_i].odometre+=1
+        else:
+            for piece in self.pieces[self.trait]:
+                if isinstance(piece,Roi):
+                    piece.odometre=0
+        
         #changer les coordonnées dans la classe piece
         self.plateau[coord_i].coord=coord_f
         #on déplace la piece sur le plateau
         self.plateau[coord_f] = self.plateau.pop(coord_i)
-        #le trait change de joueur
-        self.trait = not self.trait
     
     
     def mouvements(self,couleur) -> dict[tuple[int,int],list[tuple[int,int]]]:
@@ -281,8 +283,14 @@ class EtatJeu:
         
         if self.echec_et_mat(): 
             return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
-     
         
-        
-        
-        
+    def pat(self):
+        odometre=0
+        coups=[]
+        pieces_joueur = self.pieces[self.trait]
+        for piece in pieces_joueur:
+            coups+=piece.coups_legaux(self)
+            if isinstance(piece,Roi):
+                odometre=piece.odometre
+        print(odometre)
+        return (not self.echec_et_mat()and len(coups)==0) or (odometre>=30)
