@@ -134,7 +134,7 @@ class IA(Joueur):
             for coord_i,coords_f in partie.mouvements(self.couleur).items():
                 for coord_f in coords_f:
                     coups.append((coord_i,coord_f))
-            return coups[random.randint(len(coups))]
+            return coups[random.randint(0,len(coups)-1)]
         
         
         #minimax ou alphabeta
