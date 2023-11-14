@@ -54,11 +54,11 @@ def partie(joueur1,joueur2):
         
         #On demande quelle pièce bouger au joueur (il peut écrire nulle ou save)
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
-        partie.trait = not partie.trait #On change le tour
-        
+
         #Cas particuliers (vote de nulle ou save)
         if deplacement=="nulle":
                 draw_votes=1
+                partie.trait = not partie.trait #On change le tour
                 continue
         else:
             draw_votes=0
@@ -93,6 +93,7 @@ def main():
             else: couleur="noir"
             
             while type_joueur not in ("1","2"):
+                
                 type_joueur=input(f"De quel type est le Joueur {couleur} ? \n 1: Humain \n 2: IA \n")
             
                 
