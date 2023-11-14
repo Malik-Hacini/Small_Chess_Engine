@@ -50,3 +50,6 @@ def test_valeur():
     #Test pions allignés
     partie=init_partie_test("pions_allignes")
     assert partie.calcul_valeur()==-0.1
+    #Test pat
+    partie=init_partie_test("pat_1")
+    assert partie.calcul_valeur()==0

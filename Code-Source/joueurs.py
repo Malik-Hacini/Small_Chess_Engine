@@ -1,6 +1,6 @@
 import numpy as np
 import math
-import EtatJeu
+from EtatJeu import *
 import copy
 import time
 from stockfish import Stockfish
@@ -41,11 +41,11 @@ class Humain(Joueur):
             while not piece_deplacable:
                 coord_p = input(f"{self.nom}, ou est la pièce à bouger ? \n")
                 
-                if coord_p == "save" or coord_p=="nulle": return coord_p #Les actions spéciales qu'un joueur peut effectuer
+                if coord_p in ["save","nulle"]: return coord_p
                 # vérifier que le coup est au bon format cad (a:h),(1:8)
-                if len(coord_p)!=2:
+                if not len(coord_p)==2:
                     print("ce n'est pas un coup valide, veuillez respecter ce format : e2 \n")
-                    
+                
                 elif coord_p[0] not in ("a","b","c","d","e","f","g","h") or coord_p[1] not in ("1","2","3","4","5","6","7","8"):
                     print("Ce n'est pas un coup valide! \n")
                 
@@ -148,6 +148,14 @@ class IA(Joueur):
                     #simu = copy.deepcopy(partie)
                     piece_retirée = partie.plateau.get(coord_f,None)
                     #on bouge une piece
+                    
+                    #on sauvegarde l'odometre
+                    for piece in partie.pieces[not partie.trait]:
+                        if isinstance(piece,Roi):
+                            sauv_odometre = piece.odometre
+                            roi = piece
+                    
+                        
                     partie.deplacer_piece(coord_i,coord_f)
                     #max
                     if self.algo == "minimax" : 
@@ -160,6 +168,9 @@ class IA(Joueur):
                     if piece_retirée is not None:
                         partie.plateau[coord_f] = piece_retirée
                         partie.pieces[not partie.trait].append(piece_retirée)
+                        
+                    #remettre l'odometre a sa valeur
+                    roi.odometre = sauv_odometre
                     
                     #le joueur blanc le maximum
                     if valeur> meilleure_valeur:
@@ -179,6 +190,14 @@ class IA(Joueur):
                     #simu = copy.deepcopy(partie)
                     piece_retirée = partie.plateau.get(coord_f,None)
                     #on bouge une piece
+                    
+                    #on sauvegarde l'odometre
+                    for piece in partie.pieces[not partie.trait]:
+                        if isinstance(piece,Roi):
+                            sauv_odometre = piece.odometre
+                            roi = piece
+                            
+                    
                     partie.deplacer_piece(coord_i,coord_f)
                     #max
                     if self.algo == "minimax" : 
@@ -192,6 +211,9 @@ class IA(Joueur):
                         partie.plateau[coord_f] = piece_retirée
                         partie.pieces[not partie.trait].append(piece_retirée)
                     
+                    #remettre l'odometre a sa valeur
+                    roi.odometre = sauv_odometre
+                
                     #le joueur noir veut le minimum, le joueur blanc le maximum
                     #print(valeur)
                     if valeur< meilleure_valeur:
@@ -226,6 +248,13 @@ def minimax(etat, profondeur,couleur):
                 #créer un nouvel état où on bouge une piece, penser à changer le tour
                 piece_retirée = etat.plateau.get(coord_f,None)
                 #on bouge une piece
+                
+                #on sauvegarde l'odometre
+                for piece in etat.pieces[not etat.trait]:
+                    if isinstance(piece,Roi):
+                        sauv_odometre = piece.odometre
+                        roi = piece
+                
                 etat.deplacer_piece(coord_i,coord_f)
                 #max
                 valeur = max(valeur,minimax(etat,profondeur-1, not couleur))
@@ -234,6 +263,9 @@ def minimax(etat, profondeur,couleur):
                 if piece_retirée is not None:
                     etat.plateau[coord_f] = piece_retirée
                     etat.pieces[not etat.trait].append(piece_retirée)
+                #remettre l'odometre a sa valeur
+                roi.odometre = sauv_odometre
+                
         return valeur
     else :
         valeur = math.inf
@@ -242,6 +274,13 @@ def minimax(etat, profondeur,couleur):
                 #créer un nouvel état où on bouge une piece, penser à changer le tour
                 piece_retirée = etat.plateau.get(coord_f,None)
                 #on bouge une piece
+                
+                #on sauvegarde l'odometre
+                for piece in etat.pieces[not etat.trait]:
+                    if isinstance(piece,Roi):
+                        sauv_odometre = piece.odometre
+                        roi = piece
+                        
                 etat.deplacer_piece(coord_i,coord_f)
                 #max
                 valeur = min(valeur,minimax(etat,profondeur-1, not couleur))
@@ -250,13 +289,16 @@ def minimax(etat, profondeur,couleur):
                 if piece_retirée is not None:
                     etat.plateau[coord_f] = piece_retirée
                     etat.pieces[not etat.trait].append(piece_retirée)
+                #remettre l'odometre a sa valeur
+                roi.odometre = sauv_odometre
                     
         return valeur
 
 
 
-def alphabeta (etat, profondeur,alpha,beta,couleur):
+def alphabeta(etat, profondeur,alpha,beta,couleur):
     if profondeur==0 or etat.echec_et_mat():
+        
         return etat.calcul_valeur()
     if couleur:
         valeur = -math.inf
@@ -265,6 +307,13 @@ def alphabeta (etat, profondeur,alpha,beta,couleur):
                 #créer un nouvel état où on bouge une piece, penser à changer le tour
                 piece_retirée = etat.plateau.get(coord_f,None)
                 #on bouge une piece
+                
+                #on sauvegarde l'odometre
+                for piece in etat.pieces[not etat.trait]:
+                    if isinstance(piece,Roi):
+                        sauv_odometre = piece.odometre
+                        roi = piece
+                
                 etat.deplacer_piece(coord_i,coord_f)
                 #max
                 valeur = max(valeur,alphabeta(etat,profondeur-1,alpha,beta, not couleur))
@@ -273,6 +322,9 @@ def alphabeta (etat, profondeur,alpha,beta,couleur):
                 if piece_retirée is not None:
                     etat.plateau[coord_f] = piece_retirée
                     etat.pieces[not etat.trait].append(piece_retirée)
+                #remettre l'odometre a sa valeur
+                roi.odometre = sauv_odometre
+                
                 if valeur > beta :
                     break
                 alpha = max(alpha,valeur)
@@ -284,354 +336,28 @@ def alphabeta (etat, profondeur,alpha,beta,couleur):
                 #créer un nouvel état où on bouge une piece, penser à changer le tour
                 piece_retirée = etat.plateau.get(coord_f,None)
                 #on bouge une piece
+                
+                #on sauvegarde l'odometre
+                for piece in etat.pieces[not etat.trait]:
+                    if isinstance(piece,Roi):
+                        sauv_odometre = piece.odometre
+                        roi = piece
+                        
+                        
+                        
                 etat.deplacer_piece(coord_i,coord_f)
                 #max
                 valeur = min(valeur,alphabeta(etat,profondeur-1,alpha,beta, not couleur))
                 #retirer coup
-                etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
+                etat.deplacer_piece(coord_f,coord_i)#remettre la piece Nau bon endroit
                 if piece_retirée is not None:
                     etat.plateau[coord_f] = piece_retirée
                     etat.pieces[not etat.trait].append(piece_retirée)
+                    
+                #remettre l'odometre a sa valeur
+                roi.odometre = sauv_odometre
+                
                 if valeur < alpha :
                     break
                 beta = min(beta,valeur)
         return valeur
-
-
-
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""def negamax(etat, profondeur,couleur):
-    if profondeur==0 or etat.echec_et_mat():
-        return etat.calcul_valeur()*(-1)**(not couleur)
-    valeur = -math.inf
-    for coord_i,coords_f in etat.mouvements(etat.trait).items():
-        for coord_f in coords_f:
-            #créer un nouvel état où on bouge une piece, penser à changer le tour
-            piece_retirée = etat.plateau.get(coord_f,None)
-            #on bouge une piece
-            etat.deplacer_piece(coord_i,coord_f)
-            #max
-            valeur = max(valeur,-negamax(etat,profondeur-1, not couleur))
-            #retirer coup
-            etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
-            if piece_retirée is not None:
-                etat.plateau[coord_f] = piece_retirée
-                etat.pieces[not etat.trait].append(piece_retirée)
-    return valeur     
-
-def neagalphabeta(etat, profondeur,alpha, beta, couleur):
-    if profondeur==0 or etat.echec_et_mat():
-        return etat.calcul_valeur()*(-1)**(not couleur)
-    
-    valeur = -math.inf
-    for coord_i,coords_f in etat.mouvements(etat.trait).items():
-        for coord_f in coords_f:
-            #créer un nouvel état où on bouge une piece, penser à changer le tour
-            piece_retirée = etat.plateau.get(coord_f,None)
-            #on bouge une piece
-            etat.deplacer_piece(coord_i,coord_f)
-            #max
-            valeur = max(valeur,-neagalphabeta(etat,profondeur-1,-beta, -alpha, not couleur))
-            #retirer coup
-            etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
-            if piece_retirée is not None:
-                etat.plateau[coord_f] = piece_retirée
-                etat.pieces[not etat.trait].append(piece_retirée)
-                
-            alpha = max(alpha, valeur)
-            if alpha >= beta:
-                break
-            
-    return valeur """ 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-
-    def jouer_coup_negamaxb(self,partie: dict) -> tuple[int,int]:
-        '''Permet a l'ia de jouer un coup, cela calcule toutes les possibilités
-
-        Args:
-            partie (dict): Etat du Jeu a l'instant
-
-        Returns:
-            tuple[int,int]: coup joué
-        '''
-        début = time.time()
-        
-        meilleur_coup = None
-        #expliquer ce calcul
-        max_valeur = -math.inf
-        
-        chargement = 0
-        taille = len(partie.mouvements(self.couleur).items())
-        for coord_i,coords_f in partie.mouvements(self.couleur).items():
-            #affichage d'un chargement basique
-            chargement+=1/taille
-            print(f'{round(chargement*100)}% effectués')
-            
-            #pour chaque coups possible dans les déplacement disponibles de la piece
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece
-                simu = copy.deepcopy(partie)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                #max
-                #valeur = negamax_ab(simu,2,-math.inf, math.inf, partie.trait)
-                valeur = negamax(simu,2, self.couleur)
-                #le joueur noir veut le minimum, le joueur blanc le maximum
-                conv(coord_i,coord_f,valeur)
-                if valeur> max_valeur:
-                    meilleur_coup = (coord_i,coord_f)
-                    max_valeur = valeur
-                    
-        print("durée premier coup profondeur 3 negamax : ",time.time()-début)
-        return meilleur_coup
-        
-def negamaxb(etat, profondeur,couleur):
-    if profondeur==0 or etat.echec_et_mat():
-        etat.calcul_valeur()
-        return etat.valeur*(-1)**(not couleur)
-    valeur = -math.inf
-    for coord_i,coords_f in etat.mouvements(etat.trait).items():
-        for coord_f in coords_f:
-            #créer un nouvel état où on bouge une piece, penser à changer le tour
-            simu = copy.deepcopy(etat)
-            #on bouge une piece
-            simu.deplacer_piece(coord_i,coord_f)
-            #max
-            valeur = max(valeur,-negamax(simu,profondeur-1, not couleur))
-    return valeur  
-
-
-def negamax_ab(etat, profondeur, alpha , beta, couleur):
-    if profondeur==0 or etat.echec_et_mat():
-        etat.calcul_valeur()
-        return etat.valeur*(-1)**(not couleur)
-    
-    valeur = -math.inf
-    for coord_i,coords_f in etat.mouvements(etat.trait).items():
-        for coord_f in coords_f:
-            #créer un nouvel état où on bouge une piece, penser à changer le tour
-            simu = copy.deepcopy(etat)
-            #on bouge une piece
-            simu.deplacer_piece(coord_i,coord_f)
-            #max
-            valeur = max(valeur,-negamax(simu,profondeur-1, not couleur))
-            alpha = max(alpha, valeur)
-            if alpha>beta:
-                break
-    
-    return valeur   
-
-
-"""
-
-
-
-
-
-
-'''
-    def jouer_coup_mini(self,partie: dict) -> tuple[int,int]:
-        """Permet a l'ia de jouer un coup, cela calcule toutes les possibilités
-
-        Args:
-            partie (dict): Etat du Jeu a l'instant
-
-        Returns:
-            tuple[int,int]: coup joué
-        """
-        début = time.time()
-        
-        meilleur_coup = None
-        #expliquer ce calcul
-        max_valeur = ((-1)**(self.couleur))*math.inf
-        
-        chargement = 0
-        taille = len(partie.mouvements(self.couleur).items())
-        for coord_i,coords_f in partie.mouvements(self.couleur).items():
-            chargement+=1/taille
-            print(f'{round(chargement*100)}% effectués')
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece
-                simu = copy.deepcopy(partie)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                #max
-                val_minimax = minimax(simu,3,not self.couleur)
-                #le joueur noir veut le minimum, le joueur blanc le maximum
-                if (val_minimax > max_valeur and self.couleur) or (val_minimax < max_valeur and not self.couleur):
-                    meilleur_coup = (coord_i,coord_f)
-                    max_valeur = val_minimax
-                    
-        print("durée premier coup profondeur 3 minimax sans ab : ",time.time()-début)
-        return meilleur_coup
-    
-    
-    def jouer_coup_ab(self,partie: dict) -> tuple[int,int]:
-        """Permet a l'ia de jouer un coup, cela calcule toutes les possibilités
-
-        Args:
-            partie (dict): Etat du Jeu a l'instant
-
-        Returns:
-            tuple[int,int]: coup joué
-        """
-        début = time.time()
-        
-        meilleur_coup = None
-        valeur = ((-1)**(self.couleur))*math.inf
-        alpha = -math.inf
-        beta = math.inf
-        
-        
-        #chargement
-        chargement = 0
-        taille = len(partie.mouvements(self.couleur).items())
-        for coord_i,coords_f in partie.mouvements(self.couleur).items():
-            chargement+=1/taille
-            print(f'{round(chargement*100)}% effectués')
-            #print(f" analyse du {partie.plateau[coord_i].nom} en {chr(97+coord_i[0])}{coord_i[1]+1}",end = ", ")
-            #print(f'déplacementst possible : {coords_f}'  )
-            
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece
-                simu = copy.deepcopy(partie)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                #max
-                val_minimax = minimax_ab(simu,3,not self.couleur, alpha, beta)
-                #le joueur noir veut le minimum, le joueur blanc le maximum
-                """if (val_minimax > max_valeur and self.couleur) or (val_minimax < max_valeur and not self.couleur):
-                    meilleur_coup = (coord_i,coord_f)
-                    max_valeur = val_minimax"""
-                if (val_minimax > valeur and self.couleur) or (val_minimax < valeur and not self.couleur):
-                    meilleur_coup = (coord_i,coord_f)
-                    valeur = val_minimax
-                if self.couleur:
-                    if valeur > beta : 
-                        print(valeur, )
-                        break
-                    alpha = max(alpha, valeur)
-                    
-                else : 
-                    if valeur < alpha : break
-                    beta = min(beta, valeur)
-        print("durée premier coup profondeur 3 minimax alpha beta: ", time.time()-début)
-        return meilleur_coup
-            
-
-
-    #déterminer le meilleur coup grace à minimax
-
-
-def minimax_ab( etat : EtatJeu ,profondeur : int,couleur : bool, alpha : bool, beta : bool):
-    if profondeur==0 or etat.echec_et_mat():
-        etat.calcul_valeur()
-        return etat.valeur
-    if couleur:
-        valeur = -math.inf
-        for coord_i,coords_f in etat.mouvements(couleur).items():
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
-                simu = copy.deepcopy(etat)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                #max
-                valeur = max(valeur,minimax_ab(simu,profondeur-1, not couleur, alpha, beta))
-                if valeur > beta : break
-                alpha = max(alpha, valeur)
-        return valeur            
-    else :
-        valeur  = math.inf
-        for coord_i,coords_f in etat.mouvements(couleur).items():
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
-                simu = copy.deepcopy(etat)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                #max
-                valeur = min(valeur,minimax_ab(simu,profondeur-1, not couleur, alpha, beta))
-                if valeur <alpha : break
-                beta = min(beta, valeur)
-        return valeur
-
-
-
-
-
-def minimax( etat : EtatJeu ,profondeur : int,couleur : bool):
-    if profondeur==0 or etat.echec_et_mat():
-        etat.calcul_valeur()
-        return etat.valeur
-    if couleur:
-        valeur = -math.inf
-        for coord_i,coords_f in etat.mouvements(couleur).items():
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
-                simu = copy.deepcopy(etat)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                
-                #max
-                
-                valeur = max(valeur,minimax(simu,profondeur-1, not couleur))
-            
-        return valeur            
-    else :
-        valeur  = math.inf
-        for coord_i,coords_f in etat.mouvements(couleur).items():
-            for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
-                simu = copy.deepcopy(etat)
-                #on bouge une piece
-                simu.deplacer_piece(coord_i,coord_f)
-                #max
-                valeur = min(valeur,minimax(simu,profondeur-1, not couleur))
-        return valeur
-    
-        '''

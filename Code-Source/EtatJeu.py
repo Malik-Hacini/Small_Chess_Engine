@@ -163,8 +163,8 @@ class EtatJeu:
         
         
         if isinstance(self.plateau[coord_i],Roi):
-            print("+1")
             self.plateau[coord_i].odometre+=1
+            print(self.plateau[coord_i].odometre)
         else:
             for piece in self.pieces[self.trait]:
                 if isinstance(piece,Roi):
@@ -174,6 +174,8 @@ class EtatJeu:
         self.plateau[coord_i].coord=coord_f
         #on déplace la piece sur le plateau
         self.plateau[coord_f] = self.plateau.pop(coord_i)
+        
+        self.trait = not self.trait #On change le tour
     
     
     def mouvements(self,couleur) -> dict[tuple[int,int],list[tuple[int,int]]]:
@@ -198,7 +200,7 @@ class EtatJeu:
         """
         valeur=0
         if self.echec_et_mat():
-            if self.gagnant:
+            if self.gagnant():
                 return 1000
             else:
                 return -1000
@@ -257,9 +259,6 @@ class EtatJeu:
         for piece in self.pieces[self.trait]:
             if isinstance(piece,Roi):
                 case_roi = piece.coord#on récupere la case occupée par le roi
-        if case_roi is None:
-            print([piece.nom for piece in self.pieces[self.trait]])
-            print(self)
         pieces_adversaire = self.pieces[not (self.trait)]#on récupere les pieces de l'adversaire
         for piece in pieces_adversaire: #Pour les pièces de l'adversaire en jeu
             for case in piece.coups_possibles(self):# Pour chaque case controllé par l'adversaire
@@ -299,4 +298,4 @@ class EtatJeu:
             coups+=piece.coups_legaux(self)
             if isinstance(piece,Roi):
                 odometre=piece.odometre
-        return (not self.echec_et_mat()and len(coups)==0) or (odometre>=30)
+        return (not self.echec_et_mat()and len(coups)==0) or (odometre>=10)
