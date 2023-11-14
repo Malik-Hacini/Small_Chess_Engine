@@ -8,7 +8,6 @@ class Piece:
         
     def __str__(self):
         return self.symbole
-    
     def coups_legaux(self,partie):
         coups = []
         for coord_f in self.coups_possibles(partie):

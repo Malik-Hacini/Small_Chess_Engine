@@ -1,47 +1,52 @@
 import pytest
-from EtatJeu import *
+import os
+from EtatJeu import * 
 
-def test_sauvegarde():
-    #on va initialiser un plateau sans jouer de coups, le sauvegarder, puis le comparer au plateau de base
-    bot1,bot2 = Joueur("Joueur1","True"),Joueur("Joueur2","False")
-    Jeu = EtatJeu(bot1,bot2)
-    Jeu.sauvegarder("sauvegarde_de_test")
-    
-    fichier = open("sauvegarde_de_test.txt", 'r')
-    sauv1 = fichier.read()
-    fichier.close()
-    
-    fichier = open("Plateau_base.txt", 'r')
-    base = fichier.read()
-    fichier.close()
-    
-    assert base == sauv1
-    
-    
-    
-    
-    #Maintenant on va jouer un coup, puis sauvegarder la partie, vérifier que le coups a bien été enregistré et que le tour est au joueur Noir.
-    Jeu.plateau[(0,1)].coord=(0,2)
-    Jeu.plateau[(0,2)] = Jeu.plateau.pop((0,1))
-    Jeu.trait = not Jeu.trait
-    print(Jeu.trait)
-    
-    #sauvegarde dans le fichier de test
-    Jeu.sauvegarder("sauvegarde_de_test")
-    #lecture du fichier sauvegardé
-    fichier = open("sauvegarde_de_test.txt", 'r')
-    sauv2 = fichier.read()
-    fichier.close()
-    
-    #vérification
-    
-    assert sauv2.split("\n")[2].split(": ")[1] == "noirs"
-    
-    
-    
-#Def Valeur
+
 def init_partie_test(nom_test):
-    chemin_fichier = os.path.join("Sauvegarde_Test_Valeur", nom_test)
+    """Fonction qui initialise une partie à partir d'un plateau de test donné
+
+    Args:
+        nom_test (str): nom du fichier sauvegarde de test
+
+    Returns:
+        EtatJeu: L'état de la partie
+    """
+    chemin_fichier = os.path.join("Sauvegarde_Test_EtatJeu", nom_test)
     partie=EtatJeu(sauvegarde=chemin_fichier)
     print(partie)
     return partie
+
+
+def test_pat():
+    partie=init_partie_test("pat_1")
+    assert partie.pat()
+    partie=init_partie_test("pat_2")
+    partie.pieces[1][0].odometre=40
+    assert partie.pat()
+    
+def test_echec():
+    partie=init_partie_test("avec_echec")
+    assert partie.echec()
+    partie=init_partie_test("sans_echec")
+    assert not partie.echec()
+
+def test_mat():
+    partie=init_partie_test("avec_mat")
+    assert partie.echec_et_mat()
+    partie=init_partie_test("sans_mat")
+    assert not partie.echec_et_mat()
+    
+#Test valeur:
+def test_valeur():
+    #Test de situation finale
+    partie=init_partie_test("avec_mat")
+    assert partie.calcul_valeur()==-1000
+    partie=init_partie_test("pat_1")
+    assert partie.calcul_valeur()==0
+    #Test centre et sous centre
+    partie=init_partie_test("controle_centre_et_ss_centre")
+    assert partie.calcul_valeur()==0.4
+    #Test pions allignés
+    partie=init_partie_test("pions_allignes")
+    assert partie.calcul_valeur()==-0.1

@@ -35,22 +35,31 @@ def partie(joueur1,joueur2):
 
 
     print(partie)
-    while partie.gagnant() is None and not partie.pat():
+    draw=False
+    draw_votes=[]
+    while partie.gagnant() is None and not draw:
         deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
+        
+        #Vote de la nulle
+        if deplacement=="nulle":
+            draw_votes+=1
+            if draw_votes==2:
+                draw=True
+        else:
+            draw_votes=0
         
         if deplacement=="save" :
             partie.sauvegarder("save")
             print("Sauvegarde effectuée.") 
             return "N"
         
-        print(deplacement)
         partie.deplacer_piece(deplacement[0],deplacement[1])
         
         partie.trait = not partie.trait
         print(partie)
     
     if partie.pat():
-        print("Egalite")
+        draw=True
     else:
         print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
     

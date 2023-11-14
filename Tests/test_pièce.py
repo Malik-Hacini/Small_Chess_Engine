@@ -7,6 +7,14 @@ from piece import*
 
 
 def init_partie_test(nom_test):
+    """Fonction qui initialise une partie à partir d'un plateau de test donné
+
+    Args:
+        nom_test (str): nom du fichier sauvegarde de test
+
+    Returns:
+        EtatJeu: L'état de la partie
+    """
     chemin_fichier = os.path.join("Sauvegarde_Test_Piece", nom_test)
     partie=EtatJeu(sauvegarde=chemin_fichier)
     print(partie)

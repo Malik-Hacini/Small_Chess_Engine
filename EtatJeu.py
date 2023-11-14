@@ -199,9 +199,12 @@ class EtatJeu:
         valeur=0
         if self.echec_et_mat():
             if self.gagnant:
-                valeur+=1000
+                return 1000
             else:
-                valeur-=1000
+                return -1000
+
+        if self.pat():
+            return 0
                 
         
         for pieces in [self.pieces[1], self.pieces[0]]:
@@ -280,11 +283,15 @@ class EtatJeu:
     
     
     def gagnant(self):
-        
         if self.echec_et_mat(): 
-            return self.trait #attention ici on ne renvoie que la couleur du gagnant, au main de décider quel joueur c'est
+            return self.trait #attention ici on ne renvoie que la couleur du trait, au main de décider quel joueur c'est
         
     def pat(self):
+        """Indique si la partie est nulle selon nos critère qui sont le pat ou si seul un roi est déplacé pendant 30 coups consécutifs
+
+        Returns:
+            bool: True <=> La partie est nulle
+        """
         odometre=0
         coups=[]
         pieces_joueur = self.pieces[self.trait]
@@ -292,5 +299,4 @@ class EtatJeu:
             coups+=piece.coups_legaux(self)
             if isinstance(piece,Roi):
                 odometre=piece.odometre
-        print(odometre)
         return (not self.echec_et_mat()and len(coups)==0) or (odometre>=30)

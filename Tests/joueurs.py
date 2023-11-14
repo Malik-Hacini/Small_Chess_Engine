@@ -40,9 +40,8 @@ class Humain(Joueur):
             while not piece_deplacable:
                 coord_p = input(f"{self.nom}, ou est la pièce à bouger ? \n")
                 
-                if coord_p == "save" or coord_p== "nulle": return coord_p
+                if coord_p == "save" : return "save"
                 # vérifier que le coup est au bon format cad (a:h),(1:8)
-                
                 if not len(coord_p)==2:
                     print("ce n'est pas un coup valide, veuillez respecter ce format : e2 \n")
                 

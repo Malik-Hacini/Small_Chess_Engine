@@ -47,6 +47,7 @@ def partie(joueur1,joueur2):
                 draw=True
         else:
             draw_votes=0
+        
         if deplacement=="save" :
             partie.sauvegarder("save")
             print("Sauvegarde effectuée.") 
@@ -56,6 +57,7 @@ def partie(joueur1,joueur2):
         
         partie.trait = not partie.trait
         print(partie)
+    
     if partie.pat():
         draw=True
     else:
