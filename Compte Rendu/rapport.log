@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.9.14)  24 OCT 2023 11:19
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.9.14)  14 NOV 2023 12:59
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -550,7 +550,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 \verbatim@out=\write4
-runsystem(echo 'write18-test-20231024679'>"rapport.w18")...executed.
+runsystem(echo 'write18-test-20231114779'>"rapport.w18")...executed.
 
 \instream=\read4
 runsystem(del "rapport.w18")...executed.
@@ -825,13 +825,10 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  [1
 
-]
+] [2]
 \openout5 = `rapport.pyg'.
 
- (_minted-rapport/default.pygstyle) (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex [2])
-\openout5 = `rapport.pyg'.
-
- (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+ (_minted-rapport/default.pygstyle) (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
 \openout5 = `rapport.pyg'.
 
  (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
@@ -841,28 +838,39 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout5 = `rapport.pyg'.
 
  (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex [3])
+File: exempledraw.png Graphic file (type bmp)
+<exempledraw.png>
 \openout5 = `rapport.pyg'.
 
  (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
 \openout5 = `rapport.pyg'.
 
- (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex) [4] (rapport.aux)
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex [4])
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex) [5] (rapport.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
  ***********
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-(rerunfilecheck)             Checksum: AF3B15C576C00E531CB1580E542E8A06;2160.
+(rerunfilecheck)             Checksum: B83885FC70CE0E1F4733F78B2AC8927C;2211.
 runsystem(del rapport.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 27727 strings out of 410379
- 562135 string characters out of 5788051
+ 27750 strings out of 410379
+ 562857 string characters out of 5788051
  1926432 words of memory out of 5000000
- 48598 multiletter control sequences out of 15000+600000
+ 48616 multiletter control sequences out of 15000+600000
  565847 words of font info for 84 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 79i,7n,93p,483b,770s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,7n,93p,483b,631s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on rapport.xdv (4 pages, 74776 bytes).
+Output written on rapport.xdv (5 pages, 100856 bytes).

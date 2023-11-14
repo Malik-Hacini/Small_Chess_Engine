@@ -34,31 +34,48 @@ def partie(joueur1,joueur2):
     joueurs=[joueur2,joueur1]
 
 
-    draw= False
     print(partie)
+    draw=False
+    draw_votes=0
     while partie.gagnant() is None and not draw:
-        deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
+
         
+        #Si le joueur précédent a voté nulle :
+        if draw_votes==1:
+            vote=0
+            while vote not in {"O","N"}:
+                vote=input(f"{joueurs[int(partie.trait)].nom}, acceptez vous la nulle ? (O/N) \n")
+            
+            if vote=="O": 
+                draw=True 
+                partie.trait = not partie.trait #On change le tour
+                continue
+            else: print("Nulle refusée.")   
+        
+        #On demande quelle pièce bouger au joueur (il peut écrire nulle ou save)
+        deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
+        partie.trait = not partie.trait #On change le tour
+        
+        #Cas particuliers (vote de nulle ou save)
+        if deplacement=="nulle":
+                draw_votes=1
+                continue
+        else:
+            draw_votes=0
         if deplacement=="save" :
             partie.sauvegarder("save")
             print("Sauvegarde effectuée.") 
             return "N"
         
-        #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
-        if deplacement[1] in partie.plateau.keys() :
-            #ouais je sais là je fais une dinguerie, faudra peut être essayer de simplifier
-            partie.pieces[partie.plateau[deplacement[1]].couleur].remove(partie.plateau[deplacement[1]])
-       
-        #changement des coordonnées de la pièce  
-        partie.plateau[deplacement[0]].coord=deplacement[1]
-        #changement de la pièce dans le plateau
-        partie.plateau[deplacement[1]] = partie.plateau.pop(deplacement[0])
+        partie.deplacer_piece(deplacement[0],deplacement[1])
         
-        partie.trait = not partie.trait
+        if partie.pat():
+            draw=True
         print(partie)
-        
     
-    print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
+    #On affiche le résultat de la partie.
+    if draw: print("Partie Nulle.")
+    else:    print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
     
     
     
@@ -69,7 +86,8 @@ def main():
     while True:
         
         replay=None
-        for i in range(1,3):
+        joueurs = []
+        for i in (1,0):
             type_joueur=None
             if i==1: couleur="blanc"
             else: couleur="noir"
@@ -78,21 +96,20 @@ def main():
                 type_joueur=input(f"De quel type est le Joueur {couleur} ? \n 1: Humain \n 2: IA \n")
             
                 
-            if type_joueur=="1": nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
-            else: nom=f"IA {couleur}"
-            
             if type_joueur=="1":
-                if i==1:
-                    joueur1=Humain(nom, 1)
-                else:
-                    joueur2=Humain(nom,0)
+                nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
+                joueurs.append(Humain(nom,i))
+            
+            
             else:
-                if i==1:
-                    joueur1=IA(nom, 1)
-                else:
-                    joueur2=IA(nom,0)
+                niveau=input(f"Quel est le niveau de l'IA {couleur} souhaité? \n")
+                nom=f"IA {couleur}"
+                if niveau == "9":
+                    joueurs.append(Stockfish(nom, i))
+                else :   
+                    joueurs.append(IA(nom, i, int(niveau)))
 
-        replay=partie(joueur1,joueur2)
+        replay=partie(joueurs[0],joueurs[1])
             
         while replay not in ("O","N"):
             replay=input("Voulez vous rejouer ? (O/N) \n")
@@ -105,10 +122,3 @@ def main():
         
 if __name__== "__main__":
     main()
-    
-    
-    
-    
-    
-    
-    

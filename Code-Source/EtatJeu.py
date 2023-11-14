@@ -284,7 +284,7 @@ class EtatJeu:
     
     def gagnant(self):
         if self.echec_et_mat(): 
-            return self.trait #attention ici on ne renvoie que la couleur du trait, au main de décider quel joueur c'est
+            return not self.trait #attention ici on ne renvoie que la couleur du trait, au main de décider quel joueur c'est
         
     def pat(self):
         """Indique si la partie est nulle selon nos critère qui sont le pat ou si seul un roi est déplacé pendant 30 coups consécutifs
