@@ -1,3 +1,0 @@
-Joueur1 : [Tour,True,4,3];[Pion,True,6,3]
-Joueur2 : [Pion,False,4,6]
-Trait: Blanc
