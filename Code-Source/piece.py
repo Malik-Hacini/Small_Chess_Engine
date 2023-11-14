@@ -46,6 +46,8 @@ class Roi(Piece):
         else:
             self.symbole="♔"
             self.valeur=0
+        self.odometre=0    
+        
     def coups_possibles(self, partie):
         self.coups = []
         x,y=self.coord
