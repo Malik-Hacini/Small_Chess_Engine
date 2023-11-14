@@ -9,28 +9,24 @@ class EtatJeu:
     """
     def __init__(self, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
-        Commence par créer un plateau si il n'est pas fourni,
-        puis attribue les pièces de ce plateau aux joueurs
-        de la partie, selon leur couleurs. Attribue aussi leur position aux pièces.
+        Construit le plateau et les pièces grâce au fichier de sauvegarde FEN donné (Le plateau de base du jeu d'échecs sinon)
+
 
         Args:
-            plateau (_type_, optional): Plateau de jeu. None si non fourni (nouvelle partie)
-            j1 (Joueur) : Premier joueur de la partie, instance de la classe Joueur
-            j2 (Joueur) : Second joueur de la partie, instance de la classe Joueur
-            trait (bool) : prochaine couleur à jouer
+            sauvegarde (str, optional): Le nom du plateau de sauvegarde. Défault : "Plateau_base".
         """
         
         print("Chargement de la partie")
-        #création des pieces
+        #Création des pieces
         self.pieces=[[],[]]
         self.plateau = dict()
         
         
-        #lecture du fichier de sauvegarde
+        #Lecture du fichier de sauvegarde
         fichier = open("sauvegardes\\"+sauvegarde+".fen", 'r')
         sauv_txt = fichier.read()
         fichier.close()
-        #maintenant il faut extraire le texte important : 
+        #On extrait le texte qui compte du FEN (nous ne prenons pas en compte le roque, en passant etc)
         lignes, trait, roque, en_passant, demi_coup, coup_complet  = sauv_txt.split(" ")
         
         y=7
@@ -60,9 +56,7 @@ class EtatJeu:
                 
     def __str__(self)->str:
         """Méthode print pour la partie. Affiche le plateau dans
-        son état actuel.Nous n'utilisons pas la métohde spéciale __str__, car En fonction du tour, l'affichage
-        du plateau est renversé.
-        
+        son état actuel.
         Args:
             tour (bool) :  True <=> Tour aux blancs 
         Returns:
@@ -99,7 +93,12 @@ class EtatJeu:
         
     
     
-    def fen_position(self):
+    def fen_position(self)->str:
+        """Traduit une partie en notation FEN, afin de sauvegarder.
+
+        Returns:
+            str: FEN de la partie
+        """
         pion=["p","P"]
         cavalier=["n","N"]
         fou=["b","B"]
@@ -133,12 +132,13 @@ class EtatJeu:
         fen+=f" {trait[self.trait]} - - 0 0"
         return fen
         
-    def sauvegarder(self,nom_fichier : str = None) -> None:
-        #ouvrir un fichier de sauvegarde en ecriture
-        #écrire la sauvegarde sous format [(type de piece, couleur, coordonnées)]
-        #fermer le fichier
+    def sauvegarder(self,nom_fichier : str ):
+        """Sauvegarde la partie dans le fichier indiqué
+
+        Args:
+            nom_fichier (str): le nom du fichier.
+        """
         
-        #écriture dans le fichier spécifier (écrase le texte déja existant ou crée un nouveau fichier)
         fichier = open("sauvegardes\\"+nom_fichier+".fen", 'w')
         fichier.write(self.fen_position())
         fichier.close()    
@@ -152,7 +152,7 @@ class EtatJeu:
             coord_i (tuple[int,int]): Position de la pièce à déplacer
             coord_f (tuple[int,int]): Position finale de la pièce
         Returns:
-            dict: Le plateau modifié
+            np.ndarray: Le plateau modifié
             """
             
         #il faut aussi supprimer la piece de la liste des pieces pour le calcul de la valeur blyat
@@ -177,13 +177,17 @@ class EtatJeu:
         self.trait = not self.trait #On change le tour
     
     
-    def mouvements(self,couleur) -> dict[tuple[int,int],list[tuple[int,int]]]:
-        #dictionnaire contenant les coups possibles dans l'état pour une certaine couleur
+    def mouvements(self,couleur:bool) -> dict[tuple[int,int],list[tuple[int,int]]]:
+        """Retourne tout les coups possibles pour une certaine couleur dans l'état actuel,
+        sous forme de dictionnaire.
+
+        Args:
+            couleur (bool): True <=> Blanc
+
+        Returns:
+            dict[tuple[int,int],list[tuple[int,int]]]: Dictionnaire des coups possibles, pour chaque pièce.
+        """
         mouv = dict()
-        """ ancien code qui pue un peu la merde mais je le garde juste au cas où
-        for coord_piece in self.plateau.keys():
-            if self.plateau[coord_piece].couleur == couleur:
-                mouv[coord_piece] = self.plateau[coord_piece].coups_legaux(self)"""
         for piece in self.pieces[couleur]:
             mouv[piece.coord] = piece.coups_legaux(self)
         return mouv
@@ -191,8 +195,7 @@ class EtatJeu:
 
 
     def calcul_valeur(self)->float:
-        """Fonction qui calcule la valeur du plateau. La valeur est positive si les blancs ont l'avantage et négative si 
-        les noirs ont l'avantage 
+        """Fonction d'évaluation de l'état du jeu. Est basée sur JAI PAS TROUVE LE WIKI
 
         Returns:
             float: valeur du jeu
@@ -204,7 +207,7 @@ class EtatJeu:
             else:
                 return -1000
 
-        if self.pat():
+        if self.nulle():
             return 0
                 
         
@@ -245,11 +248,8 @@ class EtatJeu:
     
                 
     def echec(self) -> bool:
-        """Fonction qui nous dis si le roi de la couleur demandé est en échec
-
-        Args:
-            couleur (bool): Couleur de du roi dont on veut savoir si il est en échec (True<=> Blanc et False <=> Noir)
-
+        """Détermine si le roi du joueur à qui c'est le tour (trait de la partie) est en échec.
+        
         Returns:
             bool: True <=> Roi en échec
         """
@@ -268,8 +268,12 @@ class EtatJeu:
 
 
    
-    def echec_et_mat(self):
-        #regarder si le roi est en echec, regarder s'il peut bouger, regarder s'il y a d'autre coups parmis les pieces
+    def echec_et_mat(self)->bool:
+        """Détermine si le joueur à qui c'est le tour est en échec et mat.
+
+        Returns:
+            bool
+        """
         if not self.echec() : return False #si le roi n'est pas en echec il n'y a pas mat
         #on regarde s'il existe des pièces qui ont le droit de bouger
         
@@ -280,13 +284,15 @@ class EtatJeu:
         return True
     
     
-    def gagnant(self):
+    def gagnant(self)->bool:
+        """Donne le gagnant de la partie, si il y en a un."""
+    
         if self.echec_et_mat(): 
             return not self.trait #attention ici on ne renvoie que la couleur du trait, au main de décider quel joueur c'est
-        
-    def pat(self):
-        """Indique si la partie est nulle selon nos critère qui sont le pat ou si seul un roi est déplacé pendant 30 coups consécutifs
-
+        return None
+    
+    def nulle(self)->bool:
+        """Détermine si la partie est nulle selon les deux cas particuliers que nous avons défini : le pat et l'odomètre.
         Returns:
             bool: True <=> La partie est nulle
         """

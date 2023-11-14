@@ -1,14 +1,27 @@
 from EtatJeu import*
 class Piece:
+    """Classe destinée à représenter les pièces du jeu d'échec. Chaque pièce
+       possède une couleur et une coordonnée (tuple).
+       Chaque pièce en particulier est une sous-classe de cette classe (on y définira notamment les valeurs
+       et symboles des pièces).
+    """
     def __init__(self, couleur=None, coord=None):
         self.couleur=couleur
         self.coord=coord
-        self.coups=[]
         self.symbole=None
         
     def __str__(self):
         return self.symbole
-    def coups_legaux(self,partie):
+    def coups_legaux(self,partie)->list[tuple[int,int]]:
+        """Détermine tous les coups légaux qu'une pièce peut faire dans une partie.
+           Le principe est de simuler les coups possibles, puis de trier parmi les coups menant 
+           à un échec (donc non légaux)
+        Args:
+            partie (EtatJeu): La partie
+
+        Returns:
+           list[tuple[int,int]] : Les coups
+        """
         coups = []
         for coord_f in self.coups_possibles(partie):
             #sauvegarde de l'ancien plateau
@@ -17,17 +30,17 @@ class Piece:
             #déplacement de la pièce
             self.coord=coord_f
             partie.plateau[coord_f] = partie.plateau.pop(coord_i)
-            #retirer la piece des pieces de l'adversaire
+            #On retire la pièce à l'adversaire
             if piece_potentiellement_mangée is not None:
                 partie.pieces[not self.couleur].remove(piece_potentiellement_mangée)
             
-            #vérification s'il y a echec
+            #On vérifie si il y a échec
             if not partie.echec():
                 coups.append(coord_f)
             #retrait du coups
             self.coord=coord_i
             partie.plateau[coord_i] = partie.plateau.pop(coord_f)
-            #remettre la piece mangée
+            #On replace la pièce mangée
             if piece_potentiellement_mangée is not None:
                 partie.plateau[coord_f] = piece_potentiellement_mangée
                 partie.pieces[not self.couleur].append(piece_potentiellement_mangée)
@@ -36,6 +49,8 @@ class Piece:
 
     
 class Roi(Piece): 
+    """Roi du jeu d'échecs. Hérite de Piece"""
+    
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Roi"
@@ -49,7 +64,7 @@ class Roi(Piece):
         self.odometre=0    
         
     def coups_possibles(self, partie):
-        self.coups = []
+        coups=[]
         x,y=self.coord
         
         for direction in [(1,1),(1,-1),(-1,-1),(-1,1),(1,0),(0,1),(-1,0),(0,-1)]:
@@ -59,13 +74,13 @@ class Roi(Piece):
             if 0<=x<=7  and 0<=y<=7:
                 piece=partie.plateau.get((x,y),None)
                 if piece==None:
-                    self.coups.append((x,y))
+                    coups.append((x,y))
                 else:
                     if piece.couleur != self.couleur:
-                        self.coups.append((x,y))
-        return self.coups
+                        coups.append((x,y))
+        return coups
 class Dame(Piece):
-    
+    """Dame du jeu d'échecs. Hérite de Piece"""
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Dame"
@@ -78,7 +93,7 @@ class Dame(Piece):
             self.valeur=-9
             
     def coups_possibles(self, partie):
-        self.coups=[]
+        coups=[]
         x,y=self.coord
         
         for direction in [(1,1),(1,-1),(-1,-1),(-1,1),(1,0),(0,1),(-1,0),(0,-1)]:
@@ -88,19 +103,19 @@ class Dame(Piece):
             while 0<=x<=7  and 0<=y<=7:
                 piece=partie.plateau.get((x,y),None)
                 if piece==None:
-                    self.coups.append((x,y))
+                    coups.append((x,y))
                 else:
                     if piece.couleur != self.couleur:
-                        self.coups.append((x,y))
+                        coups.append((x,y))
                         break
                     elif piece.couleur==self.couleur:
                         break
                 x+=direction[0]
                 y+=direction[1]
-        return self.coups
+        return coups
 
 class Fou(Piece):
-    
+    """Fou du jeu d'échecs. Hérite de Piece"""
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom=("Fou")
@@ -113,7 +128,7 @@ class Fou(Piece):
             self.valeur=-3
             
     def coups_possibles(self, partie):
-        self.coups=[]
+        coups=[]
         
         for direction in [(1,1),(1,-1),(-1,-1),(-1,1)]:
             x,y=self.coord   
@@ -122,10 +137,10 @@ class Fou(Piece):
             while 0<=x<=7  and 0<=y<=7:
                 piece=partie.plateau.get((x,y),None)
                 if piece==None:
-                    self.coups.append((x,y))
+                    coups.append((x,y))
                 else:
                     if piece.couleur != self.couleur:
-                        self.coups.append((x,y))
+                        coups.append((x,y))
                         break
                     elif piece.couleur==self.couleur:
                         break
@@ -133,12 +148,12 @@ class Fou(Piece):
                 y+=direction[1]
     
         
-        return self.coups
+        return coups
     
 
 
 class Cavalier(Piece):
-    
+    """Cavlier du jeu d'échecs. Hérite de Piece"""
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Cavalier"
@@ -151,7 +166,7 @@ class Cavalier(Piece):
             self.valeur=-3
             
     def coups_possibles(self, partie):
-        self.coups=[]
+        coups=[]
         x,y=self.coord 
         
         for direction in [(1,2),(-1,2),(-2,1),(-2,-1),(-1,-2),(1,-2),(2,-1),(2,1)]:
@@ -159,13 +174,13 @@ class Cavalier(Piece):
             if 0<=x+direction[0]<=7 and 0<=y+direction[1]<=7:
                 piece=partie.plateau.get((x+direction[0],y+direction[1]),None)
                 if piece==None or piece.couleur!=self.couleur:
-                    self.coups.append((x+direction[0],y+direction[1]))
-        return self.coups
+                    coups.append((x+direction[0],y+direction[1]))
+        return coups
 
 
 
 class Tour(Piece):
-    
+    """Tour du jeu d'échecs. Hérite de Piece"""
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Tour"
@@ -178,7 +193,7 @@ class Tour(Piece):
             self.valeur=-5
             
     def coups_possibles(self, partie):
-        self.coups=[]
+        coups=[]
         x,y=self.coord
         
         for direction in [(1,0),(0,1),(-1,0),(0,-1)]:
@@ -188,20 +203,20 @@ class Tour(Piece):
             while 0<=x<=7  and 0<=y<=7:
                 piece=partie.plateau.get((x,y),None)
                 if piece==None:
-                    self.coups.append((x,y))
+                    coups.append((x,y))
                 else:
                     if piece.couleur != self.couleur:
-                        self.coups.append((x,y))
+                        coups.append((x,y))
                         break
                     elif piece.couleur==self.couleur:
                         break
                 x+=direction[0]
                 y+=direction[1]
-        return self.coups
+        return coups
     
 
 class Pion(Piece):
-    
+    """Pion du jeu d'échecs. Hérite de Piece"""
     def __init__(self, couleur, coord=None):
         super().__init__(couleur, coord) 
         self.nom="Pion"
@@ -215,29 +230,29 @@ class Pion(Piece):
             self.valeur=-1
             
     def coups_possibles(self, partie):
-        self.coups=[]
+        coups=[]
         x,y=self.coord
 
         if self.couleur:
             if y+1<=7:
                 if partie.plateau.get((x,y+1),None)==None:
-                    self.coups.append((x,y+1))
+                    coups.append((x,y+1))
                     if self.coord[1]==1 and partie.plateau.get((x,y+2),None)==None and y+2<=7:
-                        self.coups.append((x,y+2))
+                        coups.append((x,y+2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
                         piece=partie.plateau.get((x+dx,y+1),None)
                         if piece != None and piece.couleur != self.couleur:
-                            self.coups.append((x+dx, y+1))
+                            coups.append((x+dx, y+1))
         else:
             if y-1>=0:
                 if partie.plateau.get((x,y-1),None)==None:
-                    self.coups.append((x,y-1))
+                    coups.append((x,y-1))
                     if self.coord[1]==6 and partie.plateau.get((x,y-2),None)==None and y-2>=0:
-                        self.coups.append((x,y-2))
+                        coups.append((x,y-2))
                 for dx in [-1, 1]:
                     if 0<=x+dx<=7:
                         piece=partie.plateau.get((x+dx,y-1),None)
                         if piece != None and piece.couleur != self.couleur:
-                            self.coups.append((x+dx, y-1))   
-        return self.coups
+                            coups.append((x+dx, y-1))   
+        return coups

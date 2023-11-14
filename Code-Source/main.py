@@ -1,13 +1,14 @@
 from joueurs import*
 from EtatJeu import*
 import sys
+import time
 
-def partie(joueur1,joueur2):
+def partie(joueur1: Joueur,joueur2: Joueur):
     """Joue une partie d'échecs. 
 
     Args:
-        joueur1 (_type_): Le joueur 1. Peut être humain ou IA
-        joueur2 (_type_): Le joueur 2. Peut être humain ou IA 
+        joueur1 (Joueur): Le joueur 1. Peut être humain ou IA     
+        joueur2 (Joueur): Le joueur 2. Peut être humain ou IA 
     """
     
     save=None
@@ -35,9 +36,10 @@ def partie(joueur1,joueur2):
 
 
     print(partie)
-    draw=False
+    nulle_votee=False
     draw_votes=0
-    while partie.gagnant() is None and not draw:
+    print(partie.nulle())
+    while partie.gagnant() is None and not partie.nulle() and not nulle_votee:
 
         
         #Si le joueur précédent a voté nulle :
@@ -47,7 +49,7 @@ def partie(joueur1,joueur2):
                 vote=input(f"{joueurs[int(partie.trait)].nom}, acceptez vous la nulle ? (O/N) \n")
             
             if vote=="O": 
-                draw=True 
+                nulle_votee=True 
                 partie.trait = not partie.trait #On change le tour
                 continue
             else: print("Nulle refusée.")   
@@ -63,19 +65,17 @@ def partie(joueur1,joueur2):
         else:
             draw_votes=0
         if deplacement=="save" :
-            partie.sauvegarder("save")
+            date=time.strftime("%Y%m%d-%H%M%S")
+            partie.sauvegarder(f"save_{date}")
             print("Sauvegarde effectuée.") 
             return "N"
         
         partie.deplacer_piece(deplacement[0],deplacement[1])
-        
-        if partie.pat():
-            draw=True
         print(partie)
     
     #On affiche le résultat de la partie.
-    if draw: print("Partie Nulle.")
-    else:    print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
+    if partie.nulle() or nulle_votee: print("Partie Nulle.")
+    else: print(f"{joueurs[partie.gagnant()].nom} a gagné la partie ! \n")
     
     
     
@@ -125,13 +125,6 @@ def main():
     
     
     
-        
-if __name__== "__main__":
-    main()
-    
-
-    
-
         
 if __name__== "__main__":
     main()
