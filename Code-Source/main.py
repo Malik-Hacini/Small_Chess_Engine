@@ -93,17 +93,21 @@ def main():
             else: couleur="noir"
             
             while type_joueur not in ("1","2"):
-                
                 type_joueur=input(f"De quel type est le Joueur {couleur} ? \n 1: Humain \n 2: IA \n")
             
                 
             if type_joueur=="1":
                 nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
-                joueurs.append(Humain(nom,i))
-            
-            
+                joueurs.append(Humain(nom,i))   
             else:
-                niveau=input(f"Quel est le niveau de l'IA {couleur} souhaité? \n")
+                print("type 2")
+                niveau=5
+                while niveau not in ["0","1","2","3"]:
+                    niveau=input(f"""Quel est le niveau de l'IA {couleur} souhaité ? 
+0. Novice : Joue aléatoirement.
+1. Débutant
+2. Intérmédiaire
+3. Avancé \n""")
                 nom=f"IA {couleur}"
                 if niveau == "9":
                     joueurs.append(Stockfish(nom, i))
@@ -120,6 +124,14 @@ def main():
             sys.exit()
     
     
+    
+        
+if __name__== "__main__":
+    main()
+    
+
+    
+
         
 if __name__== "__main__":
     main()

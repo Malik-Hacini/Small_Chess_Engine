@@ -164,7 +164,6 @@ class EtatJeu:
         
         if isinstance(self.plateau[coord_i],Roi):
             self.plateau[coord_i].odometre+=1
-            print(self.plateau[coord_i].odometre)
         else:
             for piece in self.pieces[self.trait]:
                 if isinstance(piece,Roi):
