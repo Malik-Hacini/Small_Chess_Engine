@@ -20,7 +20,7 @@ class EtatJeu:
             trait (bool) : prochaine couleur à jouer
         """
         
-        print("Chargement de la partie")
+        #print("Chargement de la partie")
         #création des pieces
         self.pieces=[[],[]]
         self.plateau = dict()
