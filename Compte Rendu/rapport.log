@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.9.14)  13 NOV 2023 20:50
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.9.14)  14 NOV 2023 12:59
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -550,7 +550,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 \verbatim@out=\write4
-runsystem(echo 'write18-test-202311131250'>"rapport.w18")...executed.
+runsystem(echo 'write18-test-20231114779'>"rapport.w18")...executed.
 
 \instream=\read4
 runsystem(del "rapport.w18")...executed.
@@ -873,4 +873,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  79i,7n,93p,483b,631s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on rapport.xdv (5 pages, 100316 bytes).
+Output written on rapport.xdv (5 pages, 100856 bytes).

@@ -166,7 +166,7 @@ très complexes à mettre en place. Un exemple sera le plus parlant :
 
 \includegraphics{exempledraw}
 
-Aux yeux d'un joueur d'échec, cette partie est très clairement une égalité.
+Aux yeux d'un joueur d'échec, cette partie est très clairement une nulle.
 Cependant, il est très complexe pour un algorithme de le reconnaître.
 Nous ne pouvons donc pas mettre en place toutes les possibilités différentes.
 
@@ -228,6 +228,7 @@ définies dans des fichiers annexes.
 Nous avons décidé d'implémenter ce programme avant de concevoir l'IA, 
 afin de faciliter les tests.
 On définit alors une fonction partie, qui créee (à partir des choix de l'utilisateur) et fait jouer une partie à l'utilisateur.
+Cette fonction doit notamment gérer le vote de la nulle.
 On place ensuite cette fonction dans une boucle, en demandant à l'utilisateur si il veut rejouer
 à chaque fin de partie.
 \begin{minted}[mathescape,
