@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{c+c1}{\PYGZsh{} Déplacement des pièces}
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}deplacement\PYGZus{}pion}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}test\PYGZus{}deplacement\PYGZus{}pion\PYGZdq{}}\PYG{p}{)}
+      \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{premier\PYGZus{}coup}\PYG{o}{=}\PYG{k+kc}{False}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{)]}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[]}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{)]}
+
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}deplacement\PYGZus{}fou}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}test\PYGZus{}deplacement\PYGZus{}fou\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{),(}\PYG{l+m+mi}{6}\PYG{p}{,}\PYG{l+m+mi}{6}\PYG{p}{),(}\PYG{l+m+mi}{7}\PYG{p}{,}\PYG{l+m+mi}{7}\PYG{p}{),(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{),(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{),(}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{),(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{),(}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{6}\PYG{p}{),(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{7}\PYG{p}{)]}
+
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}deplacement\PYGZus{}tour}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}test\PYGZus{}deplacement\PYGZus{}tour\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)]}
+
+
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}deplacement\PYGZus{}reine}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}test\PYGZus{}deplacement\PYGZus{}reine\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,} \PYG{l+m+mi}{6}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{6}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{7}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{6}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{7}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{)]}
+
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}deplacement\PYGZus{}cavalier}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}test\PYGZus{}deplacement\PYGZus{}cavalier\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)]}
+\end{Verbatim}

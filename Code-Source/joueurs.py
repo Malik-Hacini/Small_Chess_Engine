@@ -1,12 +1,7 @@
 import numpy as np
 import math
 from EtatJeu import *
-from stockfish import Stockfish
 import random
-
-stockfish = Stockfish("stockfish\\stockfish-windows-x86-64-avx2.exe")
-
-
 
 
 class Joueur():
@@ -100,20 +95,6 @@ class Humain(Joueur):
 
         return coord_p,coup_int
         
-class Stockfish(Joueur):
-    
-    def __init__(self, nom: str, couleur: bool, elo : int = 1350) -> None:
-        super().__init__(nom, couleur)
-        #stockfish.set_elo_rating(elo)
-        stockfish.set_skill_level(elo)
-        
-    def jouer_coup(self,partie: dict) -> tuple[int,int]:
-        
-        stockfish.set_fen_position(partie.fen_position())
-        
-        move = stockfish.get_best_move()
-        return (conv_str(move[:2]),conv_str(move[2:]))
-        
         
         
         
@@ -124,10 +105,17 @@ class IA(Joueur):
         Joueur (class): super classe
     """
     def __init__(self, nom: str, couleur: bool,profondeur = 0) -> None:
+        """initialise une ia
+
+        Args:
+            nom (str): nom de l'ia 
+            couleur (bool): couleur de l'ia
+            profondeur (int, optional): profondeur du minimax/alphabeta. Defaults to 0.
+        """
         super().__init__(nom, couleur)
         self.profondeur = profondeur
         self.endgame = False
-        self.algo = "alphabeta"
+        self.algo = "alphabeta"#permet de choisir l'algo de l'ia
     
     
     def jouer_coup(self,partie: dict) -> tuple[int,int]:
@@ -139,7 +127,8 @@ class IA(Joueur):
         Returns:
             tuple[int,int]: coup.
         """
-        
+        couleurs=["noire","blanche"]
+        print(f"\n L'IA {couleurs[self.couleur]} réflechit \n")
         meilleur_coup = None
         alpha = -math.inf
         beta = math.inf
@@ -151,10 +140,11 @@ class IA(Joueur):
                     coups.append((coord_i,coord_f))
             return coups[random.randint(0,len(coups)-1)]
         
-        
+        #si le coup n'est pas aléatoire
         if self.couleur :
             meilleure_valeur = -math.inf
             for coord_i,coords_f in partie.mouvements(self.couleur).items():
+                #récupere les coordonnées de départ de chaque piece qui peut être déplacée, et les cases sur laquelle elle peut se déplacer
                 
                 #Ici, l'idée est de simuler touts les coups possibles.
                 #On sauvegarde toutes les informations de la partie que nous allons modifier pendant la simulation,
@@ -163,52 +153,47 @@ class IA(Joueur):
 
                 #pour chaque coups possible dans les déplacement disponibles de la piece
                 for coord_f in coords_f:
-                    #créer un nouvel état où on bouge une piece
-                    #simu = copy.deepcopy(partie)
+                    #sauvegarder les données du plateau de jeu
                     piece_retirée = partie.plateau.get(coord_f,None)
-                    #on bouge une piece
                     
                     #on sauvegarde l'odometre
                     for piece in partie.pieces[not partie.trait]:
                         if isinstance(piece,Roi):
                             sauv_odometre = piece.odometre
                             roi = piece
-                    
-                        
+                    #on déplace la piece
                     partie.deplacer_piece(coord_i,coord_f)
-                    #max
+                    
+                    #calcul de la valeur avec l'algo voulu
                     if self.algo == "minimax" : 
                         valeur = minimax(partie,self.profondeur-1, not self.couleur)
                     else:
                         valeur = alphabeta(partie,self.profondeur-1,alpha,beta, not self.couleur)
                     
                     #retirer coup
-                    partie.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
+                    #remettre la piece au bon endroit
+                    partie.deplacer_piece(coord_f,coord_i)
                     if piece_retirée is not None:
                         partie.plateau[coord_f] = piece_retirée
                         partie.pieces[not partie.trait].append(piece_retirée)
                         
-                    #remettre l'odometre a sa valeur
+                    #remettre l'odometre à sa valeur de départ
                     roi.odometre = sauv_odometre
                     
                     #le joueur blanc le maximum
                     if valeur> meilleure_valeur:
                         meilleur_coup = coord_i,coord_f
                         meilleure_valeur = valeur
-                    #cette condition ne sert a rien on compare une valeur finie à plus l'infinie. car beta ne change pas
-                    if valeur > beta :
-                        break
+                        
+                    #modification du alpha pour le minimax avec elagage alpha beta
                     alpha = max(alpha,valeur)
         else :
             meilleure_valeur = math.inf
             for coord_i,coords_f in partie.mouvements(self.couleur).items():
-                
                 #pour chaque coups possible dans les déplacement disponibles de la piece
                 for coord_f in coords_f:
-                    #créer un nouvel état où on bouge une piece
-                    #simu = copy.deepcopy(partie)
+                    #sauvegarder les données du plateau de jeu
                     piece_retirée = partie.plateau.get(coord_f,None)
-                    #on bouge une piece
                     
                     #on sauvegarde l'odometre
                     for piece in partie.pieces[not partie.trait]:
@@ -216,9 +201,9 @@ class IA(Joueur):
                             sauv_odometre = piece.odometre
                             roi = piece
                             
-                    
+                    #on bouge une piece
                     partie.deplacer_piece(coord_i,coord_f)
-                    #max
+                    #calcul de la valeur avec l'algo voulu
                     if self.algo == "minimax" : 
                         valeur = minimax(partie,self.profondeur-1, not self.couleur)
                     else:
@@ -234,15 +219,10 @@ class IA(Joueur):
                     roi.odometre = sauv_odometre
                 
                     #le joueur noir veut le minimum, le joueur blanc le maximum
-                    #print(valeur)
                     if valeur< meilleure_valeur:
                         meilleur_coup = coord_i,coord_f
                         meilleure_valeur = valeur
-                    if valeur < alpha :
-                        break
                     beta = min(beta,valeur)
-            
-        #print(time.time()-début)
         return meilleur_coup
     
 def conv_str(coord):
@@ -258,17 +238,24 @@ def conv_int(coord):
 
 
 def minimax(etat, profondeur,couleur):
-    
-    """A FAIRE"""
+    """Implémentation de l'algorithme minimax appliqué à notre exemple
+
+    Args:
+        etat (EtatJeu): etat de la partie à analyser
+        profondeur (int): nombre de profondeur restante a analyser
+        couleur (bool): couleur dont il faut identifier la valeur du jeu
+
+    Returns:
+        int: valeur du minimax
+    """
     if profondeur==0 or etat.echec_et_mat():
         return etat.calcul_valeur()
     if couleur:
         valeur = -math.inf
         for coord_i,coords_f in etat.mouvements(etat.trait).items():
             for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
+                #sauvegarder les données du plateau de jeu
                 piece_retirée = etat.plateau.get(coord_f,None)
-                #on bouge une piece
                 
                 #on sauvegarde l'odometre
                 for piece in etat.pieces[not etat.trait]:
@@ -276,11 +263,13 @@ def minimax(etat, profondeur,couleur):
                         sauv_odometre = piece.odometre
                         roi = piece
                 
+                #on bouge la piece
                 etat.deplacer_piece(coord_i,coord_f)
-                #max
+                #calcul recursif de la valeur
                 valeur = max(valeur,minimax(etat,profondeur-1, not couleur))
                 #retirer coup
-                etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
+                #remettre la piece au bon endroit
+                etat.deplacer_piece(coord_f,coord_i)
                 if piece_retirée is not None:
                     etat.plateau[coord_f] = piece_retirée
                     etat.pieces[not etat.trait].append(piece_retirée)
@@ -292,9 +281,8 @@ def minimax(etat, profondeur,couleur):
         valeur = math.inf
         for coord_i,coords_f in etat.mouvements(etat.trait).items():
             for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
+                #sauvegarder les données du plateau de jeu
                 piece_retirée = etat.plateau.get(coord_f,None)
-                #on bouge une piece
                 
                 #on sauvegarde l'odometre
                 for piece in etat.pieces[not etat.trait]:
@@ -302,8 +290,9 @@ def minimax(etat, profondeur,couleur):
                         sauv_odometre = piece.odometre
                         roi = piece
                         
+                #on bouge la piece
                 etat.deplacer_piece(coord_i,coord_f)
-                #max
+                #calcul recursif de la valeur
                 valeur = min(valeur,minimax(etat,profondeur-1, not couleur))
                 #retirer coup
                 etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
@@ -318,7 +307,16 @@ def minimax(etat, profondeur,couleur):
 
 
 def alphabeta(etat, profondeur,alpha,beta,couleur):
-    """A FAIRE"""
+    """Implémentation de l'algorithme minimax avec élagage alpha beta appliqué à notre exemple
+
+    Args:
+        etat (EtatJeu): etat de la partie à analyser
+        profondeur (int): nombre de profondeur restante a analyser
+        couleur (bool): couleur dont il faut identifier la valeur du jeu
+
+    Returns:
+        int: valeur du minimax
+    """
     if profondeur==0 or etat.echec_et_mat():
         
         return etat.calcul_valeur()
@@ -326,18 +324,18 @@ def alphabeta(etat, profondeur,alpha,beta,couleur):
         valeur = -math.inf
         for coord_i,coords_f in etat.mouvements(etat.trait).items():
             for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
+                #sauvegarder les données du plateau de jeu
                 piece_retirée = etat.plateau.get(coord_f,None)
-                #on bouge une piece
                 
                 #on sauvegarde l'odometre
                 for piece in etat.pieces[not etat.trait]:
                     if isinstance(piece,Roi):
                         sauv_odometre = piece.odometre
                         roi = piece
+                #on bouge la piece
                 
                 etat.deplacer_piece(coord_i,coord_f)
-                #max
+                #calcul recursif de la valeur
                 valeur = max(valeur,alphabeta(etat,profondeur-1,alpha,beta, not couleur))
                 #retirer coup
                 etat.deplacer_piece(coord_f,coord_i)#remettre la piece au bon endroit
@@ -355,22 +353,20 @@ def alphabeta(etat, profondeur,alpha,beta,couleur):
         valeur = math.inf
         for coord_i,coords_f in etat.mouvements(etat.trait).items():
             for coord_f in coords_f:
-                #créer un nouvel état où on bouge une piece, penser à changer le tour
+                #sauvegarder les données du plateau de jeu
                 piece_retirée = etat.plateau.get(coord_f,None)
-                #on bouge une piece
                 
                 #on sauvegarde l'odometre
                 for piece in etat.pieces[not etat.trait]:
                     if isinstance(piece,Roi):
                         sauv_odometre = piece.odometre
                         roi = piece
-                        
-                        
-                        
+                
+                #on bouge la piece        
                 etat.deplacer_piece(coord_i,coord_f)
-                #max
+                #calcul recursif de la valeur
                 valeur = min(valeur,alphabeta(etat,profondeur-1,alpha,beta, not couleur))
-                #retirer coup
+                #retirer le coup
                 etat.deplacer_piece(coord_f,coord_i)#remettre la piece Nau bon endroit
                 if piece_retirée is not None:
                     etat.plateau[coord_f] = piece_retirée

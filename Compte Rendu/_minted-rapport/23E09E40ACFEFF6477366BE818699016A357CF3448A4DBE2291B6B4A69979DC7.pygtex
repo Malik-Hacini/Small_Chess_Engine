@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}coups\PYGZus{}legaux}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}test\PYGZus{}coups\PYGZus{}legaux\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}possibles}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[(}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),}
+      \PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)]}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{coups\PYGZus{}legaux}\PYG{p}{(}\PYG{n}{partie}\PYG{p}{)}\PYG{o}{==}\PYG{p}{[]}
+\end{Verbatim}

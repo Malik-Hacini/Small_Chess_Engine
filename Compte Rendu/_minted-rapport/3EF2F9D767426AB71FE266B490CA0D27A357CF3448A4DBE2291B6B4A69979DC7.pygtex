@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}pat}\PYG{p}{():}
+      \PYG{c+c1}{\PYGZsh{} 1ère situation de nulle, il n\PYGZsq{}y a pas d\PYGZsq{}échec et mat et aucun coup n\PYGZsq{}est possible}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}pat\PYGZus{}1\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pat}\PYG{p}{()}
+      \PYG{c+c1}{\PYGZsh{} 2ème situation de nulle, seul les rois bougent}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}pat\PYGZus{}2\PYGZdq{}}\PYG{p}{)}
+      \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pieces}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{odometre}\PYG{o}{=}\PYG{l+m+mi}{40}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{pat}\PYG{p}{()}
+
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}echec}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}avec\PYGZus{}echec\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{echec}\PYG{p}{()}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}sans\PYGZus{}echec\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{o+ow}{not} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{echec}\PYG{p}{()}
+
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}mat}\PYG{p}{():}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}avec\PYGZus{}mat\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{echec\PYGZus{}et\PYGZus{}mat}\PYG{p}{()}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}sans\PYGZus{}mat\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{o+ow}{not} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{echec\PYGZus{}et\PYGZus{}mat}\PYG{p}{()}
+\end{Verbatim}

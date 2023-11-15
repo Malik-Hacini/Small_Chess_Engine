@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.9.14)  15 NOV 2023 11:15
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.9.14)  15 NOV 2023 21:54
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -550,7 +550,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 \verbatim@out=\write4
-runsystem(echo 'write18-test-20231115675'>"rapport.w18")...executed.
+runsystem(echo 'write18-test-202311151314'>"rapport.w18")...executed.
 
 \instream=\read4
 runsystem(del "rapport.w18")...executed.
@@ -834,10 +834,10 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
 \openout5 = `rapport.pyg'.
 
- (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex) [3]
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
 \openout5 = `rapport.pyg'.
 
- (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex [3])
 File: exempledraw.png Graphic file (type bmp)
 <exempledraw.png>
 \openout5 = `rapport.pyg'.
@@ -852,43 +852,68 @@ File: exempledraw.png Graphic file (type bmp)
 \openout5 = `rapport.pyg'.
 
  (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
-Overfull \hbox (159.3449pt too wide) in paragraph at lines 251--265
-[] 
+Underfull \hbox (badness 10000) in paragraph at lines 251--256
+
  []
 
 [5]
+Overfull \hbox (7.12726pt too wide) in paragraph at lines 262--262
+[]|\TU/lmr/m/n/10 Cavalier| 
+ []
+
 \openout5 = `rapport.pyg'.
 
- (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 295--301
+(_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+Underfull \hbox (badness 10000) in paragraph at lines 298--304
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 307--311
+Underfull \hbox (badness 10000) in paragraph at lines 310--314
 
  []
 
 [6]
 \openout5 = `rapport.pyg'.
 
- (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex) [7] (rapport.aux)
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/2C304D3F8E9010BAE63CCB3E2B379590A357CF3448A4DBE2291B6B4A69979DC7.pygtex) [7]
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/3993841623809D85D3ED771A3CBD363AA357CF3448A4DBE2291B6B4A69979DC7.pygtex
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 3.
+ [8])
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/23E09E40ACFEFF6477366BE818699016A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/3EF2F9D767426AB71FE266B490CA0D27A357CF3448A4DBE2291B6B4A69979DC7.pygtex)
+\openout5 = `rapport.pyg'.
+
+ (_minted-rapport/28E4875AD3A5366C394BFB5194E38554A357CF3448A4DBE2291B6B4A69979DC7.pygtex [9]) [10] (rapport.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
  ***********
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-(rerunfilecheck)             Checksum: FC7490B96CCFFE0FC4112B525CA8E697;2572.
+(rerunfilecheck)             Checksum: 538F0B7F8FC91BFA7D5AA1B95492B161;3643.
 runsystem(del rapport.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 27755 strings out of 410379
- 563105 string characters out of 5788051
- 1926432 words of memory out of 5000000
- 48619 multiletter control sequences out of 15000+600000
- 565847 words of font info for 84 fonts, out of 8000000 for 9000
+ 27796 strings out of 410379
+ 566013 string characters out of 5788051
+ 1930432 words of memory out of 5000000
+ 48642 multiletter control sequences out of 15000+600000
+ 565855 words of font info for 85 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 79i,9n,93p,483b,631s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,9n,93p,654b,771s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on rapport.xdv (7 pages, 138060 bytes).
+Output written on rapport.xdv (10 pages, 221436 bytes).

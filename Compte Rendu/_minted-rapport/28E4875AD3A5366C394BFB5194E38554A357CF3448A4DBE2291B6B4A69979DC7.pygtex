@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{c+c1}{\PYGZsh{} Test valeur}
+  \PYG{k}{def} \PYG{n+nf}{test\PYGZus{}valeur}\PYG{p}{():}
+      \PYG{c+c1}{\PYGZsh{} Test de situation finale}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}avec\PYGZus{}mat\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{calcul\PYGZus{}valeur}\PYG{p}{()}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1000}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}pat\PYGZus{}1\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{calcul\PYGZus{}valeur}\PYG{p}{()}\PYG{o}{==}\PYG{l+m+mi}{0}
+      \PYG{c+c1}{\PYGZsh{} Test centre et sous\PYGZhy{}centre}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}controle\PYGZus{}centre\PYGZus{}et\PYGZus{}ss\PYGZus{}centre\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{calcul\PYGZus{}valeur}\PYG{p}{()}\PYG{o}{==}\PYG{l+m+mf}{0.4}
+      \PYG{c+c1}{\PYGZsh{} Test pions alignés}
+      \PYG{n}{partie}\PYG{o}{=}\PYG{n}{init\PYGZus{}partie\PYGZus{}test}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}pions\PYGZus{}allignes\PYGZdq{}}\PYG{p}{)}
+      \PYG{k}{assert} \PYG{n}{partie}\PYG{o}{.}\PYG{n}{calcul\PYGZus{}valeur}\PYG{p}{()}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mf}{0.1}
+\end{Verbatim}

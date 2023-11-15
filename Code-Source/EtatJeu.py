@@ -303,4 +303,4 @@ class EtatJeu:
             coups+=piece.coups_legaux(self)
             if isinstance(piece,Roi):
                 odometre=piece.odometre
-        return (not self.echec_et_mat()and len(coups)==0) or (odometre>=10)
+        return (not self.echec_et_mat()and len(coups)==0) or (odometre>=30)

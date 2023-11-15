@@ -161,7 +161,6 @@ def main():
                 nom=input(f"Quel est le nom du Joueur {couleur} ? \n")
                 joueurs.append(Humain(nom,i))   
             else:
-                print("type 2")
                 niveau=5
                 while niveau not in ("0","1","2","3"):
                     niveau=input(f"""Quel est le niveau de l'IA {couleur} souhaité ? 
@@ -170,10 +169,7 @@ def main():
 2. Intérmédiaire
 3. Avancé \n""")
                 nom=f"IA {couleur}"
-                if niveau == "9":
-                    joueurs.append(Stockfish(nom, i))
-                else :   
-                    joueurs.append(IA(nom, i, int(niveau)))
+                joueurs.append(IA(nom, i, int(niveau)))
 
         replay=partie(joueurs[0],joueurs[1])
             
