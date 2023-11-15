@@ -101,7 +101,7 @@ class Humain(Joueur):
         return coord_p,coup_int
         
 class Stockfish(Joueur):
-    
+    """Classe stockfish, IA d'echec performante utile pour faire les tests"""
     def __init__(self, nom: str, couleur: bool, elo : int = 1350) -> None:
         super().__init__(nom, couleur)
         #stockfish.set_elo_rating(elo)
@@ -119,10 +119,7 @@ class Stockfish(Joueur):
         
 class IA(Joueur):
     """Représente un joueur de type IA du jeu d'échecs. Basée sur les fonctions minimax et alphabeta définies plus bas
-    Une IA possède un nom, une couleur, et une profondeur (de recherche dans le minimax), représentée comme "niveau" à l'utilisateur.
-    Args:
-        Joueur (class): super classe
-    """
+    Une IA possède un nom, une couleur, et une profondeur (de recherche dans le minimax), représentée comme "niveau" à l'utilisateur."""
     def __init__(self, nom: str, couleur: bool,profondeur = 0) -> None:
         super().__init__(nom, couleur)
         self.profondeur = profondeur
@@ -246,8 +243,7 @@ class IA(Joueur):
         return meilleur_coup
     
 def conv_str(coord):
-    """Simple convertisseur de notation algébrique en coordonnées entières
-    """
+    """Simple convertisseur de notation algébrique en coordonnées entières"""
     return (ord(coord[0])-97,int(coord[1])-1)
 
 
@@ -258,8 +254,16 @@ def conv_int(coord):
 
 
 def minimax(etat, profondeur,couleur):
-    
-    """A FAIRE"""
+    """Performe l'algorithme minmax appliqué à notre jeu d'echec en prenant en compte une profondeur demandé
+
+    Args:
+        etat (EtatJeu): Classe de l'etat du jeu
+        profondeur (int): profondeur à laquelle va l'algorithme 
+        couleur (bool): couleur du joueur pour qui ont cherche la valeur du plateau
+
+    Returns:
+        valeur: la valeur du noeud
+    """
     if profondeur==0 or etat.echec_et_mat():
         return etat.calcul_valeur()
     if couleur:
@@ -318,7 +322,18 @@ def minimax(etat, profondeur,couleur):
 
 
 def alphabeta(etat, profondeur,alpha,beta,couleur):
-    """A FAIRE"""
+    """Performe l'algorithme alpha-beta appliqué à notre jeu d'echec en prenant en compte une profondeur demandé
+
+    Args:
+        etat (EtatJeu): classe de l'etat jeu
+        profondeur (int): profondeur à laquelle va l'algorithme
+        alpha (float): _description_
+        beta (float): _description_
+        couleur (bool): couleur du joueur pour qui ont cherche la valeur du plateau
+
+    Returns:
+        float: _description_
+    """
     if profondeur==0 or etat.echec_et_mat():
         
         return etat.calcul_valeur()
@@ -363,10 +378,7 @@ def alphabeta(etat, profondeur,alpha,beta,couleur):
                 for piece in etat.pieces[not etat.trait]:
                     if isinstance(piece,Roi):
                         sauv_odometre = piece.odometre
-                        roi = piece
-                        
-                        
-                        
+                        roi = piece     
                 etat.deplacer_piece(coord_i,coord_f)
                 #max
                 valeur = min(valeur,alphabeta(etat,profondeur-1,alpha,beta, not couleur))
