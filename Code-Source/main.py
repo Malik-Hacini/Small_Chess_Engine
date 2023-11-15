@@ -1,8 +1,27 @@
 from joueurs import*
 from EtatJeu import*
 import sys
+import os
 import time
 
+def conv_date(date:str)->str:
+    """Convertit une date au format "AAAAMMJJ-HMS en texte plus clair.
+
+    Args:
+        date (str): date à convertir
+
+    Returns:
+        str: date au format JJ-MM-AAAA H:M
+    """
+    annee=date[:4]
+    mois=date[4:6]
+    jour=date[6:8]
+    heure=date[9:11]
+    min=date[11:13]
+    
+    return jour + "/" + mois + "/" + annee + " à " + heure + ":" + min
+    
+    
 def partie(joueur1: Joueur,joueur2: Joueur):
     """Joue une partie d'échecs. 
 
@@ -16,21 +35,34 @@ def partie(joueur1: Joueur,joueur2: Joueur):
         
         save=input("Voulez vous charger une sauvegarde ? (O/N) \n")
     
+    
+    #On affiche les sauvegardes disponibles à l'utilisateur, et on lui en fait choisir une. On gère les erreurs possibles.
     if save=="O":
-        loop=True
-        while loop:
-            try :
-                nom_save=input("Nom du fichier de sauvegarde : \n")
-                partie = EtatJeu(sauvegarde = nom_save)
-                loop=False
-            except:
-                print("Fichier introuvable \n")
-        print("Sauvegarde chargée \n")
+        liste_fichiers=[fichier for fichier in os.listdir("./sauvegardes") if os.path.splitext(fichier)[-1].lower()==".fen"]
+        liste_fichiers.remove("Plateau_base.fen")
+        if liste_fichiers==[]:
+            start=input("""Aucune sauvegarde n'est disponible. 
+Appuyez sur Entrée pour démarrer une nouvelle partie.""")
+            nom_save="Plateau_base.fen"
+        else:
+            print("Voici les sauvegardes disponibles: ")
+            for index,fichier in enumerate(liste_fichiers):
+                    print(index+1,".Sauvegarde du " + conv_date(fichier[5:-4]))
+            fichier_valide=False
+            while not fichier_valide:
+                    num_save=input(f"Choisissez une sauvegarde (1-{len(liste_fichiers)}) \n")
+                    if num_save.isdigit():
+                        if int(num_save)-1 in list(range(len(liste_fichiers))):
+                            nom_save=liste_fichiers[int(num_save) - 1]
+                            fichier_valide=True
+                            continue
+                    print("Fichier introuvable ou invalide.")       
+        partie=EtatJeu(nom_save)
     
     else:
         partie= EtatJeu()        
     
-    print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter.")
+    print("Bonne partie ! A tout moment, entrez 'save' pour sauvegarder et quitter, et 'nulle' pour voter pour la nulle.")
         
     joueurs=[joueur2,joueur1]
 
@@ -38,14 +70,13 @@ def partie(joueur1: Joueur,joueur2: Joueur):
     print(partie)
     nulle_votee=False
     draw_votes=0
-    print(partie.nulle())
     while partie.gagnant() is None and not partie.nulle() and not nulle_votee:
 
         
         #Si le joueur précédent a voté nulle :
         if draw_votes==1:
             vote=0
-            while vote not in {"O","N"}:
+            while vote not in ("O","N"):
                 vote=input(f"{joueurs[int(partie.trait)].nom}, acceptez vous la nulle ? (O/N) \n")
             
             if vote=="O": 
@@ -55,13 +86,19 @@ def partie(joueur1: Joueur,joueur2: Joueur):
             else: print("Nulle refusée.")   
         
         #On demande quelle pièce bouger au joueur (il peut écrire nulle ou save)
-        deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
+        deplacement_valide=False
+        while not deplacement_valide:
+            deplacement=joueurs[int(partie.trait)].jouer_coup(partie)
+            if deplacement=="nulle" and isinstance(joueurs[not partie.trait],IA):
+                print("Vous ne pouvez pas voter nulle contre une IA. ")
+            else:
+                deplacement_valide=True
 
         #Cas particuliers (vote de nulle ou save)
         if deplacement=="nulle":
-                draw_votes=1
-                partie.trait = not partie.trait #On change le tour
-                continue
+                    draw_votes=1
+                    partie.trait = not partie.trait #On change le tour
+                    continue
         else:
             draw_votes=0
         if deplacement=="save" :
@@ -71,7 +108,9 @@ def partie(joueur1: Joueur,joueur2: Joueur):
             return "N"
         
         partie.deplacer_piece(deplacement[0],deplacement[1])
+        
         print(partie)
+        if partie.echec(): print("Votre roi est en échec.")
     
     #On affiche le résultat de la partie.
     if partie.nulle() or nulle_votee: print("Partie Nulle.")
@@ -81,9 +120,31 @@ def partie(joueur1: Joueur,joueur2: Joueur):
     
 def main():
     """Le jeu d'échec dans son intégralité. Initialise une partie, 
-    la joue et répète tant que l'utilisateur veut rejouer."""
+    la fait jouer et répète tant que l'utilisateur veut rejouer."""
     
+    
+    print("""
+███████  ██████ ██   ██ ███████  ██████ ███████ 
+██      ██      ██   ██ ██      ██      ██      
+█████   ██      ███████ █████   ██      ███████ 
+██      ██      ██   ██ ██      ██           ██ 
+███████  ██████ ██   ██ ███████  ██████ ███████
+
+
+
+                     Par
+        ===============================
+        ||       Timothé Boyer       ||
+        ||       Basile Mouret       ||
+        ||       Malik Hacini        ||
+        ===============================
+        
+        
+            Bienvenue aux échecs ! 
+        """)                                        
+          
     while True:
+        
         
         replay=None
         joueurs = []
@@ -102,7 +163,7 @@ def main():
             else:
                 print("type 2")
                 niveau=5
-                while niveau not in ["0","1","2","3"]:
+                while niveau not in ("0","1","2","3"):
                     niveau=input(f"""Quel est le niveau de l'IA {couleur} souhaité ? 
 0. Novice : Joue aléatoirement.
 1. Débutant

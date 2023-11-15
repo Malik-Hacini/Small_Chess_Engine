@@ -7,7 +7,7 @@ class EtatJeu:
     
     """Partie de jeu d'échecs
     """
-    def __init__(self, sauvegarde : str = "Plateau_base"):
+    def __init__(self, sauvegarde : str = "Plateau_base.fen"):
         """Construit une partie d'échecs.
         Construit le plateau et les pièces grâce au fichier de sauvegarde FEN donné (Le plateau de base du jeu d'échecs sinon)
 
@@ -23,7 +23,7 @@ class EtatJeu:
         
         
         #Lecture du fichier de sauvegarde
-        fichier = open("sauvegardes\\"+sauvegarde+".fen", 'r')
+        fichier = open("sauvegardes\\"+sauvegarde, 'r')
         sauv_txt = fichier.read()
         fichier.close()
         #On extrait le texte qui compte du FEN (nous ne prenons pas en compte le roque, en passant etc)

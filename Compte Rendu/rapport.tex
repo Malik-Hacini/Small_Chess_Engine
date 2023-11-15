@@ -240,8 +240,86 @@ On place ensuite cette fonction dans une boucle, en demandant à l'utilisateur s
 
     #PLACEHOLDER
 \end{minted}
-\subsection{IA}
-A FAIRE
+\subsection{Conception de l'IA}
+Notre IA sera basée sur l'algorithme minimax et l'élagage alphabeta.
+Pour implémenter l'IA, nous nous y sommes repris plusieurs fois.
+Nous avons essuyé plusieurs difficultés : valeur erronée, problèmes de récursivité, coups absurdes de l'IA etc.
+Notre première difficulté fut rencontré lors de l'élaboration de la fonction de calcul de valeur du jeu.
+
+\subsubsection{Calcul de la valeur}
+
+Pour évaluer la partie, nous avons longtemps cherché la méthode correcte. 
+La base de notre méthode heuristique
+est la fonction d'évaluation de Claude Shannon. C'est une fonction symétrique : si l'avantage est aux blancs,
+la valeur sera positive, si l'avantage est aux noirs, elle sera négative.
+Le critère principal est le barème général de la valeur des pièces aux échecs : \\
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
+    \hline
+    \multicolumn{6}{|c|}{Valeurs des pièces} \\
+    \hline 
+    Roi&Pion&Cavalier&Fou&Tour&Dame \\ 
+    \hline 
+1000&1&3&3&5&9 \\
+\hline
+\end{tabular} 
+
+Cependant, cette base n'était pas suffisante pour obtenir une valeur reflétant correctement le jeu d'échecs.
+Nous avons donc pris plusieurs critères en compte :
+\begin{itemize}
+    \item Si les pièces sont au centre ou au sous-centre du plateau (augmentation de la valeur)
+    \item Le nombre de cases accessibles au prochian tour (appelées cases controlées, augmentation de la valeur)
+    \item L'alignement des pions (baisse de la valeur)
+\end{itemize}
+
+Evidemment, cette liste n'est absolument pas exhaustive et est loin de représenter parfaitement 
+toute la complexité du jeu d'échecs. De plus, le poids que nous avons attribué à chaque critère se base
+sur des méthodes déjà existantes, mais une part d'arbitraire rentre en compte. 
+En revanche, il n'y aurait que peu d'intêret à avoir une fonction valeur extrêmemnt élaborée.
+En effet, notre IA ne pourra que se contenter d'une profondeur de 3 au maximum (à partir de 4, c'est trop long en pratique),
+et les effets d'une valeur plus précise ne se feront donc pas énormément ressentir pour la majorité de la partie.
+Vers la fin de la partie, l'impact est plus grand.
+
+
+Nous avons testé plusieurs versions, mais voici la version finale du calcul de la valeur:  
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+
+    #PLACEHOLDER
+\end{minted}
+
+\subsubsection{Minimax}
+Pour implémenter Minimax, nous nous sommes basés sur l'algorithme du cours.
+Il faut cependant pouvoir passer la profondeur comme un paramètre.
+Nous ne rédigons pas la fonction dans la classe Joueurs, du à sa nature récursive.
+C'est la méthode jouer coup d'un joueur IA qui y fera appel.
+L'algorithme minimax impose de simuler des coups.
+En première approche, nous avons implémenté la méthode suivante : \\
+\begin{itemize}
+    \item On copie l'état de jeu avec un deepcopy 
+    \item On joue un coup sur ce nouvel état, et on calcule la valeur
+    \item On renvoie la valeur
+\end{itemize}
+
+Cependant, nous nous sommes rendus compte de l'inefficacité de la méthode en la testant.
+La création d'un nouvel objet EtatJeu à chaque itération de la fonction était très longue,
+et remplissait la mémoire. Avec cette méthode (sans élagage alphabeta), une IA de profondeur 3
+mettait plus de 1 min a donner un coup. \\
+
+Nous avons alors modifié notre approche.
+\begin{itemize}
+    \item On sauvegarde les informations qui seront modifiées (positions de la pièce déplacée, pièce mangée, odomètre du roi)
+    \item On simule directement le coup sur l'état de jeu.
+    \item On calcule la valeur.
+    \item On restaure le jeu à son état initial.
+\end{itemize}
+Avec cette nouvelle approche, le temps d'obtention d'un coup d'une IA de profondeur 3 passe à 30 secondes.
+
+Voici l'implémentation finale de la fonction minimax :
+
 \begin{minted}[mathescape,
     linenos,
     numbersep=5pt,
