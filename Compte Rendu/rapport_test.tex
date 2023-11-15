@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{minted}
+
+\title{Compte rendu Test}
+\author{Timothé Boyer}
+\date{Novembre 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Tests}
+Dans cette partie du compte rendu, nous nous intéresserons aux tests réalisés sur les différentes parties de notre programme.
+
+\subsection{Tests de conception du jeu d'échecs}
+Nous avons réalisé des tests sur les différents programmes qui permettent au jeu d'échecs de fonctionner.
+
+Pour tester le bon fonctionnement du jeu, nous avons utilisé la fonctionnalité nous permettant d'importer des sauvegardes car ainsi, on peut tester des situations précises et voir si tout fonctionne comme prévu.
+\\
+On crée donc une fonction dont le but est de créer des parties à partir du nom du fichier de test. Cela nous permet de ranger les tests dans différents dossiers dédiés à chaque test.
+
+\subsubsection{Tests de la classe pièce}
+Pour tester les pièces, nous avons d'abord testé la méthode coups\_possibles pour chacune des pièces existantes. Pour cela, nous avons d'abord créé une situation avec la pièce que l'on veut tester. On note à la main toutes les cases accessibles par cette pièce et on vérifie si la méthode coups\_possibles de cette pièce renvoie la même liste de coups.
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+    # Déplacement des pièces
+    def test_deplacement_pion():
+        partie=init_partie_test("test_deplacement_pion")
+        partie.pieces[1][1].premier_coup=False
+        assert partie.pieces[1][0].coups_possibles(partie)==[(3, 4), (4, 4)]
+        assert partie.pieces[1][1].coups_possibles(partie)==[]
+        assert partie.pieces[1][2].coups_possibles(partie)==[(1, 2), (1, 3)]
+    
+    def test_deplacement_fou():
+        partie=init_partie_test("test_deplacement_fou")
+        assert partie.pieces[1][0].coups_possibles(partie)==[(5,5),(6,6),(7,7),(5,3),(3,3),(2,2),
+        (1,1),(3,5),(2,6),(1,7)]
+                
+    def test_deplacement_tour():
+        partie=init_partie_test("test_deplacement_tour")
+        assert partie.pieces[0][1].coups_possibles(partie)==[(5, 4), (6, 4), (7, 4), (4, 5), 
+        (3, 4), (2, 4), (1, 4), (4, 3), (4, 2), (4, 1)]
+    
+    
+    def test_deplacement_reine():
+        partie=init_partie_test("test_deplacement_reine")
+        assert partie.pieces[0][0].coups_possibles(partie)==[(5, 5), (6, 6), (5, 3), (3, 3), 
+        (2, 2), (1, 1), (0, 0), (3, 5), (2, 6), (1, 7), 
+        (5, 4), (6, 4), (7, 4), (4, 5), (4, 6), (4, 7), (3, 4), 
+        (2, 4), (4, 3)]
+    
+    def test_deplacement_cavalier():   
+        partie=init_partie_test("test_deplacement_cavalier")
+        assert partie.pieces[1][1].coups_possibles(partie)==[(5, 5), (3, 5), (2, 4), (2, 2), 
+        (3, 1), (5, 1), (6, 2)]
+\end{minted}
+
+\\
+Il faut ensuite vérifier si il est bien impossible de déplacer une pièce en mettant le roi en échec. Cette fonctionnalité correspond à la méthode coups\_legaux de la classe Pièce. Pour vérifier si ça marche, on fait donc un plateau avec une pièce qui est clouée (si elle bouge, le roi est en échec) et on vérifie qu'elle n'a pas de coups légaux.
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+    def test_coups_legaux():
+        partie=init_partie_test("test_coups_legaux")
+        assert partie.pieces[1][0].coups_possibles(partie)==[(5, 3), (3, 3), (2, 2), (2, 0), 
+        (6, 0), (6, 2)]
+        assert partie.pieces[1][0].coups_legaux(partie)==[]
+\end{minted}
+
+\subsubsection{Tests de l'ÉtatJeu}
+\paragraph{Tests des échecs}
+\\
+Nous avons fait différents tests pour voir si les méthodes echec et echec\_et\_mat fonctionnent correctement. Pour cela, on crée 3 situations :
+\begin{itemize}
+    \item Une avec le joueur qui doit jouer en échec
+    \item Une sans échec et donc sans mat
+    \item Une autre où le joueur qui doit jouer est en échec et mat
+\end{itemize}
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+    def test_pat():
+        # 1ère situation de nulle, il n'y a pas d'échec et mat et aucun coup n'est possible
+        partie=init_partie_test("pat_1")
+        assert partie.pat()
+        # 2ème situation de nulle, seul les rois bougent
+        partie=init_partie_test("pat_2")
+        partie.pieces[1][0].odometre=40
+        assert partie.pat()
+        
+    def test_echec():
+        partie=init_partie_test("avec_echec")
+        assert partie.echec()
+        partie=init_partie_test("sans_echec")
+        assert not partie.echec()
+    
+    def test_mat():
+        partie=init_partie_test("avec_mat")
+        assert partie.echec_et_mat()
+        partie=init_partie_test("sans_mat")
+        assert not partie.echec_et_mat()
+\end{minted}
+
+\paragraph{Tests de la valeur} 
+Pour tester le calcul de la valeur, on a créé des plateaux simples où il est possible de calculer à la main facilement la valeur du plateau.
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+    # Test valeur
+    def test_valeur():
+        # Test de situation finale
+        partie=init_partie_test("avec_mat")
+        assert partie.calcul_valeur()==-1000
+        partie=init_partie_test("pat_1")
+        assert partie.calcul_valeur()==0
+        # Test centre et sous-centre
+        partie=init_partie_test("controle_centre_et_ss_centre")
+        assert partie.calcul_valeur()==0.4
+        # Test pions alignés
+        partie=init_partie_test("pions_allignes")
+        assert partie.calcul_valeur()==-0.1
+\end{minted}
+
+\subsection{Tests IA}
+\end{document}
