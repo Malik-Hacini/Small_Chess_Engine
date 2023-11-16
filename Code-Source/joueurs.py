@@ -311,7 +311,7 @@ def alphabeta(etat, profondeur,alpha,beta,couleur):
 
     Args:
         etat (EtatJeu): etat de la partie à analyser
-        profondeur (int): nombre de profondeur restante a analyser
+        profondeur (int): Profondeur restante
         couleur (bool): couleur dont il faut identifier la valeur du jeu
 
     Returns:

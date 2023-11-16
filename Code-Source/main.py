@@ -166,8 +166,8 @@ def main():
                     niveau=input(f"""Quel est le niveau de l'IA {couleur} souhaité ? 
 0. Novice : Joue aléatoirement.
 1. Débutant
-2. Intérmédiaire
-3. Avancé \n""")
+2. Intérmédiaire (700 elo)
+3. Avancé (800 elo) \n""")
                 nom=f"IA {couleur}"
                 joueurs.append(IA(nom, i, int(niveau)))
 

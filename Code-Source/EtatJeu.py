@@ -66,6 +66,7 @@ class EtatJeu:
             ordre_affichage=range(7,-1,-1)
         else:
             ordre_affichage=range(8)
+       
         
         p=""
 
@@ -75,7 +76,7 @@ class EtatJeu:
         
         
         p+=" "*5 +  "    ".join(nom_col) +"\n"
-        
+        p+="   "+ "-"*41 + "\n"
         for i in ordre_affichage:
            
            p+=num_ligne[i] + "  | "
