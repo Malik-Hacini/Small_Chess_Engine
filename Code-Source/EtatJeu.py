@@ -4,9 +4,7 @@ import numpy as np
 
 
 class EtatJeu:
-    
-    """Partie de jeu d'échecs
-    """
+    """Partie de jeu d'échecs """
     def __init__(self, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Construit le plateau et les pièces grâce au fichier de sauvegarde FEN donné (Le plateau de base du jeu d'échecs sinon)
@@ -209,7 +207,6 @@ class EtatJeu:
 
         if self.nulle():
             return 0
-                
         
         for pieces in [self.pieces[1], self.pieces[0]]:
             cases_controllees=set()
@@ -241,10 +238,7 @@ class EtatJeu:
                     collones.append(pion.coord[0])
                 else:
                     valeur+=0.1*((-1)**piece.couleur)
-        return round(valeur,3)
-        
-                
-                
+        return round(valeur,3)       
     
                 
     def echec(self) -> bool:

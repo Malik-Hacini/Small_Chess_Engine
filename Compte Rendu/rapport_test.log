@@ -1,0 +1,303 @@
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.5) (preloaded format=xelatex 2023.10.4)  15 NOV 2023 21:08
+entering extended mode
+ \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**"c:/Users/Tim/Documents/Programation/Programme/Cours/Majeure/Projet-POO/Compte Rendu/rapport_test.tex"
+(c:/Users/Tim/Documents/Programation/Programme/Cours/Majeure/Projet-POO/Compte Rendu/rapport_test.tex
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-08-29>
+(C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count181
+\c@section=\count182
+\c@subsection=\count183
+\c@subsubsection=\count184
+\c@paragraph=\count185
+\c@subparagraph=\count186
+\c@figure=\count187
+\c@table=\count188
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: xetex.def on input line 107.
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.def
+File: xetex.def 2022/09/22 v5.0n Graphics/color driver for xetex
+))
+\Gin@req@height=\dimen141
+\Gin@req@width=\dimen142
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/minted\minted.sty
+Package: minted 2023/09/12 v2.8 Yet another Pygments shim for LaTeX
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/fvextra\fvextra.sty
+Package: fvextra 2022/11/30 v1.5 fvextra - extensions and patches for fancyvrb
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count189
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/fancyvrb\fancyvrb.sty
+Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
+\FV@CodeLineNo=\count190
+\FV@InFile=\read2
+\FV@TabBox=\box51
+\c@FancyVerbLine=\count191
+\FV@StepNumber=\count192
+\FV@OutFile=\write3
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/upquote\upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/base\textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/lineno\lineno.sty
+Package: lineno 2023/05/20 line numbers on paragraphs v5.3
+Invalid UTF-8 byte or sequence at line 292 replaced by U+FFFD.
+\linenopenalty=\count193
+\output=\toks18
+\linenoprevgraf=\count194
+\linenumbersep=\dimen143
+\linenumberwidth=\dimen144
+\c@linenumber=\count195
+\c@pagewiselinenumber=\count196
+\c@LN@truepage=\count197
+\c@internallinenumber=\count198
+\c@internallinenumbers=\count199
+\quotelinenumbersep=\dimen145
+\bframerule=\dimen146
+\bframesep=\dimen147
+\bframebox=\box52
+LaTeX Info: Redefining \\ on input line 3180.
+)
+\c@FV@TrueTabGroupLevel=\count266
+\c@FV@TrueTabCounter=\count267
+\FV@TabBox@Group=\box53
+\FV@TmpLength=\skip50
+\c@FV@HighlightLinesStart=\count268
+\c@FV@HighlightLinesStop=\count269
+\FV@LoopCount=\count270
+\FV@NCharsBox=\box54
+\FV@BreakIndent=\dimen148
+\FV@BreakIndentNChars=\count271
+\FV@BreakSymbolSepLeft=\dimen149
+\FV@BreakSymbolSepLeftNChars=\count272
+\FV@BreakSymbolSepRight=\dimen150
+\FV@BreakSymbolSepRightNChars=\count273
+\FV@BreakSymbolIndentLeft=\dimen151
+\FV@BreakSymbolIndentLeftNChars=\count274
+\FV@BreakSymbolIndentRight=\dimen152
+\FV@BreakSymbolIndentRightNChars=\count275
+\c@FancyVerbLineBreakLast=\count276
+\FV@LineBox=\box55
+\FV@LineIndentBox=\box56
+\c@FV@BreakBufferDepth=\count277
+\FV@LineWidth=\dimen153
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/tools\shellesc.sty
+Package: shellesc 2023/04/15 v1.0d unified shell escape interface for LaTeX
+Package shellesc Info: Unrestricted shell escape enabled on input line 75.
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/ifplatform\ifplatform.sty
+Package: ifplatform 2017/10/13 v0.4a Testing for the operating system
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode not found.
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/catchfile\catchfile.sty
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/etexcmds\etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+)) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/xstring\xstring.sty (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/generic/xstring\xstring.tex
+\xs_counta=\count278
+\xs_countb=\count279
+)
+Package: xstring 2023/08/22 v1.86 String manipulations (CT)
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/framed\framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip51
+\fb@frw=\dimen154
+\fb@frh=\dimen155
+\FrameRule=\dimen156
+\FrameSep=\dimen157
+) (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count280
+\float@exts=\toks19
+\float@box=\box57
+\@float@everytoks=\toks20
+\@floatcapt=\box58
+)
+\minted@appexistsfile=\read3
+\minted@bgbox=\box59
+\minted@code=\write4
+\c@minted@FancyVerbLineTemp=\count281
+\c@minted@pygmentizecounter=\count282
+\@float@every@listing=\toks21
+\c@listing=\count283
+)
+runsystem(if not exist _minted-rapport_test mkdir _minted-rapport_test)...executed.
+
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: xetex.def on input line 227.
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+)
+runsystem(for ^%i in (pygmentize.exe pygmentize.bat pygmentize.cmd) do set > rapport_test.aex <nul: /p x=^%~$PATH:i>> rapport_test.aex)...executed.
+
+runsystem(del rapport_test.aex)...executed.
+
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-xetex.def
+File: l3backend-xetex.def 2023-04-19 L3 backend support: XeTeX
+\g__graphics_track_int=\count284
+\l__pdf_internal_box=\box60
+\g__pdf_backend_object_int=\count285
+\g__pdf_backend_annotation_int=\count286
+\g__pdf_backend_link_int=\count287
+) (rapport_test.aux)
+\openout1 = `rapport_test.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 10.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 10.
+ (C:\Users\Tim\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmr.fd
+File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 12.
+\openout3 = `rapport_test.pyg'.
+
+ (_minted-rapport_test/default.pygstyle) (_minted-rapport_test/B0D9D6FA56DB7FF3476EC774D25D0401151DB4FAD25A37E3A0B13A8408DC1C95.pygtex
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 4.
+ [1
+
+])
+
+c:/Users/Tim/Documents/Programation/Programme/Cours/Majeure/Projet-POO/Compte Rendu/rapport_test.tex:68: LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.68 I
+      l faut ensuite vérifier si il est bien pas possible de déplacer une pi...
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+\openout3 = `rapport_test.pyg'.
+
+(_minted-rapport_test/BB3101233C7709CFD00BD3A621F2DBA3151DB4FAD25A37E3A0B13A8408DC1C95.pygtex)
+File: pytest_piece.png Graphic file (type bmp)
+<pytest_piece.png>
+
+Overfull \hbox (506.65326pt too wide) in paragraph at lines 86--87
+ [] 
+ []
+
+[2]
+
+c:/Users/Tim/Documents/Programation/Programme/Cours/Majeure/Projet-POO/Compte Rendu/rapport_test.tex:91: LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.91 N
+      ous avons fait différents tests pour voir si les méthodes echec et ech...
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+\openout3 = `rapport_test.pyg'.
+
+(_minted-rapport_test/EB9C901C6271E0D06159268C23B7C2F9151DB4FAD25A37E3A0B13A8408DC1C95.pygtex)
+\openout3 = `rapport_test.pyg'.
+
+ (_minted-rapport_test/DA4930605F727F73900C597A274845D9151DB4FAD25A37E3A0B13A8408DC1C95.pygtex [3])
+File: pytest_EtatJeu.png Graphic file (type bmp)
+<pytest_EtatJeu.png>
+
+Overfull \hbox (503.03943pt too wide) in paragraph at lines 152--153
+ [] 
+ []
+
+\openout3 = `rapport_test.pyg'.
+
+(_minted-rapport_test/5A622BC83E1DAEA3702F249EB9FD5D92151DB4FAD25A37E3A0B13A8408DC1C95.pygtex [4] [5])
+\openout3 = `rapport_test.pyg'.
+
+ (_minted-rapport_test/FC063C31C2D0B0267C6A981EC3634D96151DB4FAD25A37E3A0B13A8408DC1C95.pygtex)
+\openout3 = `rapport_test.pyg'.
+
+ (_minted-rapport_test/64AF69A27DD2D16289029BDBCAE8E2DB151DB4FAD25A37E3A0B13A8408DC1C95.pygtex [6] [7]) [8] (rapport_test.aux)
+ ***********
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-08-29>
+ ***********
+runsystem(del rapport_test.pyg)...executed.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 5352 strings out of 410379
+ 105232 string characters out of 5788457
+ 1926432 words of memory out of 5000000
+ 26599 multiletter control sequences out of 15000+600000
+ 560893 words of font info for 56 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 75i,6n,81p,702b,538s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on rapport_test.xdv (8 pages, 160064 bytes).
