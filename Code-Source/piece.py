@@ -256,3 +256,10 @@ class Pion(Piece):
                         if piece != None and piece.couleur != self.couleur:
                             coups.append((x+dx, y-1))   
         return coups
+    
+    def promotion(self):
+        if self.couleur and self.coord[1]==7:
+            return True
+        elif not self.couleur and self.coord[1]==0:
+            return True
+        return False

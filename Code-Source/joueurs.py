@@ -332,7 +332,7 @@ def alphabeta(etat, profondeur,alpha,beta,couleur):
         couleur (bool): couleur du joueur pour qui ont cherche la valeur du plateau
 
     Returns:
-        float: _description_
+        valeur: _description_
     """
     if profondeur==0 or etat.echec_et_mat():
         

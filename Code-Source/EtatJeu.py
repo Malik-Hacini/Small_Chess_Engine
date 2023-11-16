@@ -4,9 +4,7 @@ import numpy as np
 
 
 class EtatJeu:
-    
-    """Partie de jeu d'échecs
-    """
+    """Partie de jeu d'échecs """
     def __init__(self, sauvegarde : str = "Plateau_base"):
         """Construit une partie d'échecs.
         Construit le plateau et les pièces grâce au fichier de sauvegarde FEN donné (Le plateau de base du jeu d'échecs sinon)
@@ -174,6 +172,13 @@ class EtatJeu:
         #on déplace la piece sur le plateau
         self.plateau[coord_f] = self.plateau.pop(coord_i)
         
+        if isinstance(self.plateau[coord_f],Pion):
+            if self.plateau[coord_f].promotion():
+                dame=Dame(self.trait, self.plateau[coord_f].coord)
+                self.pieces[self.trait][self.pieces[self.trait].index(self.plateau[coord_f])]=dame
+                self.plateau[coord_f]=dame
+                
+        
         self.trait = not self.trait #On change le tour
     
     
@@ -209,7 +214,6 @@ class EtatJeu:
 
         if self.nulle():
             return 0
-                
         
         for pieces in [self.pieces[1], self.pieces[0]]:
             cases_controllees=set()
@@ -241,10 +245,7 @@ class EtatJeu:
                     collones.append(pion.coord[0])
                 else:
                     valeur+=0.1*((-1)**piece.couleur)
-        return round(valeur,3)
-        
-                
-                
+        return round(valeur,3)       
     
                 
     def echec(self) -> bool:
@@ -304,3 +305,4 @@ class EtatJeu:
             if isinstance(piece,Roi):
                 odometre=piece.odometre
         return (not self.echec_et_mat()and len(coups)==0) or (odometre>=10)
+    
