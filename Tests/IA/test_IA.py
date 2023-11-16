@@ -66,10 +66,10 @@ def test_minimax_profondeur_3():
     assert coup[0] in partie.mouvements(False).keys()
     assert coup[1] in partie.mouvements(False)[coup[0]]
     
-#test si minimax ne se suicide pas 
+#test si minimax évite d'être en echecs et mat au prochain tour
 def test_pas_de_suicide():
     #initialisation d'un plateau ou les blanc peuvent etre mis en mat en 1, on vérifie qu'il ne joue pas un coup qui le ferai perdre
-    partie,bot_blanc,bot_noir = initialiser_plateau_bots("Sauvegarde_Test_IA\\suicide")
+    partie,bot_blanc,bot_noir = initialiser_plateau_bots("Sauvegarde_Test_IA\\suicide.fen")
     coup = bot_blanc.jouer_coup(partie)
     partie.deplacer_piece(coup[0],coup[1])
     coup = bot_noir.jouer_coup(partie)
@@ -78,11 +78,27 @@ def test_pas_de_suicide():
 
 
 
+#on teste que l'ia met bien en echec le roi
+def test_mat_blanc():
+    plateaux = ["Sauvegarde_Test_IA\\mat_en_1_b.fen","Sauvegarde_Test_IA\\mat_promotion_b.fen"]
+    for plateau in plateaux:
+        partie,bot_blanc,bot_noir = initialiser_plateau_bots(plateau)
+        coup = bot_blanc.jouer_coup(partie)
+        partie.deplacer_piece(coup[0],coup[1])
+        assert partie.echec_et_mat()
+
+def test_mat_noir():
+    plateaux = ["Sauvegarde_Test_IA\\mat_en_1_n.fen","Sauvegarde_Test_IA\\mat_promotion_n.fen"]
+    for plateau in plateaux:
+        partie,bot_blanc,bot_noir = initialiser_plateau_bots(plateau)
+        coup = bot_noir.jouer_coup(partie)
+        partie.deplacer_piece(coup[0],coup[1])
+        assert partie.echec_et_mat()
 
 
 #test si minimax et alphabeta jouent le meme coup (profondeur 2)
 def test_alphabeta():
-    plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+    plateaux = ["Sauvegarde_Test_IA\\Plateau_base.fen","Sauvegarde_Test_IA\\suicide.fen"]
     for plateau in plateaux:
         partie_ab,bot_blanc_ab,bot_noir_ab = initialiser_plateau_bots(plateau)
         partie_mm,bot_blanc_mm,bot_noir_mm= initialiser_plateau_bots(plateau)
@@ -101,7 +117,7 @@ def test_alphabeta():
     
 #test différence de temps minimax alphabeta, différentes profondeurs
 def test_durée_1():
-    plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+    plateaux = ["Sauvegarde_Test_IA\\Plateau_base.fen","Sauvegarde_Test_IA\\suicide.fen"]
     rapports = []
     for plateau in plateaux:
         partie_ab,bot_blanc_ab,bot_noir_ab = initialiser_plateau_bots(plateau,1,1)
@@ -127,7 +143,7 @@ def test_durée_1():
     print("moyenne profondeur 1 : "+str(round(average(rapports),3)))
         
 def test_durée_2():
-    plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+    plateaux = ["Sauvegarde_Test_IA\\Plateau_base.fen","Sauvegarde_Test_IA\\suicide.fen"]
     rapports = []
     for plateau in plateaux:
         partie_ab,bot_blanc_ab,bot_noir_ab = initialiser_plateau_bots(plateau,2,2)
@@ -154,7 +170,7 @@ def test_durée_2():
     
    
 def test_durée_3():
-    plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+    plateaux = ["Sauvegarde_Test_IA\\Plateau_base.fen","Sauvegarde_Test_IA\\suicide.fen"]
     rapports = []
     for plateau in plateaux:
         partie_ab,bot_blanc_ab,bot_noir_ab = initialiser_plateau_bots(plateau,3,3)
@@ -179,5 +195,19 @@ def test_durée_3():
             rapports.append(rapport)
     print("moyenne profondeur 3 : "+str(round(average(rapports),3)))
         
+"""test_durée_1()
+test_durée_2()
+test_durée_3()"""
 
+
+    
+    
+
+
+
+
+
+#rajouter un cache
+
+#faire un tableau plateau : profondeur : coup reccomandé
 

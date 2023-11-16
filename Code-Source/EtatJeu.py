@@ -174,6 +174,13 @@ class EtatJeu:
         #on déplace la piece sur le plateau
         self.plateau[coord_f] = self.plateau.pop(coord_i)
         
+        #On vérifie la promotion.
+        if isinstance(self.plateau[coord_f],Pion):
+            if self.plateau[coord_f].promotion():
+                dame=Dame(self.trait, self.plateau[coord_f].coord)
+                self.pieces[self.trait][self.pieces[self.trait].index(self.plateau[coord_f])]=dame
+                self.plateau[coord_f]=dame
+                
         self.trait = not self.trait #On change le tour
     
     

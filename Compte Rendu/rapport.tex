@@ -487,13 +487,28 @@ Nous avons fait différents tests pour voir si les méthodes echec et echec\_et\
         assert not partie.echec_et_mat()
 \end{minted}
 
+\paragraph{Test de la promotion}
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+    def test_promotion():
+    partie=init_partie_test("promotion")
+    partie.deplacer_piece((7,6),(7,7))
+    for piece in partie.pieces[not partie.trait]:
+        assert not isinstance(piece, Pion)
+    assert isinstance(partie.plateau[(7,7)], Dame)
+\end{minted}
+
 \paragraph{Validation des tests}
 \begin{verbatim}
-collected 3 items
+collected 4 items
 
 test_EtatJeu.py ...                                                                                                                                                  [100%]
 
-=============================== 3 passed in 0.47s ======================================== 
+=============================== 4 passed in 0.47s ======================================== 
 \end{verbatim}
 
 \subsection{Tests relatifs à l'IA}
@@ -580,16 +595,7 @@ Pour cette partie, on regarde si l'IA pour différentes profondeurs fait bien de
         coup = bot2.jouer_coup(partie)
         assert coup[0] in partie.mouvements(False).keys()
         assert coup[1] in partie.mouvements(False)[coup[0]]
-        
-    # Test si minimax ne se suicide pas 
-    def test_pas_de_suicide():
-        # Initialisation d'un plateau où les blancs peuvent être mis en échec et mat en 1, on vérifie qu'il ne joue pas un coup qui le ferait perdre
-        partie, bot_blanc, bot_noir = initialiser_plateau_bots("Sauvegarde_Test_IA\\suicide")
-        coup = bot_blanc.jouer_coup(partie)
-        partie.deplacer_piece(coup[0], coup[1])
-        coup = bot_noir.jouer_coup(partie)
-        partie.deplacer_piece(coup[0], coup[1])
-        assert not partie.echec_et_mat()    
+     
 \end{minted}
 
 \subsubsection{Tests de cohérence}
@@ -711,12 +717,64 @@ Nous avons aussi vérifié si l'algorithme alphabeta était plus optimisé que m
 
 
 \end{minted}
+
+
+\subsubsection{Tests de niveau de l'IA}
+Tester le niveau de notre IA est une tâche difficile.\\
+Nous avons d'abord vérifié que l'IA (profondeur 3) voyait bien les échecs et mat disponibles à sa 
+profondeur.
+Pour cela, nous avons crée 3 plateaux (avec des doublons pour chaque couleur) :
+\begin{itemize}
+    \item L'IA peut être mise en échec et mat en 2 coups (elle doit l'éviter)
+    \item L'IA peut mettre en échec et mat en 1 coup
+    \item L'IA peut mettre en échec et mat en 1 coup, grâce à une promotion.
+\end{itemize}
+
+Voici les tests associés:
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+    # Test si minimax ne se suicide pas 
+    def test_eviter_mat():
+        # Initialisation d'un plateau où les blancs peuvent être mis en échec et mat en 1, on vérifie qu'il ne joue pas un coup qui le ferait perdre
+        partie, bot_blanc, bot_noir = initialiser_plateau_bots("Sauvegarde_Test_IA\\suicide.fen")
+        coup = bot_blanc.jouer_coup(partie)
+        partie.deplacer_piece(coup[0], coup[1])
+        coup = bot_noir.jouer_coup(partie)
+        partie.deplacer_piece(coup[0], coup[1])
+        assert not partie.echec_et_mat()   
+    
+    def test_mat_blanc():
+        plateaux = ["Sauvegarde_Test_IA\\mat_en_1_b.fen","Sauvegarde_Test_IA\\mat_promotion_b.fen"]
+        for plateau in plateaux:
+            partie,bot_blanc,bot_noir = initialiser_plateau_bots(plateau)
+            coup = bot_blanc.jouer_coup(partie)
+            partie.deplacer_piece(coup[0],coup[1])
+            assert partie.echec_et_mat()
+    
+    def test_mat_noir():
+        plateaux = ["Sauvegarde_Test_IA\\mat_en_1_n.fen","Sauvegarde_Test_IA\\mat_promotion_n.fen"]
+        for plateau in plateaux:
+            partie,bot_blanc,bot_noir = initialiser_plateau_bots(plateau)
+            coup = bot_noir.jouer_coup(partie)
+            partie.deplacer_piece(coup[0],coup[1])
+            assert partie.echec_et_mat()
+
+\end{minted}
+
 \paragraph{Validation des tests}
+
 \begin{verbatim}
-collected 9 items
-
-test_IA.py ......                                                                                                                                                  [100%]
-
-=============================== 9 passed in 12.5s ============================================================================= 
+    collected 11 items
+    
+    test_IA.py ......                                                                                                                                                  [100%]
+    
+    =============================== 11 passed in 14.5s ============================================================================= 
 \end{verbatim}
+
+
 \end{document}

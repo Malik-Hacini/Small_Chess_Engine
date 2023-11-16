@@ -53,3 +53,10 @@ def test_valeur():
     #Test pat
     partie=init_partie_test("pat_1")
     assert partie.calcul_valeur()==0
+    
+def test_promotion():
+    partie=init_partie_test("promotion")
+    partie.deplacer_piece((7,6),(7,7))
+    for piece in partie.pieces[not partie.trait]:
+        assert not isinstance(piece, Pion)
+    assert isinstance(partie.plateau[(7,7)], Dame)

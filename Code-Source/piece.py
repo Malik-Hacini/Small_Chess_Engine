@@ -63,7 +63,15 @@ class Roi(Piece):
             self.valeur=0
         self.odometre=0    
         
-    def coups_possibles(self, partie):
+    def coups_possibles(self, partie)->list:
+        """Renvoie tout les coups possibles (sans trier les coups mettant en échec) de la pièce.
+
+        Args:
+            partie (EtatJeu): La partie.
+
+        Returns:
+            list: Liste des coups
+        """
         coups=[]
         x,y=self.coord
         
@@ -256,3 +264,16 @@ class Pion(Piece):
                         if piece != None and piece.couleur != self.couleur:
                             coups.append((x+dx, y-1))   
         return coups
+    
+    
+    def promotion(self)->bool:
+        """Détermine si le pion peut être promu, selon sa couleur.
+
+        Returns:
+            bool: True <=> Le pion peut être promu
+        """
+        if self.couleur and self.coord[1]==7:
+            return True
+        elif not self.couleur and self.coord[1]==0:
+            return True
+        return False

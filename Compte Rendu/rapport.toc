@@ -24,10 +24,12 @@
 \contentsline {paragraph}{Validation des tests}{10}{section*.5}%
 \contentsline {subsubsection}{\numberline {4.1.2}Tests de l'ÉtatJeu}{10}{subsubsection.4.1.2}%
 \contentsline {paragraph}{Tests des échecs}{10}{section*.6}%
-\contentsline {paragraph}{Validation des tests}{11}{section*.7}%
+\contentsline {paragraph}{Test de la promotion}{11}{section*.7}%
+\contentsline {paragraph}{Validation des tests}{11}{section*.8}%
 \contentsline {subsection}{\numberline {4.2}Tests relatifs à l'IA}{11}{subsection.4.2}%
 \contentsline {subsubsection}{\numberline {4.2.1}Tests de la valeur}{11}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Tests d'existence des coups}{11}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.2}Tests d'existence des coups}{12}{subsubsection.4.2.2}%
 \contentsline {subsubsection}{\numberline {4.2.3}Tests de cohérence}{13}{subsubsection.4.2.3}%
 \contentsline {subsubsection}{\numberline {4.2.4}Tests de durées}{13}{subsubsection.4.2.4}%
-\contentsline {paragraph}{Validation des tests}{15}{section*.8}%
+\contentsline {subsubsection}{\numberline {4.2.5}Tests de niveau de l'IA}{15}{subsubsection.4.2.5}%
+\contentsline {paragraph}{Validation des tests}{16}{section*.9}%
