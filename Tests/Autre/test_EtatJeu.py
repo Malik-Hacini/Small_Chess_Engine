@@ -20,10 +20,10 @@ def init_partie_test(nom_test):
 
 def test_pat():
     partie=init_partie_test("pat_1")
-    assert partie.pat()
+    assert partie.nulle()
     partie=init_partie_test("pat_2")
     partie.pieces[1][0].odometre=40
-    assert partie.pat()
+    assert partie.nulle()
     
 def test_echec():
     partie=init_partie_test("avec_echec")

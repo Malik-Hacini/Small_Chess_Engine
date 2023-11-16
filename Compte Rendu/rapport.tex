@@ -39,7 +39,7 @@ d’échecs qui permet à deux joueurs de s’affronter,
 chaque joueur peut être soit un humain, soit l’ordinateur via une IA
  (intelligence artificielle) . Le jeu se jouera dans un terminal, 
  et si les deux joueurs sont humains, ils utiliseront le même clavier.
- \section{Collaboration}
+\section{Collaboration}
  
 Pour ce projet, nous avons mis en place un \href{https://github.com/Zertag/Projet-POO}{\textcolor{blue}{dépôt GitHub}}, qui a nous a permis
 de chacun travailler sur sa propre version du projet avec VS Code (dépôt cloné localement) et 
@@ -64,7 +64,11 @@ Ce projet a été réalisé en utilisant les outils de la programmation orienté
 Les différentes composantes d'un jeu d'échecs (joueurs, pieces) sont donc 
 représentées par des classes.
 \subsubsection{Diagramme de classe UML}
-a mettre
+\includegraphics[scale=0.6]{uml.png}
+
+Nous avons donc divisé notre projet en trois grandes classes : EtatJeu, Joueurs et Piece.
+Des sous classes 'Humain' et 'IA' sont présentes dans la classe Joueurs.
+Ensuite, on regroupe tout dans un programme main, qui constitue la partie extérieure du logiciel.
 
 
 Il y eu 2 grandes phases de développement du projet : La conception du jeu entre humains
@@ -255,7 +259,7 @@ la valeur sera positive, si l'avantage est aux noirs, elle sera négative.
 Le critère principal est le barème général de la valeur des pièces aux échecs : \\
 
 \begin{center}
-\begin{tabular}{ |p{1cm}||p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|  }
+\begin{tabular}{ |p{1cm}||p{1cm}|p{1.5cm}|p{1cm}|p{1cm}|p{1cm}|  }
     \hline
     \multicolumn{6}{|c|}{Valeurs des pièces} \\
     \hline 
@@ -436,6 +440,15 @@ Pour vérifier si ça marche, on fait donc un plateau avec une pièce qui est cl
         assert partie.pieces[1][0].coups_legaux(partie)==[]
 \end{minted}
 
+\paragraph{Validation des tests}
+\begin{verbatim}
+collected 6 items
+
+test_pièce.py ......                                                                                                                                                  [100%]
+
+============================== 6 passed in 0.37s ============================================================================= 
+\end{verbatim}
+
 \subsubsection{Tests de l'ÉtatJeu}
 \paragraph{Tests des échecs}
 
@@ -474,6 +487,15 @@ Nous avons fait différents tests pour voir si les méthodes echec et echec\_et\
         assert not partie.echec_et_mat()
 \end{minted}
 
+\paragraph{Validation des tests}
+\begin{verbatim}
+collected 3 items
+
+test_EtatJeu.py ...                                                                                                                                                  [100%]
+
+=============================== 3 passed in 0.47s ======================================== 
+\end{verbatim}
+
 \subsection{Tests relatifs à l'IA}
 \subsubsection{Tests de la valeur} 
 Pour tester le calcul de la valeur, on a créé des plateaux simples où il est possible de calculer à la main facilement la valeur du plateau.
@@ -498,6 +520,203 @@ Pour tester le calcul de la valeur, on a créé des plateaux simples où il est 
         partie=init_partie_test("pions_allignes")
         assert partie.calcul_valeur()==-0.1
 \end{minted}
+\subsubsection{Tests d'existence des coups}
+Pour cette partie, on regarde si l'IA pour différentes profondeurs fait bien des coups existants.
 
-\
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+
+    # Test jouer un coup
+    # Test IA aléatoire (niveau == 0)
+    def test_IA_0():
+        partie, bot1, bot2 = initialiser_plateau_bots(profondeur_blanc=0, profondeur_noir=0)
+        # Blanc
+        coup = bot1.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(True).keys()
+        assert coup[1] in partie.mouvements(True)[coup[0]]
+        partie.deplacer_piece(coup[0], coup[1])
+        # Noir
+        coup = bot2.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(False).keys()
+        assert coup[1] in partie.mouvements(False)[coup[0]]
+    
+    def test_minimax_profondeur_1():
+        partie, bot1, bot2 = initialiser_plateau_bots(profondeur_blanc=1, profondeur_noir=1)
+        # Blanc
+        coup = bot1.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(True).keys()
+        assert coup[1] in partie.mouvements(True)[coup[0]]
+        partie.deplacer_piece(coup[0], coup[1])
+        # Noir
+        coup = bot2.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(False).keys()
+        assert coup[1] in partie.mouvements(False)[coup[0]]
+    
+    def test_minimax_profondeur_2():
+        partie, bot1, bot2 = initialiser_plateau_bots(profondeur_blanc=2, profondeur_noir=2)
+        # Blanc
+        coup = bot1.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(True).keys()
+        assert coup[1] in partie.mouvements(True)[coup[0]]
+        partie.deplacer_piece(coup[0], coup[1])
+        # Noir
+        coup = bot2.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(False).keys()
+        assert coup[1] in partie.mouvements(False)[coup[0]]
+        
+        
+    def test_minimax_profondeur_3():
+        partie, bot1, bot2 = initialiser_plateau_bots(profondeur_blanc=3, profondeur_noir=3)
+        # Blanc
+        coup = bot1.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(True).keys()
+        assert coup[1] in partie.mouvements(True)[coup[0]]
+        partie.deplacer_piece(coup[0], coup[1])
+        # Noir
+        coup = bot2.jouer_coup(partie)
+        assert coup[0] in partie.mouvements(False).keys()
+        assert coup[1] in partie.mouvements(False)[coup[0]]
+        
+    # Test si minimax ne se suicide pas 
+    def test_pas_de_suicide():
+        # Initialisation d'un plateau où les blancs peuvent être mis en échec et mat en 1, on vérifie qu'il ne joue pas un coup qui le ferait perdre
+        partie, bot_blanc, bot_noir = initialiser_plateau_bots("Sauvegarde_Test_IA\\suicide")
+        coup = bot_blanc.jouer_coup(partie)
+        partie.deplacer_piece(coup[0], coup[1])
+        coup = bot_noir.jouer_coup(partie)
+        partie.deplacer_piece(coup[0], coup[1])
+        assert not partie.echec_et_mat()    
+\end{minted}
+
+\subsubsection{Tests de cohérence}
+On vérifie maintenant si les algorithmes alphabeta et minimax proposent le même coup.
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+
+    # Test si minimax et alphabeta jouent le même coup (profondeur 2)
+    def test_alphabeta():
+        plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+        for plateau in plateaux:
+            partie_ab, bot_blanc_ab, bot_noir_ab = initialiser_plateau_bots(plateau)
+            partie_mm, bot_blanc_mm, bot_noir_mm = initialiser_plateau_bots(plateau)
+            bot_blanc_mm.algo = "minimax"
+            bot_noir_mm.algo = "minimax"
+            if partie_ab.trait:
+                assert bot_blanc_mm.jouer_coup(partie_ab) == bot_blanc_ab.jouer_coup(partie_ab)
+                print(bot_blanc_mm.jouer_coup(partie_ab) == bot_blanc_ab.jouer_coup(partie_ab))
+            else : 
+                assert bot_noir_mm.jouer_coup(partie_ab) == bot_noir_ab.jouer_coup(partie_ab)
+                print(bot_noir_mm.jouer_coup(partie_ab) == bot_noir_ab.jouer_coup(partie_ab))
+
+\end{minted}
+
+\subsubsection{Tests de durées}
+Nous avons aussi vérifié si l'algorithme alphabeta était plus optimisé que minimax et que donc le temps d'exécution de chaque coup était plus court pour alphabeta que pour minimax et ce pour plusieurs profondeurs.
+
+\begin{minted}[mathescape,
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{python}
+
+    # Test différence de temps minimax alphabeta, différentes profondeurs
+    def test_duree_1():
+        plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+        rapports = []
+        for plateau in plateaux:
+            partie_ab, bot_blanc_ab, bot_noir_ab = initialiser_plateau_bots(plateau,1,1)
+            partie_mm, bot_blanc_mm, bot_noir_mm = initialiser_plateau_bots(plateau,1,1)
+            bot_blanc_mm.algo = "minimax"
+            bot_noir_mm.algo = "minimax"
+            if partie_ab.trait:
+                debut = time.time()
+                bot_blanc_mm.jouer_coup(partie_ab)
+                fin_mm = time.time()
+                bot_blanc_ab.jouer_coup(partie_ab)
+                rapport = (fin_mm-debut)/(time.time()-fin_mm)
+                print("alphabeta est "+str(round(rapport,3))+" plus rapide que minimax")
+                rapports.append(rapport)
+            else:
+                debut = time.time()
+                bot_noir_mm.jouer_coup(partie_ab)
+                fin_mm = time.time()
+                bot_noir_ab.jouer_coup(partie_ab)
+                rapport = (fin_mm-debut)/(time.time()-fin_mm)
+                print("alphabeta est "+str(round(rapport,3))+" plus rapide que minimax")
+                rapports.append(rapport)
+        print("moyenne profondeur 1 : "+str(round(average(rapports),3)))
+            
+    def test_duree_2():
+        plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+        rapports = []
+        for plateau in plateaux:
+            partie_ab, bot_blanc_ab, bot_noir_ab = initialiser_plateau_bots(plateau,2,2)
+            partie_mm, bot_blanc_mm, bot_noir_mm = initialiser_plateau_bots(plateau,2,2)
+            bot_blanc_mm.algo = "minimax"
+            bot_noir_mm.algo = "minimax"
+            if partie_ab.trait:
+                debut = time.time()
+                bot_blanc_mm.jouer_coup(partie_ab)
+                fin_mm = time.time()
+                bot_blanc_ab.jouer_coup(partie_ab)
+                rapport = (fin_mm-debut)/(time.time()-fin_mm)
+                print("alphabeta est "+str(round(rapport,3))+" plus rapide que minimax")
+                rapports.append(rapport)
+            else:
+                debut = time.time()
+                bot_noir_mm.jouer_coup(partie_ab)
+                fin_mm = time.time()
+                bot_noir_ab.jouer_coup(partie_ab)
+                rapport = (fin_mm-debut)/(time.time()-fin_mm)
+                print("alphabeta est "+str(round(rapport,3))+" plus rapide que minimax")
+                rapports.append(rapport)
+        print("moyenne profondeur 2 : "+str(round(average(rapports),3)))     
+        
+       
+    def test_duree_3():
+        plateaux = ["Sauvegarde_Test_IA\\Plateau_base","Sauvegarde_Test_IA\\suicide"]
+        rapports = []
+        for plateau in plateaux:
+            partie_ab, bot_blanc_ab, bot_noir_ab = initialiser_plateau_bots(plateau,3,3)
+            partie_mm, bot_blanc_mm, bot_noir_mm = initialiser_plateau_bots(plateau,3,3)
+            bot_blanc_mm.algo = "minimax"
+            bot_noir_mm.algo = "minimax"
+            if partie_ab.trait:
+                debut = time.time()
+                bot_blanc_mm.jouer_coup(partie_ab)
+                fin_mm = time.time()
+                bot_blanc_ab.jouer_coup(partie_ab)
+                rapport = (fin_mm-debut)/(time.time()-fin_mm)
+                print("alphabeta est "+str(round(rapport,3))+" plus rapide que minimax")
+                rapports.append(rapport)
+            else:
+                debut = time.time()
+                bot_noir_mm.jouer_coup(partie_ab)
+                fin_mm = time.time()
+                bot_noir_ab.jouer_coup(partie_ab)
+                rapport = (fin_mm-debut)/(time.time()-fin_mm)
+                print("alphabeta est "+str(round(rapport,3))+" plus rapide que minimax")
+                rapports.append(rapport)
+        print("moyenne profondeur 3 : "+str(round(average(rapports),3)))
+
+
+\end{minted}
+\paragraph{Validation des tests}
+\begin{verbatim}
+collected 9 items
+
+test_IA.py ......                                                                                                                                                  [100%]
+
+=============================== 9 passed in 12.5s ============================================================================= 
+\end{verbatim}
 \end{document}

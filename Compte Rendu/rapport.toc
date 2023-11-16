@@ -1,27 +1,33 @@
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
 \contentsline {section}{\numberline {2}Collaboration}{2}{section.2}%
 \contentsline {section}{\numberline {3}Conception}{2}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Règles traitées}{2}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Architecture}{2}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Diagramme de classe UML}{2}{subsubsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.3}Conception du Jeu d'échecs}{2}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Classe Piece}{2}{subsubsection.3.3.1}%
-\contentsline {paragraph}{Difficultés}{3}{section*.2}%
-\contentsline {subsubsection}{\numberline {3.3.2}Classe EtatJeu}{3}{subsubsection.3.3.2}%
-\contentsline {paragraph}{Plateau: Création, Affichage et Sauvegarde}{3}{section*.3}%
-\contentsline {paragraph}{Vérification de l'état du jeu}{4}{section*.4}%
-\contentsline {subsubsection}{\numberline {3.3.3}Finalisation de la classe Piece}{5}{subsubsection.3.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.4}Classe Joueurs : Humain}{5}{subsubsection.3.3.4}%
-\contentsline {subsection}{\numberline {3.4}Le Programme main}{5}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Conception de l'IA}{5}{subsection.3.5}%
-\contentsline {subsubsection}{\numberline {3.5.1}Calcul de la valeur}{5}{subsubsection.3.5.1}%
-\contentsline {subsubsection}{\numberline {3.5.2}Minimax}{6}{subsubsection.3.5.2}%
-\contentsline {subsubsection}{\numberline {3.5.3}Elagage Alpha-Beta}{7}{subsubsection.3.5.3}%
-\contentsline {subsubsection}{\numberline {3.5.4}Méthode Jouer\_Coup pour l'IA}{7}{subsubsection.3.5.4}%
-\contentsline {section}{\numberline {4}Tests}{7}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Tests de conception du jeu d'échecs}{8}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Tests de la classe pièce}{8}{subsubsection.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.2}Tests de l'ÉtatJeu}{9}{subsubsection.4.1.2}%
-\contentsline {paragraph}{Tests des échecs}{9}{section*.5}%
-\contentsline {subsection}{\numberline {4.2}Tests relatifs à l'IA}{10}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Tests de la valeur}{10}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.1}Diagramme de classe UML}{3}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Conception du Jeu d'échecs}{3}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Classe Piece}{4}{subsubsection.3.3.1}%
+\contentsline {paragraph}{Difficultés}{4}{section*.2}%
+\contentsline {subsubsection}{\numberline {3.3.2}Classe EtatJeu}{4}{subsubsection.3.3.2}%
+\contentsline {paragraph}{Plateau: Création, Affichage et Sauvegarde}{4}{section*.3}%
+\contentsline {paragraph}{Vérification de l'état du jeu}{5}{section*.4}%
+\contentsline {subsubsection}{\numberline {3.3.3}Finalisation de la classe Piece}{6}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.4}Classe Joueurs : Humain}{6}{subsubsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.4}Le Programme main}{6}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Conception de l'IA}{6}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Calcul de la valeur}{7}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Minimax}{7}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.3}Elagage Alpha-Beta}{8}{subsubsection.3.5.3}%
+\contentsline {subsubsection}{\numberline {3.5.4}Méthode Jouer\_Coup pour l'IA}{8}{subsubsection.3.5.4}%
+\contentsline {section}{\numberline {4}Tests}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Tests de conception du jeu d'échecs}{9}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Tests de la classe pièce}{9}{subsubsection.4.1.1}%
+\contentsline {paragraph}{Validation des tests}{10}{section*.5}%
+\contentsline {subsubsection}{\numberline {4.1.2}Tests de l'ÉtatJeu}{10}{subsubsection.4.1.2}%
+\contentsline {paragraph}{Tests des échecs}{10}{section*.6}%
+\contentsline {paragraph}{Validation des tests}{11}{section*.7}%
+\contentsline {subsection}{\numberline {4.2}Tests relatifs à l'IA}{11}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Tests de la valeur}{11}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Tests d'existence des coups}{11}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Tests de cohérence}{13}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}Tests de durées}{13}{subsubsection.4.2.4}%
+\contentsline {paragraph}{Validation des tests}{15}{section*.8}%
