@@ -51,3 +51,10 @@ def test_valeur():
     #Test pions allignés
     partie=init_partie_test("pions_allignes")
     assert partie.calcul_valeur()==-0.1
+
+def test_promotion():
+    partie=init_partie_test("promotion")
+    partie.deplacer_piece((7,6),(7,7))
+    for piece in partie.pieces[not partie.trait]:
+        assert not isinstance(piece, Pion)
+    assert isinstance(partie.plateau[(7,7)], Dame)
